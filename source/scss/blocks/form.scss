@@ -43,6 +43,9 @@
   border: 0;
   border-radius: 3rem;
   outline: none;
+  transform: scaleX(0);
+  transform-origin: top right;
+  transition: transform 0.4s ease;
 
   &:focus {
     border: 1px solid $c-purple;
@@ -75,6 +78,10 @@
     width: calc(100% - 5rem);
     height: 4rem;
     font-size: 1.6rem;
+  }
+
+  .screen--game.active & {
+    transform: scaleX(1);
   }
 }
 
