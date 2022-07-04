@@ -11,7 +11,6 @@ export default class FullPageScroll {
     this.screenBackground = document.querySelector(`.screen__background`);
     this.menuElements = document.querySelectorAll(`.page-header__menu .js-menu-link`);
 
-    this.prevScreen = 0;
     this.activeScreen = 0;
     this.onScrollHandler = this.onScroll.bind(this);
     this.onUrlHashChengedHandler = this.onUrlHashChanged.bind(this);
