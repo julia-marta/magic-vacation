@@ -1,4 +1,5 @@
 import throttle from 'lodash/throttle';
+import {Screens} from '../common/enums.js';
 
 export default class FullPageScroll {
   constructor() {
@@ -7,8 +8,10 @@ export default class FullPageScroll {
     this.timeout = null;
 
     this.screenElements = document.querySelectorAll(`.screen:not(.screen--result)`);
+    this.screenBackground = document.querySelector(`.screen__background`);
     this.menuElements = document.querySelectorAll(`.page-header__menu .js-menu-link`);
 
+    this.prevScreen = 0;
     this.activeScreen = 0;
     this.onScrollHandler = this.onScroll.bind(this);
     this.onUrlHashChengedHandler = this.onUrlHashChanged.bind(this);
@@ -41,8 +44,20 @@ export default class FullPageScroll {
 
   onUrlHashChanged() {
     const newIndex = Array.from(this.screenElements).findIndex((screen) => location.hash.slice(1) === screen.id);
-    this.activeScreen = (newIndex < 0) ? 0 : newIndex;
-    this.changePageDisplay();
+    const changeScreen = () => {
+      this.activeScreen = (newIndex < 0) ? 0 : newIndex;
+      this.changePageDisplay();
+    };
+
+    if (this.activeScreen === Screens.STORY && newIndex === Screens.PRIZES) {
+      this.screenBackground.classList.add(`screen__background--active`);
+      this.screenBackground.addEventListener(`transitionend`, () => {
+        changeScreen();
+        this.screenBackground.classList.remove(`screen__background--active`);
+      });
+      return;
+    }
+    changeScreen();
   }
 
   changePageDisplay() {
