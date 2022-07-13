@@ -58,3 +58,13 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+@mixin iteration($selector, $count, $delay) {
+  @for $i from 1 through $count {
+    &:nth-child(#{$i}) {
+      #{$selector} {
+        animation-delay: (0.1 + $delay * $i);
+      }
+  }
+  }
+}
