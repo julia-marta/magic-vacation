@@ -63,7 +63,7 @@
   @for $i from 1 through $count {
     &:nth-child(#{$i}) {
       #{$selector} {
-        animation-delay: (0.1 + $delay * $i);
+        animation-delay: ($delay + 0.2 * $i);
       }
   }
   }
