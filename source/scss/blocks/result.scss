@@ -39,18 +39,47 @@
     right: -1rem;
   }
 
-  picture {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
   img {
     display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+  }
+}
+
+.result__image-wrapper {
+  position: relative;
+  width: 64.5rem;
+  height: 34.5rem;
+  margin-top: 16rem;
+  margin-left: -5rem;
+}
+
+.result__img {
+  position: absolute;
+  max-height: 100%;
+
+  &--leaf-right {
+    top: 0;
+    right: 2rem;
+  }
+
+  &--leaf-left {
+    bottom: 0;
+    left: 0;
+  }
+
+  &--leaf-green {
+    bottom: 5rem;
+    right: 0;
+  }
+
+  &--suitcase {
+    left: 14rem;
+    top: -0.1rem;
+  }
+
+  &--flamingo {
+    height: 26rem;
+    bottom: 0.3rem;
+    left: 10.5rem;
   }
 }
 
