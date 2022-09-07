@@ -1,4 +1,5 @@
 import throttle from 'lodash/throttle';
+import PageSwitchHandler from './page-switch-handler.js';
 import {Screens} from '../common/enums.js';
 
 export default class FullPageScroll {
@@ -6,6 +7,7 @@ export default class FullPageScroll {
     this.THROTTLE_TIMEOUT = 1000;
     this.scrollFlag = true;
     this.timeout = null;
+    this.pageAnimationSwitcher = new PageSwitchHandler();
 
     this.screenElements = document.querySelectorAll(`.screen:not(.screen--result)`);
     this.screenBackground = document.querySelector(`.screen__background`);
@@ -62,6 +64,7 @@ export default class FullPageScroll {
   changePageDisplay() {
     this.changeVisibilityDisplay();
     this.changeActiveMenuItem();
+    this.pageAnimationSwitcher.runAnimationScheme(this.screenElements[this.activeScreen].id);
     this.emitChangeDisplayEvent();
   }
 

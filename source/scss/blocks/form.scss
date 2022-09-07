@@ -87,6 +87,15 @@
 }
 
 .form__button {
+  opacity: 0;
+
+  .screen--animate & {
+    animation: fade-in 0.2s 0.7s ease-in both;
+
+    span {
+       animation: fade-in 0.3s 0.9s ease-in both;
+    }
+  }
 
   @media (orientation: portrait) {
     position: relative;
@@ -150,6 +159,11 @@
 
     @media (max-width: $mobile) and (orientation: landscape) {
       width: calc(100% - 5rem);
+    }
+
+    .screen--animate & {
+      animation: input-expand-in 0.3s 0.8s ease both,
+        placeholder-fade-in 0.2s 1s ease-in both;
     }
   }
 }
