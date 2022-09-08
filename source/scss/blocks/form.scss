@@ -166,4 +166,14 @@
         placeholder-fade-in 0.2s 1s ease-in both;
     }
   }
+
+  .form__field::placeholder {
+    color: inherit;
+    // transition: color 0.2s ease-in;
+    // transition-delay: 1s;
+
+    // .screen--animate & {
+    //   color: red;
+    // }
+  }
 }
