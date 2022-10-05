@@ -93,7 +93,7 @@
     animation: fade-in 0.2s 0.7s ease-in both;
 
     span {
-       animation: fade-in 0.3s 0.9s ease-in both;
+      animation: fade-in 0.3s 0.9s ease-in both;
     }
   }
 
@@ -169,11 +169,5 @@
 
   .form__field::placeholder {
     color: inherit;
-    // transition: color 0.2s ease-in;
-    // transition-delay: 1s;
-
-    // .screen--animate & {
-    //   color: red;
-    // }
   }
 }

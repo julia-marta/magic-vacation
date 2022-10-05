@@ -61,10 +61,11 @@
     top: 0;
     right: 2rem;
     opacity: 0;
-    transform: rotate(-20deg);
+    transform: rotate(-10deg);
+    transform-origin: 0 30%;
 
     .screen--animate & {
-      animation: leaf-right-appereance 1.7s 0.4s ease-in-out forwards;
+      animation: leaf-right-appereance 1.7s 0.2s ease-in-out forwards;
     }
   }
 
@@ -72,10 +73,11 @@
     bottom: 0;
     left: 0;
     opacity: 0;
-    transform: rotate(-20deg);
+    transform: rotate(-10deg);
+    transform-origin: 100% 50%;
 
     .screen--animate & {
-      animation: leaf-left-appereance 1.7s 0.4s ease-in-out forwards;
+      animation: leaf-left-appereance 1.7s 0.2s ease-in-out forwards;
     }
   }
 
@@ -84,20 +86,32 @@
     right: 0;
     opacity: 0;
     transform: rotate(-10deg);
+    transform-origin: 0 20%;
 
     .screen--animate & {
-      animation: leaf-green-appereance 1.5s 0.6s ease-in-out forwards;
+      animation: leaf-green-appereance 1.5s 0.3s ease-in-out forwards;
     }
   }
 
   &--suitcase {
+    height: 36rem;
     left: 14rem;
     top: -0.1rem;
-    transform: translateY(100%) scale(0.1);
+    transform: translateY(100%);
 
     .screen--animate & {
-      transform: translateY(0) scale(1);
-      transition: transform 0.5s cubic-bezier(0.54, 0.54, 0, 1.22);
+      transform:  translateY(0);
+      transition: transform 0.3s cubic-bezier(0.34, 1.46, 0.64, 1);
+    }
+    img {
+      height: 100%;
+      max-height: 100%;
+      transform: scale(0.1);
+
+      .screen--animate & {
+        transform:  scale(1);
+        transition: transform 0.3s cubic-bezier(0.34, 1.46, 0.64, 1);
+      }
     }
   }
 
@@ -107,10 +121,11 @@
     left: 10.5rem;
     opacity: 0;
     transform: translateY(100%) rotate(-30deg);
+    transform-origin: 100% 40%;
 
     .screen--animate & {
-      animation: flamingo-appereance 0.5s cubic-bezier(0.54, 0.54, 0, 1) forwards,
-        flamingo-sway 2s 0.5s ease-in-out infinite;
+      animation: flamingo-appereance 0.3s cubic-bezier(0.54, 0.54, 0, 1) forwards,
+        flamingo-sway 2s 0.3s ease-in-out infinite;
     }
   }
 }

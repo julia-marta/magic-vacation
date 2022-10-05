@@ -126,10 +126,7 @@
 
   .screen--story.active .swiper-slide-active &,
   .screen--story.active .swiper-slide-next & {
-    animation-name: fade-in-right;
-    animation-duration: 0.5s;
-    animation-timing-function: ease;
-    animation-fill-mode: both;
+    animation: fade-in-right 0.5s ease both;
   }
 
   .screen--story.active .swiper-slide-active & {
@@ -171,6 +168,20 @@
   width: 4rem;
   height: 4rem;
   color: $c-dark;
+
+  &--prev {
+    .screen--story.active & {
+      animation: button-roll-prev 0.4s ease-in-out both;
+      animation-delay: 1s;
+    }
+  }
+
+  &--next {
+    .screen--story.active & {
+      animation: button-roll-next 0.4s ease-in-out both;
+      animation-delay: 1s;
+    }
+  }
 
   @media (min-width: $stop-scaling) {
     width: 40px;
