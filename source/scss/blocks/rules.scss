@@ -88,11 +88,7 @@
   }
 
   .screen--rules.active & {
-    animation-name: fade-in-up;
-    animation-duration: 0.4s;
-    animation-timing-function: ease-in-out;
-    animation-delay: 0.5s;
-    animation-fill-mode: both;
+    animation: fade-in-up 0.4s 0.5s ease-in-out both;
   }
 }
 
@@ -193,20 +189,14 @@
     border-radius: 50%;
     .screen--rules.active & {
       opacity: 1;
-      animation-name: bounce-in;
-      animation-duration: 0.4s;
-      animation-timing-function: $bounce-effect;
-      animation-fill-mode: both;
+      animation: bounce-in 0.4s $bounce-effect both;
     }
   }
   &::after {
     content: counter(li);
     counter-increment: li;
     .screen--rules.active & {
-      animation-name: fade-in;
-      animation-duration: 0.3s;
-      animation-timing-function: ease-in;
-      animation-fill-mode: both;
+      animation: fade-in 0.3s ease-in both;
     }
   }
 
@@ -219,10 +209,7 @@
     }
 
     .screen--rules.active & {
-      animation-name: fade-in-right;
-      animation-duration: 0.5s;
-      animation-timing-function: ease;
-      animation-fill-mode: both;
+      animation: fade-in-right 0.5s ease both;
     }
   }
 }
@@ -235,18 +222,10 @@
 
   .screen--rules.active & {
     opacity: 1;
-    animation-name: expand-in;
-    animation-duration: 0.6s;
-    animation-timing-function: ease;
-    animation-fill-mode: both;
-    animation-delay: 1.6s;
+    animation: expand-in 0.6s 1.6s ease both;
 
     span {
-      animation-name: fade-in;
-      animation-duration: 0.3s;
-      animation-timing-function: ease-in;
-      animation-fill-mode: both;
-      animation-delay: 1.9s;
+      animation: fade-in 0.3s 1.9s ease-in both;
     }
   }
 

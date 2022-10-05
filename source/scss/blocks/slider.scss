@@ -171,15 +171,13 @@
 
   &--prev {
     .screen--story.active & {
-      animation: button-roll-prev 0.4s ease-in-out both;
-      animation-delay: 1s;
+      animation: button-roll-left 0.4s 1s ease-in-out both;
     }
   }
 
   &--next {
     .screen--story.active & {
-      animation: button-roll-next 0.4s ease-in-out both;
-      animation-delay: 1s;
+      animation: button-roll-right 0.4s 1s ease-in-out both;
     }
   }
 

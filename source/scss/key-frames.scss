@@ -223,7 +223,7 @@
   // радиус - 2 рема или 20пкс
   // длина окружности - 2 ПИ * радиус, то есть 12.56 ремов пройдёт за полный оборот
 
-@keyframes button-roll-prev {
+@keyframes button-roll-left {
   0% {
     opacity: 0;
     transform: translateX(-12.56rem) rotate(0deg);
@@ -235,7 +235,7 @@
   }
 }
 
-@keyframes button-roll-next {
+@keyframes button-roll-right {
   0% {
     opacity: 0;
     transform: translateX(12.56rem) rotate(0deg);
