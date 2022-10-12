@@ -5,3 +5,10 @@ export const Screens = {
   RULES: 3,
   GAME: 4,
 };
+
+export const ColorThemes = {
+  0: `purple`,
+  2: `blue`,
+  4: `blue-light`,
+  6: `purple-dark`,
+};

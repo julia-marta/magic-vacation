@@ -128,9 +128,7 @@
   padding-top: 0.6rem;
   padding-left: 6.5rem;
   break-inside: avoid;
-  @include iteration('p', 4, 0.8s);
-  @include iteration('&::before', 4, 0.7s);
-  @include iteration('&::after', 4, 0.75s);
+
 
   @media (min-width: $stop-scaling) {
     margin: 0 0 62px;
@@ -212,6 +210,13 @@
       animation: fade-in-right 0.5s ease both;
     }
   }
+
+  .screen--rules.active & {
+    @include iteration('p', 4, 0.8s);
+    @include iteration('&::before', 4, 0.7s);
+    @include iteration('&::after', 4, 0.75s);
+  }
+
 }
 
 .rules__link {

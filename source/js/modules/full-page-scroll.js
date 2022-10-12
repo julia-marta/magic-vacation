@@ -1,6 +1,7 @@
 import throttle from 'lodash/throttle';
 import PageSwitchHandler from './page-switch-handler.js';
-import {Screens} from '../common/enums.js';
+import {Screens, ColorThemes} from '../common/enums.js';
+import {setColorTheme} from '../common/utils.js';
 
 export default class FullPageScroll {
   constructor() {
@@ -66,6 +67,12 @@ export default class FullPageScroll {
     this.changeActiveMenuItem();
     this.pageAnimationSwitcher.runAnimationScheme(this.screenElements[this.activeScreen].id);
     this.emitChangeDisplayEvent();
+
+    if (this.activeScreen === Screens.STORY) {
+      setColorTheme(ColorThemes, 0);
+    } else {
+      setColorTheme(ColorThemes, 6);
+    }
   }
 
   changeVisibilityDisplay() {

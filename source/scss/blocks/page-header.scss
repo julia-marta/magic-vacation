@@ -57,7 +57,7 @@
     z-index: 1;
 
     .page-header--menu-opened & {
-      color: $c-dark;
+      color: $c-purple-dark;
     }
   }
 
@@ -68,7 +68,7 @@
     z-index: 1;
 
     .page-header--menu-opened & {
-      color: $c-dark;
+      color: $c-purple-dark;
     }
   }
 
@@ -104,13 +104,13 @@
     position: absolute;
     right: 0.8rem;
     height: 1px;
-    background-color: $c-dark;
+    background-color: $c-purple-dark;
   }
 
   &::before {
     top: 0.9rem;
     width: 1rem;
-    box-shadow: 0 0.6rem 0 0 $c-dark;
+    box-shadow: 0 0.6rem 0 0 $c-purple-dark;
   }
 
   &::after {
@@ -155,7 +155,7 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 4rem 3.5rem;
-    color: $c-dark;
+    color: $c-purple-dark;
     background-color: $c-light;
 
     .page-header--menu-opened & {
@@ -174,7 +174,7 @@
     align-items: flex-start;
     padding: 2rem 3.5rem;
     max-height: calc(var(--vh, 1vh) * 100);
-    color: $c-dark;
+    color: $c-purple-dark;
     background-color: $c-light;
     overflow-y: auto;
 
@@ -199,13 +199,13 @@
   @media (max-width: $tablet) and (orientation: portrait) {
     margin: auto 0;
     font-size: 2.4rem;
-    color: $c-dark;
+    color: $c-purple-dark;
   }
 
   @media (max-width: $mobile) and (orientation: landscape) {
     margin: auto 0;
     font-size: 1.4rem;
-    color: $c-dark;
+    color: $c-purple-dark;
   }
 
   ul {
@@ -270,13 +270,13 @@
       @media (max-width: $tablet) and (orientation: portrait) {
         bottom: 0;
         right: 0;
-        background-color: $c-dark;
+        background-color: $c-purple-dark;
       }
 
       @media (max-width: $mobile) and (orientation: landscape) {
         bottom: 0;
         right: 0;
-        background-color: $c-dark;
+        background-color: $c-purple-dark;
       }
     }
 
@@ -290,12 +290,27 @@
 
     &:hover,
     &:focus {
-      color: $c-purple;
       outline: none;
+
+      body.purple & {
+        color: $c-purple-dark;
+      }
+
+      body.blue &{
+        color: $c-blue-light;
+      }
+
+      body.blue-light &{
+        color: $c-blue;
+      }
+
+      body.purple-dark & {
+        color: $c-purple;
+      }
 
       &::after {
         opacity: 1;
-        background-color: $c-purple;
+        background-color: currentColor;
         width: 100%;
         right: auto;
         left: 0;
