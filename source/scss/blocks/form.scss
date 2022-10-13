@@ -40,7 +40,7 @@
   font: inherit;
   font-size: 2.4rem;
   line-height: 1.2;
-  color: $c-dark;
+  color: $c-purple-dark;
   border: 0;
   border-radius: 3rem;
   outline: none;
@@ -93,7 +93,7 @@
     animation: fade-in 0.2s 0.7s ease-in both;
 
     span {
-       animation: fade-in 0.3s 0.9s ease-in both;
+      animation: fade-in 0.3s 0.9s ease-in both;
     }
   }
 
@@ -165,5 +165,9 @@
       animation: input-expand-in 0.3s 0.8s ease both,
         placeholder-fade-in 0.2s 1s ease-in both;
     }
+  }
+
+  .form__field::placeholder {
+    color: inherit;
   }
 }

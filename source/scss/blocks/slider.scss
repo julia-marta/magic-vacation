@@ -126,10 +126,7 @@
 
   .screen--story.active .swiper-slide-active &,
   .screen--story.active .swiper-slide-next & {
-    animation-name: fade-in-right;
-    animation-duration: 0.5s;
-    animation-timing-function: ease;
-    animation-fill-mode: both;
+    animation: fade-in-right 0.5s ease both;
   }
 
   .screen--story.active .swiper-slide-active & {
@@ -170,7 +167,35 @@
   position: relative;
   width: 4rem;
   height: 4rem;
-  color: $c-dark;
+  opacity: 0;
+
+  body.purple & {
+    color: $c-purple;
+  }
+
+  body.blue & {
+    color: $c-blue;
+  }
+
+  body.blue-light & {
+    color: $c-blue-light;
+  }
+
+  body.purple-dark & {
+    color: $c-purple-dark;
+  }
+
+  &--prev {
+    .screen--story.active & {
+      animation: button-roll-left 0.4s 1s ease-in-out both;
+    }
+  }
+
+  &--next {
+    .screen--story.active & {
+      animation: button-roll-right 0.4s 1s ease-in-out both;
+    }
+  }
 
   @media (min-width: $stop-scaling) {
     width: 40px;
@@ -201,9 +226,26 @@
     }
   }
 
-  &:hover {
-    color: $c-purple;
+  &:hover,
+  &:focus {
+    body.purple & {
+      color: $c-purple-dark;
+    }
 
+    body.blue & {
+      color: $c-blue-light;
+    }
+
+    body.blue-light & {
+      color: $c-blue;
+    }
+
+    body.purple-dark & {
+      color: $c-purple;
+    }
+  }
+
+  &:hover {
     &::before {
       width: 112.5%;
       height: 112.5%;
@@ -211,23 +253,56 @@
   }
 
   &:focus {
-    color: $c-purple;
     outline: none;
 
     &::before {
-      border-color: $c-purple;
+      body.purple & {
+        border-color: $c-purple-dark;
+      }
+
+      body.blue & {
+        border-color: $c-blue-light;
+      }
+
+      body.blue-light & {
+        border-color: $c-blue;
+      }
+
+      body.purple-dark & {
+        border-color: $c-purple;
+      }
     }
   }
 
   &:active,
   &:active:focus {
-    color: $c-light;
+    body & {
+      color: $c-light;
+    }
 
     &::before {
       width: 100%;
       height: 100%;
-      background-color: $c-purple;
-      border-color: $c-purple;
+
+      body.purple & {
+        background-color: $c-purple-dark;
+        border-color: $c-purple-dark;
+      }
+
+      body.blue & {
+        background-color: $c-blue-light;
+        border-color: $c-blue-light;
+      }
+
+      body.blue-light & {
+        background-color: $c-blue;
+        border-color: $c-blue;
+      }
+
+      body.purple-dark & {
+        background-color: $c-purple;
+        border-color: $c-purple;
+      }
     }
   }
 

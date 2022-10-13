@@ -140,11 +140,7 @@
   }
 
   .screen--intro.active & {
-    animation-name: fade-in-up;
-    animation-duration: 0.5s;
-    animation-timing-function: ease-in-out;
-    animation-delay: 0.5s;
-    animation-fill-mode: both;
+    animation: fade-in-up 0.5s 0.5s ease-in-out both;
   }
 }
 
@@ -163,11 +159,7 @@
   }
 
   .screen--intro.active & {
-    animation-name: fade-in;
-    animation-duration: 0.3s;
-    animation-timing-function: ease-in-out;
-    animation-delay: 1.2s;
-    animation-fill-mode: both;
+    animation: fade-in 0.3s 1.2s ease-in-out both;
   }
 }
 

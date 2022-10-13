@@ -101,12 +101,12 @@
 @keyframes leaf-right-appereance {
   0% {
     opacity: 0;
-    transform: translateY(-10%) rotate(-20deg);
+    transform: translateY(-10%) rotate(-10deg);
   }
 
   20% {
     opacity: 1;
-    transform: translateY(10%) rotate(20deg);
+    transform: translateY(10%) rotate(10deg);
   }
 
   40% {
@@ -133,12 +133,12 @@
 @keyframes leaf-left-appereance {
   0% {
     opacity: 0;
-    transform: rotate(20deg) translateY(-10%);
+    transform: rotate(10deg) translateY(-10%);
   }
 
   20% {
     opacity: 1;
-    transform: rotate(-20deg) translateY(10%);
+    transform: rotate(-10deg) translateY(10%);
   }
 
   40% {
@@ -212,10 +212,37 @@
   }
 
   50% {
-    transform: rotate(-10deg) translateY(5%) translateX(2%);
+    transform: rotate(-5deg) translateY(3%) translateX(2%);
   }
 
   100% {
     transform: rotate(0) translateY(0) translateX(0);
+  }
+}
+
+  // радиус - 2 рема или 20пкс
+  // длина окружности - 2 ПИ * радиус, то есть 12.56 ремов пройдёт за полный оборот
+
+@keyframes button-roll-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-12.56rem) rotate(0deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(360deg);
+  }
+}
+
+@keyframes button-roll-right {
+  0% {
+    opacity: 0;
+    transform: translateX(12.56rem) rotate(0deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(-360deg);
   }
 }
