@@ -19,7 +19,7 @@
 </svg> -->
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 350 330">
   <g id="dirigible">
-    <g id="basket">
+    <g id="basket" transform="translate(-171.360, -219.310)">
         <animateTransform dur="1s"
               repeatCount="indefinite"
               calcMode="spline"
@@ -41,13 +41,15 @@
             calcMode="spline"
             attributeName="transform"
             type="skewX"
-            values="-4; 0; -4"
+            values="4; 0; 4"
             keySplines="0.33 0 0.67 1; 0.33 0 0.67 1"
           additive="sum"/>
+    <g transform='translate(171.360, 219.310)'>
       <path d="M175.44,249.28h48.36a13.27,13.27,0,0,0,13-10.65l3.74-18.32H172.36v25.89A3.09,3.09,0,0,0,175.44,249.28Z" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       <path d="M235.79,241.69h-9.22a8.31,8.31,0,0,1-8.28-8.31V220.31" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/>
       <path d="M204.25,231.88h-2.05a3.45,3.45,0,0,0-3.43,3.45v2.92a3.45,3.45,0,0,0,3.43,3.45h2.05a3.45,3.45,0,0,0,3.43-3.45v-2.92A3.44,3.44,0,0,0,204.25,231.88Z" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       <path d="M185.64,231.88h-2.05a3.45,3.45,0,0,0-3.43,3.45v2.92a3.45,3.45,0,0,0,3.43,3.45h2.05a3.45,3.45,0,0,0,3.43-3.45v-2.92A3.45,3.45,0,0,0,185.64,231.88Z" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    </g>
     </g>
     <g id="baloon">
       <path d="M205,227.08c43.38,0,74.86-15.55,74.86-37s-31.48-37-74.86-37c-27.94,0-55.36,13.53-73.46,24.87a14.3,14.3,0,0,0,0,24.21c18.09,11.33,45.52,24.87,73.46,24.87" fill="#36e69a"/>
