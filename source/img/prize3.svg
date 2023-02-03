@@ -99,7 +99,7 @@
           <animateTransform
             dur="0.167s"
             calcMode="spline"
-            attributeName="transform" 
+            attributeName="transform"
             type="rotate"
             values="36, -16.8, 12.3; 0, -16.8, 12.3"
             keySplines="0.33 0 0.67 1"
@@ -133,6 +133,223 @@
         </g>
       </g>
     </g>
+    <!-- Нить: слой thread Outlines -->
+    <line id="thread" x1="100" y1="318" x2="107.65" y2="289.02" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2">
+      <!-- анимации контура -->
+      <animate id="threadY1"
+        attributeName="y1"
+        calcMode="spline"
+        values="318; 141.5"
+        keySplines="0.33 0 0.67 1"
+        dur="0.566s"
+        begin="0.533s"/>
+      <animate id="threadY2"
+        attributeName="y1"
+        calcMode="spline"
+        values="141.5; 148.2"
+        keySplines="0.33 0 0.67 1"
+        dur="0.3s"
+        begin="threadY1.end"/>
+      <animate id="threadY3"
+        attributeName="y1"
+        calcMode="spline"
+        values="148.2; 150.3"
+        keySplines="0.33 0 0.67 1"
+        dur="0.266s"
+        begin="threadY2.end"/>
+      <animate id="threadY4"
+        attributeName="y1"
+        calcMode="spline"
+        values="150.3; 133"
+        keySplines="0.33 0 0.67 1"
+        dur="0.566s"
+        begin="threadY3.end"/>
+      <animate id="threadY5"
+        attributeName="y1"
+        calcMode="spline"
+        values="133; 166.71"
+        keySplines="0.33 0 0.67 1"
+        dur="0.3s"
+        begin="threadY4.end"
+        fill="freeze"/>
+      <animate id="threadX1"
+        attributeName="x1"
+        calcMode="spline"
+        values="100; 107.65"
+        keySplines="0.33 0 0.67 1"
+        dur="0.566s"
+        begin="0.533s"/>
+      <animate id="threadX2"
+        attributeName="x1"
+        calcMode="spline"
+        values="107.65; 114.8"
+        keySplines="0.33 0 0.67 1"
+        dur="0.3s"
+        begin="threadX1.end"/>
+      <animate id="threadX3"
+        attributeName="x1"
+        calcMode="spline"
+        values="114.8; 100"
+        keySplines="0.33 0 0.67 1"
+        dur="0.266s"
+        begin="threadX2.end"/>
+      <animate id="threadX4"
+        attributeName="x1"
+        calcMode="spline"
+        values="100; 111"
+        keySplines="0.33 0 0.67 1"
+        dur="0.566s"
+        begin="threadX3.end"/>
+      <animate id="threadX5"
+        attributeName="x1"
+        calcMode="spline"
+        values="111; 107.65"
+        keySplines="0.33 0 0.67 1"
+        dur="0.3s"
+        begin="threadX4.end"
+        fill="freeze"/>
+    </line>
+    <!-- Воздушный шар: слой baloon Outlines -->
+    <!-- смещаем центр координат перед анимацией -->
+    <g id="baloon" transform="translate(73.240, 77.810)">
+      <!-- анимации положения -->
+      <animateTransform
+        id="baloonTranslate1"
+        dur="0.567s"
+        calcMode="spline"
+        attributeName="transform"
+        type="translate"
+        values="0, 161; 0, 0"
+        keySplines="0.5 0 0.87 1"
+        begin="0.533s"
+        additive="sum"/>
+      <animateTransform
+        id="baloonTranslate2"
+        dur="0.301s"
+        calcMode="spline"
+        attributeName="transform"
+        type="translate"
+        values="0, 0; 5, 25"
+        keySplines="0.33 0 0.67 1"
+        begin="baloonTranslate1.end"
+        additive="sum"/>
+      <animateTransform
+        id="baloonTranslate3"
+        dur="0.241s"
+        calcMode="spline"
+        attributeName="transform"
+        type="translate"
+        values="5, 25; -7.67, -5.83"
+        keySplines="0.33 0 0.67 1"
+        begin="baloonTranslate2.end"
+        additive="sum"/>
+      <animateTransform
+        id="baloonTranslate4"
+        dur="0.241s"
+        calcMode="spline"
+        attributeName="transform"
+        type="translate"
+        values="-7.67, -5.83; -3.84, 12.08"
+        keySplines="0.33 0 0.67 1"
+        begin="baloonTranslate3.end"
+        additive="sum"/>
+      <animateTransform
+        id="baloonTranslate5"
+        dur="0.241s"
+        calcMode="spline"
+        attributeName="transform"
+        type="translate"
+        values="-3.84, 12.08; 2.86, -0.8"
+        keySplines="0.33 0 0.67 1"
+        begin="baloonTranslate4.end"
+        additive="sum"/>
+      <animateTransform
+        id="baloonTranslate6"
+        dur="0.241s"
+        calcMode="spline"
+        attributeName="transform"
+        type="translate"
+        values="2.86, -0.8; 0.22, 4.66"
+        keySplines="0.33 0 0.67 1"
+        begin="baloonTranslate5.end"
+        additive="sum"/>
+      <animateTransform
+        id="baloonTranslate7"
+        dur="0.169s"
+        calcMode="spline"
+        attributeName="transform"
+        type="translate"
+        values="0.22, 4.66; 0, 0"
+        keySplines="0.33 0 0.67 1"
+        begin="baloonTranslate6.end"
+        additive="sum"
+        fill="freeze"/>
+      <!-- анимации поворота: опорная точка 34.8, 85.2 -->
+      <animateTransform
+        id="baloonRotate1"
+        dur="0.7s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="45, 34.8, 85.2; -11.72, 34.8, 85.2"
+        keySplines="0.5 0 0.67 1"
+        begin="0.533s"
+        additive="sum"/>
+      <animateTransform
+        id="baloonRotate2"
+        dur="0.3s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="-11.72, 34.8, 85.2; 6.06, 34.8, 85.2"
+        keySplines="0.33 0 0.67 1"
+        begin="baloonRotate1.end"
+        additive="sum"/>
+      <animateTransform
+        id="baloonRotate3"
+        dur="0.3s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="6.06, 34.8, 85.2; -5.28, 34.8, 85.2"
+        keySplines="0.33 0 0.67 1"
+        begin="baloonRotate2.end"
+        additive="sum"/>
+      <animateTransform
+        id="baloonRotate4"
+        dur="0.345s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="-5.28, 34.8, 85.2; 4.67, 34.8, 85.2"
+        keySplines="0.33 0 0.67 1"
+        begin="baloonRotate3.end"
+        additive="sum"/>
+      <animateTransform
+        id="baloonRotate5"
+        dur="0.355s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="4.67, 34.8, 85.2; 0, 34.8, 85.2"
+        keySplines="0.33 0 0.67 1"
+        begin="baloonRotate4.end"
+        additive="sum"
+        fill="freeze"/>
+      <!-- смещаем центр координат обратно после анимации -->
+      <g transform="translate(-73.240, -77.810)">
+        <path d="M106.58,161.87l-2.19,3.79a1.34,1.34,0,0,0,1.17,2h4.37a1.34,1.34,0,0,0,1.16-2l-2.18-3.79a1.35,1.35,0,0,0-2.33,0" fill="#fff"/>
+        <path d="M107.74,79.42a32.91,32.91,0,0,1,32.9,32.89c0,18.17-15.09,48.89-33.25,48.89s-32.55-30.73-32.55-48.89a32.91,32.91,0,0,1,32.9-32.89m0-1.61a34.54,34.54,0,0,0-34.5,34.5c0,9.51,3.8,22.1,9.68,32.07,7,11.88,15.68,18.42,24.46,18.42s17.6-6.54,24.81-18.4c6.1-10,10.05-22.64,10.05-32.09a34.54,34.54,0,0,0-34.5-34.5" fill="#fff"/>
+        <path d="M96.06,112.39c0-18.16,5.23-32.89,11.68-32.89a32.91,32.91,0,0,0-32.9,32.89c0,18.17,14.38,48.89,32.55,48.89h0.17c-6.43-.19-11.5-30.77-11.5-48.89" fill="#76abff"/>
+        <path d="M140.64,112.39a32.91,32.91,0,0,0-32.9-32.89c6.45,0,11.68,14.73,11.68,32.89s-5.29,48.48-11.68,48.87c18-.39,32.9-30.82,32.9-48.87" fill="#1553b7"/>
+        <path d="M119.42,112.39c0-18.16-5.23-32.89-11.68-32.89S96.06,94.23,96.06,112.39s5.07,48.69,11.5,48.89h0.18c6.39-.4,11.68-30.83,11.68-48.88" fill="#3b7bf2"/>
+        <path d="M100.54,105.36a5.7,5.7,0,1,0,5.7,5.7,5.39,5.39,0,0,0-5.7-5.7m0,8c-1.86,0-3.06-.93-3.06-2.29s1.21-2.29,3.06-2.29,3.07,0.93,3.07,2.29-1.25,2.29-3.07,2.29" fill="#fff"/>
+        <path d="M114.74,105.36a1.78,1.78,0,0,1,1.46,2.8L102.87,127.5a1.79,1.79,0,0,1-2.94-2l13.34-19.34a1.77,1.77,0,0,1,1.47-.77" fill="#fff"/>
+        <path d="M116.21,116.88a5.7,5.7,0,1,0,5.7,5.7,5.4,5.4,0,0,0-5.7-5.7m0,8c-1.86,0-3.06-.93-3.06-2.29s1.21-2.29,3.06-2.29,3.07,0.9,3.07,2.29-1.21,2.29-3.07,2.29" fill="#fff"/>
+      </g>
+    </g>
+
+
   </g>
   <!-- Нижняя часть чемодана: слой bottom Outlines -->
   <g id="suitcase-bottom">
