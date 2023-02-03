@@ -509,11 +509,147 @@
     <!-- Колибри: слой calibry Outlines -->
     <!-- смещаем центр координат перед анимациями -->
     <g id="hummingbird" transform="translate(262.240, 166.954)">
-
-
+      <!-- анимации положения -->
+      <animateTransform
+        id="hummingbirdTranslate1"
+        dur="0.577s"
+        calcMode="spline"
+        attributeName="transform"
+        type="translate"
+        values="-63.5, 75; 0, 0"
+        keySplines="0.33 0 0.07 1"
+        begin="0.533s"
+        additive="sum"/>
+      <animateTransform
+        id="hummingbirdTranslate2"
+        dur="0.956s"
+        calcMode="spline"
+        attributeName="transform"
+        type="translate"
+        values="0, 0; -13.85, 8.6"
+        keySplines="0.51 0 0.57 1"
+        begin="hummingbirdTranslate1.end"
+        additive="sum"/>
+      <animateTransform
+        id="hummingbirdTranslate3"
+        dur="1.033s"
+        calcMode="spline"
+        attributeName="transform"
+        type="translate"
+        values="-13.85, 8.6; 0, 0"
+        keySplines="0.49 0 0.36 1"
+        begin="hummingbirdTranslate2.end"
+        additive="sum"
+        fill="freeze"/>
+      <!-- анимации поворота: опорная точка 21.2, 20.8 -->
+      <animateTransform
+        id="hummingbirdRotate1"
+        dur="0.371s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="-37.46, 21.2, 20.8; 3.64, 21.2, 20.8"
+        keySplines="0.33 0 0.67 1"
+        begin="0.533s"
+        additive="sum"/>
+      <animateTransform
+        id="hummingbirdRotate2"
+        dur="0.262s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="3.64, 21.2, 20.8; -16.78, 21.2, 20.8"
+        keySplines="0.33 0 0.67 1"
+        begin="hummingbirdRotate1.end"
+        additive="sum"/>
+      <animateTransform
+        id="hummingbirdRotate3"
+        dur="0.614s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="-16.78, 21.2, 20.8; -22.3, 21.2, 20.8"
+        keySplines="0.33 0 0.67 1"
+        begin="hummingbirdRotate2.end"
+        additive="sum"/>
+      <animateTransform
+        id="hummingbirdRotate4"
+        dur="0.420s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="-22.3, 21.2, 20.8; 1.5, 21.2, 20.8"
+        keySplines="0.33 0 0.67 1"
+        begin="hummingbirdRotate3.end"
+        additive="sum"/>
+      <animateTransform
+        id="hummingbirdRotate5"
+        dur="0.6s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="1.5, 21.2, 20.8; 1.5, 21.2, 20.8"
+        keySplines="0.33 0 0.67 1"
+        begin="hummingbirdRotate4.end"
+        additive="sum"/>
+      <animateTransform
+        id="hummingbirdRotate6"
+        dur="0.433s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="1.5, 21.2, 20.8; -16.78, 21.2, 20.8"
+        keySplines="0.33 0 0.67 1"
+        begin="hummingbirdRotate5.end"
+        additive="sum"
+        fill="freeze"/>
       <!-- смещаем центр координат обратно после анимации -->
       <g transform="translate(-262.240, -166.954)">
-        <path d="M279.2,183.8A4.89,4.89,0,0,1,283,179h0l21.07-5.4c-7.78,14.84-19.18,15.07-20,15.07h0a4.9,4.9,0,0,1-4.85-4.9" fill="#fff"/>
+        <!-- Крылья: Group2 -->
+        <!-- смещаем центр координат перед анимацией -->
+        <g id="hummingbirdWings" transform="translate(279.200, 173.600)">
+          <!-- анимации изменения масштаба (фоновая анимация) -->
+          <animateTransform
+            id="wingsScale1"
+            dur="33ms"
+            calcMode="linear"
+            attributeName="transform"
+            type="scale"
+            values="1, 1; -0.432, 0.948"
+            begin="0.533s; wingsScale4.end"
+            additive="sum"/>
+          <animateTransform
+            id="wingsScale2"
+            dur="67ms"
+            calcMode="linear"
+            attributeName="transform"
+            type="scale"
+            values="-0.432, 0.948; 1, 1"
+            begin="wingsScale1.end"
+            additive="sum"/>
+           <animateTransform
+            id="wingsScale3"
+            dur="67ms"
+            calcMode="linear"
+            attributeName="transform"
+            type="scale"
+            values="1, 1; -0.432, 0.948"
+            begin="wingsScale2.end"
+            additive="sum"/>
+          <animateTransform
+            id="wingsScale4"
+            dur="33ms"
+            calcMode="linear"
+            attributeName="transform"
+            type="scale"
+            values="-0.432, 0.948; 1, 1"
+            begin="wingsScale3.end"
+            additive="sum"/>
+          <!-- смещаем центр координат обратно после анимации -->
+          <g transform="translate(-279.200, -173.600)">
+            <path d="M279.2,183.8A4.89,4.89,0,0,1,283,179h0l21.07-5.4c-7.78,14.84-19.18,15.07-20,15.07h0a4.9,4.9,0,0,1-4.85-4.9" fill="#fff"/>        
+          </g>
+        </g>
         <path d="M262.24,169.86l10.76,0a4.65,4.65,0,0,1,4.41-2.9,3.91,3.91,0,0,1,3.48,1.76,13.39,13.39,0,0,1,1.37,2.59c0.63,1.57,4,15.8,5.89,19.16,1.1,2,4.39,7.16,4.39,7.16a2.3,2.3,0,0,1,.31,1.15V208s-3.11-1.08-3.11-3.91v-6.53c-1.91.27-6-1.65-8.33-2.88a12.82,12.82,0,0,1-6.36-6.76,12.33,12.33,0,0,1-.11-9.16,7.13,7.13,0,0,0,.79-2.91c-0.06-1.14-1.39-2.72-2.18-4.05Z" fill="#fff"/>
       </g>
     </g>
