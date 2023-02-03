@@ -44,95 +44,6 @@
       dur="0.001s"
       begin="0.533s"
       fill="freeze"/>
-    <!-- Цветы: слой flowers Outlines -->
-    <!-- смещаем центр координат перед анимациями -->
-    <g id="flowers" transform="translate(177.24, 162.63)">
-      <!-- анимации поворота: опорная точка 4.3, 127.6 -->
-      <animateTransform
-        id="flowersUp1"
-        dur="0.3s"
-        calcMode="spline"
-        attributeName="transform"
-        type="rotate"
-        values="51.64, 4.3, 127.6; -10, 4.3, 127.6"
-        keySplines="0.45 0 0.85 1"
-        begin="0.533s"
-        additive="sum"/>
-      <animateTransform
-        id="flowersDown1"
-        dur="0.333s"
-        calcMode="spline"
-        attributeName="transform"
-        type="rotate"
-        values="-10, 4.3, 127.6; 4, 4.3, 127.6"
-        keySplines="0.33 0 0.67 1"
-        begin="flowersUp1.end"
-        additive="sum"/>
-      <animateTransform
-        id="flowersUp2"
-        dur="0.333s"
-        calcMode="spline"
-        attributeName="transform"
-        type="rotate"
-        values="4, 4.3, 127.6; -2, 4.3, 127.6"
-        keySplines="0.33 0 0.67 1"
-        begin="flowersDown1.end"
-        additive="sum"/>
-      <animateTransform
-        id="flowersDown2"
-        dur="0.4s"
-        calcMode="spline"
-        attributeName="transform"
-        type="rotate"
-        values="-2, 4.3, 127.6; 0, 4.3, 127.6"
-        keySplines="0.33 0 0.67 1"
-        begin="flowersUp2.end"
-        additive="sum"
-        fill="freeze"/>
-      <!-- смещаем центр координат обратно после анимаций -->
-      <g transform="translate(-177.24, -162.63)">
-        <path d="M180.73,277.8s8.3-74.59,39.71-90" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-        <!-- Верхний цветок: Group 3 -->
-        <!-- смещаем центр координат перед анимацией -->
-        <g id="bud-top" transform="translate(217.764, 162.630)">
-          <!-- анимация поворота: опорная точка -16.8, 12.3 -->
-          <animateTransform
-            dur="0.167s"
-            calcMode="spline"
-            attributeName="transform"
-            type="rotate"
-            values="36, -16.8, 12.3; 0, -16.8, 12.3"
-            keySplines="0.33 0 0.67 1"
-            begin="0.533s"
-            additive="sum"
-            fill="freeze"/>
-          <!-- смещаем центр координат обратно после анимации -->
-          <g transform="translate(-217.764, -162.630)">
-            <path d="M217.95,187.12l9.27-24.49a22,22,0,0,1,8.72,3,7.87,7.87,0,0,1,9.72,12.33,22.14,22.14,0,0,1,.86,9.18l-26,3.3a2.45,2.45,0,0,1-2.6-3.29" fill="#3b7bf2"/>
-          </g>
-        </g>
-        <path d="M178.24,287.63s6.89-44.68,37.95-56.53" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-        <!-- Нижний цветок: Group 1 -->
-        <!-- смещаем центр координат перед анимацией -->
-        <g id="bud-bottom" transform="translate(210.597, 215.530)">
-          <!-- анимация поворота: опорная точка -12, 7.7 -->
-          <animateTransform
-            dur="0.167s"
-            calcMode="spline"
-            attributeName="transform"
-            type="rotate"
-            values="26, -12, 7.7; 0, -12, 7.7"
-            keySplines="0.33 0 0.67 1"
-            begin="0.533s"
-            additive="sum"
-            fill="freeze"/>
-          <!-- смещаем центр координат обратно после анимации -->
-          <g transform="translate(-210.597, -215.530)">
-            <path d="M210.85,232l9-16.47a16.66,16.66,0,0,1,6.13,2.93,5.93,5.93,0,0,1,4-.42,5.67,5.67,0,0,1,4.26,6.85,5.54,5.54,0,0,1-2.29,3.23,15.1,15.1,0,0,1-.21,6.58l-19.34-.11a1.76,1.76,0,0,1-1.6-2.58" fill="#3b7bf2"/>
-          </g>
-        </g>
-      </g>
-    </g>
     <!-- Нить: слой thread Outlines -->
     <line id="thread" x1="100" y1="318" x2="107.65" y2="289.02" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2">
       <!-- анимации контура -->
@@ -348,8 +259,264 @@
         <path d="M116.21,116.88a5.7,5.7,0,1,0,5.7,5.7,5.4,5.4,0,0,0-5.7-5.7m0,8c-1.86,0-3.06-.93-3.06-2.29s1.21-2.29,3.06-2.29,3.07,0.9,3.07,2.29-1.21,2.29-3.07,2.29" fill="#fff"/>
       </g>
     </g>
+    <!-- Цветы: слой flowers Outlines -->
+    <!-- смещаем центр координат перед анимациями -->
+    <g id="flowers" transform="translate(177.24, 162.63)">
+      <!-- анимации поворота: опорная точка 4.3, 127.6 -->
+      <animateTransform
+        id="flowersRotate1"
+        dur="0.3s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="51.64, 4.3, 127.6; -10, 4.3, 127.6"
+        keySplines="0.45 0 0.85 1"
+        begin="0.533s"
+        additive="sum"/>
+      <animateTransform
+        id="flowersRotate2"
+        dur="0.333s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="-10, 4.3, 127.6; 4, 4.3, 127.6"
+        keySplines="0.33 0 0.67 1"
+        begin="flowersRotate1.end"
+        additive="sum"/>
+      <animateTransform
+        id="flowersRotate3"
+        dur="0.333s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="4, 4.3, 127.6; -2, 4.3, 127.6"
+        keySplines="0.33 0 0.67 1"
+        begin="flowersRotate2.end"
+        additive="sum"/>
+      <animateTransform
+        id="flowersRotate4"
+        dur="0.4s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="-2, 4.3, 127.6; 0, 4.3, 127.6"
+        keySplines="0.33 0 0.67 1"
+        begin="flowersRotate3.end"
+        additive="sum"
+        fill="freeze"/>
+      <!-- смещаем центр координат обратно после анимаций -->
+      <g transform="translate(-177.24, -162.63)">
+        <path d="M180.73,277.8s8.3-74.59,39.71-90" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <!-- Верхний цветок: Group 3 -->
+        <!-- смещаем центр координат перед анимацией -->
+        <g id="bud-top" transform="translate(217.764, 162.630)">
+          <!-- анимация поворота: опорная точка -16.8, 12.3 -->
+          <animateTransform
+            dur="0.167s"
+            calcMode="spline"
+            attributeName="transform"
+            type="rotate"
+            values="36, -16.8, 12.3; 0, -16.8, 12.3"
+            keySplines="0.33 0 0.67 1"
+            begin="0.533s"
+            additive="sum"
+            fill="freeze"/>
+          <!-- смещаем центр координат обратно после анимации -->
+          <g transform="translate(-217.764, -162.630)">
+            <path d="M217.95,187.12l9.27-24.49a22,22,0,0,1,8.72,3,7.87,7.87,0,0,1,9.72,12.33,22.14,22.14,0,0,1,.86,9.18l-26,3.3a2.45,2.45,0,0,1-2.6-3.29" fill="#3b7bf2"/>
+          </g>
+        </g>
+        <path d="M178.24,287.63s6.89-44.68,37.95-56.53" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <!-- Нижний цветок: Group 1 -->
+        <!-- смещаем центр координат перед анимацией -->
+        <g id="bud-bottom" transform="translate(210.597, 215.530)">
+          <!-- анимация поворота: опорная точка -12, 7.7 -->
+          <animateTransform
+            dur="0.167s"
+            calcMode="spline"
+            attributeName="transform"
+            type="rotate"
+            values="26, -12, 7.7; 0, -12, 7.7"
+            keySplines="0.33 0 0.67 1"
+            begin="0.533s"
+            additive="sum"
+            fill="freeze"/>
+          <!-- смещаем центр координат обратно после анимации -->
+          <g transform="translate(-210.597, -215.530)">
+            <path d="M210.85,232l9-16.47a16.66,16.66,0,0,1,6.13,2.93,5.93,5.93,0,0,1,4-.42,5.67,5.67,0,0,1,4.26,6.85,5.54,5.54,0,0,1-2.29,3.23,15.1,15.1,0,0,1-.21,6.58l-19.34-.11a1.76,1.76,0,0,1-1.6-2.58" fill="#3b7bf2"/>
+          </g>
+        </g>
+      </g>
+    </g>
+    <!-- Малый лист: слой leaf1 Outlines -->
+    <!-- смещаем центр координат перед анимациями -->
+    <g id="leaf-small" transform="translate(170.239, 247)">
+      <!-- анимации поворота: опорная точка 6.7, 49.8 -->
+      <animateTransform
+        id="leafSmallRotate1"
+        dur="0.467s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="38.8, 6.7, 49.8; -9.57, 6.7, 49.8"
+        keySplines="0.33 0 0.67 1"
+        begin="0.533s"
+        additive="sum"/>
+      <animateTransform
+        id="leafSmallRotate2"
+        dur="0.367s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="-9.57, 6.7, 49.8; 4.29, 6.7, 49.8"
+        keySplines="0.33 0 0.67 1"
+        begin="leafSmallRotate1.end"
+        additive="sum"/>
+      <animateTransform
+        id="leafSmallRotate3"
+        dur="0.433s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="4.29, 6.7, 49.8; 0.31, 6.7, 49.8"
+        keySplines="0.33 0 0.67 1"
+        begin="leafSmallRotate2.end"
+        additive="sum"/>
+      <animateTransform
+        id="leafSmallRotate4"
+        dur="0.433s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="0.31, 6.7, 49.8; 4.29, 6.7, 49.8"
+        keySplines="0.33 0 0.67 1"
+        begin="leafSmallRotate3.end"
+        additive="sum"/>
+      <animateTransform
+        id="leafSmallRotate5"
+        dur="0.433s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="4.29, 6.7, 49.8; 0.31, 6.7, 49.8"
+        keySplines="0.33 0 0.67 1"
+        begin="leafSmallRotate4.end"
+        additive="sum"/>
+      <animateTransform
+        id="leafSmallRotate6"
+        dur="0.433s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="0.31, 6.7, 49.8; 4.29, 6.7, 49.8"
+        keySplines="0.33 0 0.67 1"
+        begin="leafSmallRotate5.end"
+        additive="sum"
+        fill="freeze"/>
+      <!-- смещаем центр координат обратно после анимации -->
+      <g transform="translate(-170.239, -247)">
+        <path d="M183.79,264.77c2.3,9.1-2.27,18.12-2.27,18.12s-8.32-5.74-10.63-14.85,2.27-18.12,2.27-18.12,8.32,5.75,10.63,14.85" fill="#3b7bf2"/>
+        <path d="M199.63,285.16c-9.11,2.31-18.12-2.27-18.12-2.27s5.74-8.32,14.85-10.63,18.12,2.27,18.12,2.27-5.75,8.32-14.85,10.63" fill="#3b7bf2"/>
+        <path d="M188.56,271.67a144.15,144.15,0,0,0-10.31,16.61" fill="none" stroke="#3b7bf2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <path d="M203.69,264.19c-6.17,7.08-16.19,8.44-16.19,8.44s0-10.11,6.16-17.18S209.85,247,209.85,247s0,10.11-6.16,17.19" fill="#76abff"/>
+      </g>
+    </g>
+    <!-- Большой лист: слой leaf2 Outlines -->
+    <!-- смещаем центр координат перед анимациями -->
+    <g id="leaf-large" transform="translate(119.19, 178)">
+      <!-- анимации поворота: опорная точка 62, 121.2 -->
+      <animateTransform
+        id="leafLargeRotate1"
+        dur="0.367s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="60.75, 62, 121.2; -6.4, 62, 121.2"
+        keySplines="0.33 0 0.67 1"
+        begin="0.533s"
+        additive="sum"/>
+      <animateTransform
+        id="leafLargeRotate2"
+        dur="0.267s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="-6.4, 62, 121.2; 3, 62, 121.2"
+        keySplines="0.33 0 0.67 1"
+        begin="leafLargeRotate1.end"
+        additive="sum"/>
+      <animateTransform
+        id="leafLargeRotate3"
+        dur="0.433s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="3, 62, 121.2; -0.14, 62, 121.2"
+        keySplines="0.33 0 0.67 1"
+        begin="leafLargeRotate2.end"
+        additive="sum"/>
+      <animateTransform
+        id="leafLargeRotate4"
+        dur="0.433s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="-0.14, 62, 121.2; 3, 62, 121.2"
+        keySplines="0.33 0 0.67 1"
+        begin="leafLargeRotate3.end"
+        additive="sum"/>
+      <animateTransform
+        id="leafLargeRotate5"
+        dur="0.433s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="3, 62, 121.2; -0.14, 62, 121.2"
+        keySplines="0.33 0 0.67 1"
+        begin="leafLargeRotate4.end"
+        additive="sum"/>
+      <animateTransform
+        id="leafLargeRotate6"
+        dur="0.433s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="-0.14, 62, 121.2; 3, 62, 121.2"
+        keySplines="0.33 0 0.67 1"
+        begin="leafLargeRotate5.end"
+        additive="sum"/>
+      <animateTransform
+        id="leafLargeRotate7"
+        dur="0.433s"
+        calcMode="spline"
+        attributeName="transform"
+        type="rotate"
+        values="3, 62, 121.2; -0.14, 62, 121.2"
+        keySplines="0.33 0 0.67 1"
+        begin="leafLargeRotate6.end"
+        additive="sum"
+        fill="freeze"/>
+      <!-- смещаем центр координат обратно после анимации -->
+      <g transform="translate(-119.19, -178)">
+        <path d="M141.77,204.16c24.1,32.45,35.81,84,35.81,84" fill="none" stroke="#3b7bf2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <path d="M125.73,196.22c6.54,7.51,17.16,9,17.16,9s0-10.72-6.53-18.22-17.17-9-17.17-9,0,10.72,6.54,18.22" fill="#76abff"/>
+        <path d="M153.17,206.54c-2.69,9.58,1.91,19.27,1.91,19.27s9-5.86,11.67-15.45-1.91-19.27-1.91-19.27-9,5.86-11.67,15.45" fill="#3b7bf2"/>
+        <path d="M135.82,227.71c9.59,2.7,19.26-1.91,19.26-1.91s-5.86-9-15.45-11.67S120.37,216,120.37,216s5.87,9,15.45,11.67" fill="#3b7bf2"/>
+        <path d="M166.1,232.52c-3.41,9.36.47,19.35,0.47,19.35s9.39-5.18,12.79-14.53S178.89,218,178.89,218s-9.39,5.18-12.79,14.53" fill="#1553b7"/>
+        <path d="M147.22,252.35c9.36,3.4,19.35-.47,19.35-0.47s-5.18-9.39-14.54-12.79-19.35.47-19.35,0.47,5.18,9.39,14.54,12.79" fill="#1553b7"/>
+      </g>
+    </g>
+    <!-- Колибри: слой calibry Outlines -->
+    <!-- смещаем центр координат перед анимациями -->
+    <g id="hummingbird" transform="translate(262.240, 166.954)">
 
 
+      <!-- смещаем центр координат обратно после анимации -->
+      <g transform="translate(-262.240, -166.954)">
+        <path d="M279.2,183.8A4.89,4.89,0,0,1,283,179h0l21.07-5.4c-7.78,14.84-19.18,15.07-20,15.07h0a4.9,4.9,0,0,1-4.85-4.9" fill="#fff"/>
+        <path d="M262.24,169.86l10.76,0a4.65,4.65,0,0,1,4.41-2.9,3.91,3.91,0,0,1,3.48,1.76,13.39,13.39,0,0,1,1.37,2.59c0.63,1.57,4,15.8,5.89,19.16,1.1,2,4.39,7.16,4.39,7.16a2.3,2.3,0,0,1,.31,1.15V208s-3.11-1.08-3.11-3.91v-6.53c-1.91.27-6-1.65-8.33-2.88a12.82,12.82,0,0,1-6.36-6.76,12.33,12.33,0,0,1-.11-9.16,7.13,7.13,0,0,0,.79-2.91c-0.06-1.14-1.39-2.72-2.18-4.05Z" fill="#fff"/>
+      </g>
+    </g>
   </g>
   <!-- Нижняя часть чемодана: слой bottom Outlines -->
   <g id="suitcase-bottom">
