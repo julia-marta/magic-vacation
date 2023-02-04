@@ -363,25 +363,24 @@
     </g>
   </g>
   <!-- Земля: слой ground Outlines -->
-  <!-- сдвигаем влево, чтобы соответствовало начальному положению согласно референсу -->
-  <g id="ground" transform="translate(-34.51, 0)">
-    <!-- анимация смещения: разворачивается с нуля до полной ширины слева направо -->
-    <animate
-      id="groundExpansion"
-      dur="0.167s"
-      calcMode="spline"
-      attributeName="stroke-dashoffset"
-      values="287; 0"
-      keySplines="0.33 0 0.83 0.83" />
-    <!-- анимация смещения: cворачивается до конечного состояния слева направо -->
-    <animate
-      dur="0.233s"
-      calcMode="spline"
-      attributeName="stroke-dashoffset"
-      values="0; -148.34"
-      keySplines="0.17 0.17 0.01 1"
-      begin="groundExpansion.end"
-      fill="freeze" />
-    <line x1="41.13" y1="329" x2="319.13" y2="329" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="287"/>
+  <g id="ground" >
+    <!-- анимация контура: разворачивается с нуля до полной ширины слева направо -->
+    <line x1="41.13" y1="329" x2="290" y2="329" fill="none" stroke="#fff" stroke-width="2" >
+      <animate id="groundExpansion"
+        attributeName="x2"
+        calcMode="spline"
+        values="41.13; 290"
+        keySplines="0.33 0 0.83 0.83"
+        dur="0.167s"/>
+      <!-- анимация контура: cворачивается до конечного состояния слева направо -->
+      <animate
+        attributeName="x1"
+        calcMode="spline"
+        values="41.13; 154"
+        keySplines="0.17 0.17 0.01 1"
+        dur="0.233s"
+        begin="groundExpansion.end"
+        fill="freeze"/>
+    </line>
   </g>
 </svg>
