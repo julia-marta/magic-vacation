@@ -49,3 +49,5 @@ export const ACCENT_TYPOGRAPHY_ANIMATIONS = [
     maxDelay: 0.4,
   }
 ];
+
+export const TIMER_DURATION_MIN = 5;

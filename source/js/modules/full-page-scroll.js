@@ -1,5 +1,6 @@
 import throttle from 'lodash/throttle';
 import PageSwitchHandler from './page-switch-handler.js';
+import timer from './timer.js';
 import {Screens, ColorThemes} from '../common/enums.js';
 import {setColorTheme} from '../common/utils.js';
 
@@ -72,6 +73,9 @@ export default class FullPageScroll {
       setColorTheme(ColorThemes, 0);
     } else {
       setColorTheme(ColorThemes, 6);
+      if (this.activeScreen === Screens.GAME) {
+        timer();
+      }
     }
   }
 
