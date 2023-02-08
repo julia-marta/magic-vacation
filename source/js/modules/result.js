@@ -13,10 +13,21 @@ export default () => {
         let targetEl = [].slice.call(results).filter(function (el) {
           return el.getAttribute(`id`) === target;
         });
+        const targetAnimations = targetEl[0].querySelectorAll(`.animation`);
+        const targetAnimationsDelayed =
+          targetEl[0].querySelectorAll(`.animation-delay`);
+        let delay = 0.099;
+        const delayStep = 0.033;
+
         targetEl[0].classList.add(`screen--show`);
         targetEl[0].classList.remove(`screen--hidden`);
         setTimeout(() => {
           targetEl[0].classList.add(`screen--animate`);
+          targetAnimations.forEach((item) => item.beginElement());
+          targetAnimationsDelayed.forEach((item) => {
+            item.beginElementAt(delay);
+            delay += delayStep;
+          });
         }, 100);
       });
     }
