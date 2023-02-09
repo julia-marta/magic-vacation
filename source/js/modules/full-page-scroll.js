@@ -1,8 +1,8 @@
-import throttle from 'lodash/throttle';
-import PageSwitchHandler from './page-switch-handler.js';
-import timer from './timer.js';
-import {Screens, ColorThemes} from '../common/enums.js';
-import {setColorTheme} from '../common/utils.js';
+import throttle from "lodash/throttle";
+import PageSwitchHandler from "./page-switch-handler.js";
+import Timer from "./timer.js";
+import {Screens, ColorThemes} from "../common/enums.js";
+import {setColorTheme} from "../common/utils.js";
 
 export default class FullPageScroll {
   constructor() {
@@ -10,10 +10,15 @@ export default class FullPageScroll {
     this.scrollFlag = true;
     this.timeout = null;
     this.pageAnimationSwitcher = new PageSwitchHandler();
+    this.gameTimer = new Timer();
 
-    this.screenElements = document.querySelectorAll(`.screen:not(.screen--result)`);
+    this.screenElements = document.querySelectorAll(
+        `.screen:not(.screen--result)`
+    );
     this.screenBackground = document.querySelector(`.screen__background`);
-    this.menuElements = document.querySelectorAll(`.page-header__menu .js-menu-link`);
+    this.menuElements = document.querySelectorAll(
+        `.page-header__menu .js-menu-link`
+    );
 
     this.activeScreen = 0;
     this.onScrollHandler = this.onScroll.bind(this);
@@ -21,7 +26,10 @@ export default class FullPageScroll {
   }
 
   init() {
-    document.addEventListener(`wheel`, throttle(this.onScrollHandler, this.THROTTLE_TIMEOUT, {trailing: true}));
+    document.addEventListener(
+        `wheel`,
+        throttle(this.onScrollHandler, this.THROTTLE_TIMEOUT, {trailing: true})
+    );
     window.addEventListener(`popstate`, this.onUrlHashChengedHandler);
 
     this.onUrlHashChanged();
@@ -46,9 +54,11 @@ export default class FullPageScroll {
   }
 
   onUrlHashChanged() {
-    const newIndex = Array.from(this.screenElements).findIndex((screen) => location.hash.slice(1) === screen.id);
+    const newIndex = Array.from(this.screenElements).findIndex(
+        (screen) => location.hash.slice(1) === screen.id
+    );
     const changeScreen = () => {
-      this.activeScreen = (newIndex < 0) ? 0 : newIndex;
+      this.activeScreen = newIndex < 0 ? 0 : newIndex;
       this.changePageDisplay();
     };
 
@@ -66,16 +76,23 @@ export default class FullPageScroll {
   changePageDisplay() {
     this.changeVisibilityDisplay();
     this.changeActiveMenuItem();
-    this.pageAnimationSwitcher.runAnimationScheme(this.screenElements[this.activeScreen].id);
+    this.pageAnimationSwitcher.runAnimationScheme(
+        this.screenElements[this.activeScreen].id
+    );
     this.emitChangeDisplayEvent();
 
     if (this.activeScreen === Screens.STORY) {
       setColorTheme(ColorThemes, 0);
     } else {
       setColorTheme(ColorThemes, 6);
-      if (this.activeScreen === Screens.GAME) {
-        timer();
-      }
+    }
+
+    if (this.activeScreen === Screens.GAME) {
+      this.gameTimer.init();
+      console.log(`Timer is initialiazed`);
+    } else {
+      this.gameTimer.destroyTimer();
+      console.log(`Timer is destroyed`);
     }
   }
 
@@ -91,7 +108,9 @@ export default class FullPageScroll {
   }
 
   changeActiveMenuItem() {
-    const activeItem = Array.from(this.menuElements).find((item) => item.dataset.href === this.screenElements[this.activeScreen].id);
+    const activeItem = Array.from(this.menuElements).find(
+        (item) => item.dataset.href === this.screenElements[this.activeScreen].id
+    );
     if (activeItem) {
       this.menuElements.forEach((item) => item.classList.remove(`active`));
       activeItem.classList.add(`active`);
@@ -101,10 +120,10 @@ export default class FullPageScroll {
   emitChangeDisplayEvent() {
     const event = new CustomEvent(`screenChanged`, {
       detail: {
-        'screenId': this.activeScreen,
-        'screenName': this.screenElements[this.activeScreen].id,
-        'screenElement': this.screenElements[this.activeScreen]
-      }
+        screenId: this.activeScreen,
+        screenName: this.screenElements[this.activeScreen].id,
+        screenElement: this.screenElements[this.activeScreen],
+      },
     });
 
     document.body.dispatchEvent(event);
@@ -112,7 +131,10 @@ export default class FullPageScroll {
 
   reCalculateActiveScreenPosition(delta) {
     if (delta > 0) {
-      this.activeScreen = Math.min(this.screenElements.length - 1, ++this.activeScreen);
+      this.activeScreen = Math.min(
+          this.screenElements.length - 1,
+          ++this.activeScreen
+      );
     } else {
       this.activeScreen = Math.max(0, --this.activeScreen);
     }

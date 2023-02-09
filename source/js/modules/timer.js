@@ -3,33 +3,62 @@ import {TIMER_DURATION_MIN} from "../common/const.js";
 
 const {minute} = TimeUnits;
 
-export default () => {
-  const timerElement = document.getElementById(`timer`);
-  const minutesField = timerElement.firstChild;
-  const secondsField = timerElement.lastChild;
+export default class Timer {
+  constructor() {
+    this.timer = null;
+    this.fps = 1;
+    this.fpsInterval = 1000 / this.fps;
+    this.timerElement = document.getElementById(`timer`);
+    this.minutesField = this.timerElement.firstChild;
+    this.secondsField = this.timerElement.lastChild;
+    this.timerDeadline = null;
+    this.now = null;
+    this.then = null;
+    this.elapsed = null;
+  }
 
-  const timerDeadline =
-    new Date().getTime() + TIMER_DURATION_MIN * minute.includesMS;
+  init() {
+    this.timerDeadline =
+      new Date().getTime() + TIMER_DURATION_MIN * minute.includesMS;
+    this.then = Date.now();
+    this.runTimer();
+  }
 
-  const getRemainingTime = (deadline) => {
+  _getRemainingTime(deadline) {
     const currentTime = new Date().getTime();
     return deadline - currentTime;
-  };
+  }
 
-  const setTimerValue = () => {
-    const remainingTime = getRemainingTime(timerDeadline);
+  _setTimerValue() {
+    const remainingTime = this._getRemainingTime(this.timerDeadline);
     const minutesValue = convertTimeToString(remainingTime, `minute`);
     const secondsValue = convertTimeToString(remainingTime, `second`);
 
     if (remainingTime > 0) {
-      minutesField.textContent = minutesValue;
-      secondsField.textContent = secondsValue;
-      requestAnimationFrame(setTimerValue);
+      this.minutesField.textContent = minutesValue;
+      this.secondsField.textContent = secondsValue;
     } else {
-      minutesField.textContent = `00`;
-      secondsField.textContent = `00`;
+      this.minutesField.textContent = `00`;
+      this.secondsField.textContent = `00`;
     }
-  };
+  }
 
-  requestAnimationFrame(setTimerValue);
-};
+  runTimer() {
+    this.timer = window.requestAnimationFrame(this.runTimer.bind(this));
+
+    this.now = Date.now();
+    this.elapsed = this.now - this.then;
+
+    if (this.elapsed > this.fpsInterval) {
+      console.log(`Timer is updated`);
+      this.then = this.now - (this.elapsed % this.fpsInterval);
+      this._setTimerValue();
+    }
+  }
+
+  destroyTimer() {
+    this.minutesField.textContent = `05`;
+    this.secondsField.textContent = `00`;
+    window.cancelAnimationFrame(this.timer);
+  }
+}
