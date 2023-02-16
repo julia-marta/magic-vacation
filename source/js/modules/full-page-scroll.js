@@ -1,8 +1,10 @@
 import throttle from "lodash/throttle";
 import PageSwitchHandler from "./page-switch-handler.js";
 import Timer from "./timer.js";
+import PrizesAnimation from "./prizes-animation.js";
 import {Screens, ColorThemes} from "../common/enums.js";
 import {setColorTheme} from "../common/utils.js";
+import {PRIZES_ANIMATIONS} from "../common/const.js";
 
 export default class FullPageScroll {
   constructor() {
@@ -10,6 +12,7 @@ export default class FullPageScroll {
     this.scrollFlag = true;
     this.timeout = null;
     this.pageAnimationSwitcher = new PageSwitchHandler();
+    this.prizesAnimation = new PrizesAnimation(PRIZES_ANIMATIONS);
     this.gameTimer = new Timer();
 
     this.screenElements = document.querySelectorAll(
@@ -87,12 +90,16 @@ export default class FullPageScroll {
       setColorTheme(ColorThemes, 6);
     }
 
+    if (this.activeScreen === Screens.PRIZES) {
+      this.prizesAnimation.init();
+    } else {
+      this.prizesAnimation.destroy();
+    }
+
     if (this.activeScreen === Screens.GAME) {
       this.gameTimer.init();
-      console.log(`Timer is initialiazed`);
     } else {
       this.gameTimer.destroyTimer();
-      console.log(`Timer is destroyed`);
     }
   }
 
