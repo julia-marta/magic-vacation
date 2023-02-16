@@ -50,7 +50,6 @@ export default class Timer {
     this.elapsed = this.now - this.then;
 
     if (this.elapsed > this.fpsInterval) {
-      console.log(`Timer is updated`);
       this.then = this.now - (this.elapsed % this.fpsInterval);
       this._setTimerValue();
     }

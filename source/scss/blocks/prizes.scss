@@ -127,6 +127,7 @@
   &--journeys {
     position: relative;
     left: 8.9rem;
+    transform: translateX(33rem);
 
     .prizes__icon {
       position: relative;
@@ -192,11 +193,17 @@
         width: 7rem;
       }
     }
+
+    .prizes__desc b {
+      min-width: 6rem;
+    }
   }
 
   &--codes {
     position: relative;
     left: 1rem;
+    transform: translateX(4rem);
+
     @media (max-width: $tablet) and (orientation: portrait) {
       padding-left: 0.8rem;
     }
@@ -222,6 +229,10 @@
       @media (max-width: $mobile) and (orientation: landscape) {
         width: 10rem;
       }
+    }
+
+    .prizes__desc b {
+      min-width: 20rem;
     }
   }
 }
@@ -270,6 +281,7 @@
   }
 
   b {
+    opacity: 0;
     font-family: $font-alt;
     font-weight: 400;
     font-size: 12rem;
@@ -294,6 +306,7 @@
   }
 
   span {
+    opacity: 0;
     display: flex;
     align-items: flex-end;
     margin-left: 1.4rem;
