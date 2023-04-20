@@ -1,6 +1,6 @@
 import Animation from './animation.js';
 import Scene2D from './scene-2d.js';
-import _ from "../common/utils.js";
+import _ from "../common/easings.js";
 
 // модуль для анимации 2D-сцены с моржом
 export default class Scene2DSeaCalf extends Scene2D {
