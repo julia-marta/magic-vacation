@@ -217,4 +217,104 @@ export const PRIZES_ANIMATIONS = [
   },
 ];
 
+export const RESULT_ANIMATIONS = [
+  {
+    id: `result`,
+    canvas: `sea-calf-scene`,
+    imagesUrls: Object.freeze({
+      plane: `/img/airplane.png`,
+      tree: `/img/tree.png`,
+      tree2: `/img/tree-2.png`,
+      ice: `/img/ice.png`,
+      seaCalf: `/img/sea-calf-2.png`,
+      snowflake: `/img/snowflake.png`
+    }),
+    objects: Object.freeze({
+      plane: {
+        imageId: `plane`,
+        x: 90,
+        y: 50,
+        size: 10,
+        opacity: 0,
+        transforms: {
+          translateY: -10
+        }
+      },
+      tree: {
+        imageId: `tree`,
+        x: 65,
+        y: 62,
+        size: 5,
+        opacity: 0,
+        transforms: {
+          translateY: 30
+        }
+      },
+      tree2: {
+        imageId: `tree2`,
+        x: 60,
+        y: 60,
+        size: 5,
+        opacity: 0,
+        transforms: {
+          translateY: 30
+        }
+      },
+      ice: {
+        imageId: `ice`,
+        x: 50,
+        y: 70,
+        size: 50,
+        opacity: 0,
+        transforms: {
+          translateY: 30
+        }
+      },
+      seaCalf: {
+        imageId: `seaCalf`,
+        x: 50,
+        y: 60,
+        size: 50,
+        opacity: 0,
+        transforms: {
+          translateY: 30
+        }
+      },
+      snowflake: {
+        imageId: `snowflake`,
+        x: 25,
+        y: 55,
+        size: 30,
+        opacity: 0,
+        transforms: {
+          rotate: -30
+        }
+      },
+      snowflake2: {
+        imageId: `snowflake`,
+        x: 75,
+        y: 65,
+        size: 15,
+        opacity: 0,
+        transforms: {
+          rotate: 30,
+          scaleX: -1
+        }
+      },
+    }),
+    locals: Object.freeze({
+      blob: {
+        centerX: 45,
+        centerY: 55,
+        radius: 15,
+        endX: 87,
+        endY: 53,
+        angle: 45,
+        deltasLength: 10,
+        opacity: 0
+      }
+    })
+  }
+];
+
 export const TIMER_DURATION_MIN = 5;

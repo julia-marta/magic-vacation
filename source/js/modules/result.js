@@ -1,3 +1,12 @@
+import Scene2DSeaCalf from "./scene-2d-sea-calf";
+import {
+  RESULT_ANIMATIONS
+} from "../common/const.js";
+
+const resultScenes = {
+  result: (options) => new Scene2DSeaCalf(options)
+};
+
 export default () => {
   let showResultEls = document.querySelectorAll(`.js-show-result`);
   let results = document.querySelectorAll(`.screen--result`);
@@ -12,6 +21,10 @@ export default () => {
         });
         let targetEl = [].slice.call(results).filter(function (el) {
           return el.getAttribute(`id`) === target;
+        });
+        const targetScene = resultScenes[target];
+        const targetSceneOptions = RESULT_ANIMATIONS.filter((animation) => {
+          return animation.id === target;
         });
         const targetAnimations = targetEl[0].querySelectorAll(`.animation`);
         const targetAnimationsDelayed =
@@ -28,6 +41,9 @@ export default () => {
             item.beginElementAt(delay);
             delay += delayStep;
           });
+          if (targetScene) {
+            targetScene(targetSceneOptions[0]);
+          }
         }, 100);
       });
     }
