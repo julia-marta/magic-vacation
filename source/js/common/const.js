@@ -222,12 +222,12 @@ export const RESULT_ANIMATIONS = [
     id: `result`,
     canvas: `sea-calf-scene`,
     imagesUrls: Object.freeze({
-      plane: `/img/airplane.png`,
-      tree: `/img/tree.png`,
-      tree2: `/img/tree-2.png`,
-      ice: `/img/ice.png`,
-      seaCalf: `/img/sea-calf-2.png`,
-      snowflake: `/img/snowflake.png`
+      plane: `img/airplane.png`,
+      tree: `img/tree.png`,
+      tree2: `img/tree-2.png`,
+      ice: `img/ice.png`,
+      seaCalf: `img/sea-calf-2.png`,
+      snowflake: `img/snowflake.png`
     }),
     objects: Object.freeze({
       plane: {
@@ -311,6 +311,128 @@ export const RESULT_ANIMATIONS = [
         endY: 53,
         angle: 45,
         deltasLength: 10,
+        opacity: 0
+      }
+    })
+  },
+  {
+    id: `result3`,
+    canvas: `crocodile-scene`,
+    imagesUrls: Object.freeze({
+      key: `img/key.png`,
+      crocodile: `img/crocodile.png`,
+      flamingo: `img/flamingo.png`,
+      watermelon: `img/watermelon.png`,
+      leaf: `img/leaf.png`,
+      snowflake: `img/snowflake.png`,
+      saturn: `img/saturn.png`,
+    }),
+    objects: Object.freeze({
+      key: {
+        imageId: `key`,
+        x: 58,
+        y: 57,
+        size: 21.5,
+        opacity: 0,
+        transforms: {
+          scaleX: 0.8,
+          scaleY: 0.8,
+        }
+      },
+
+      flamingo: {
+        imageId: `flamingo`,
+        x: 32,
+        y: 49.5,
+        size: 19.5,
+        opacity: 1,
+        transforms: {
+          scaleX: 0,
+          scaleY: 0,
+          translateY: 6,
+          translateX: 23,
+          rotate: 60,
+        }
+      },
+      watermelon: {
+        imageId: `watermelon`,
+        x: 5.5,
+        y: 69.5,
+        size: 17,
+        opacity: 1,
+        transforms: {
+          scaleX: 0,
+          scaleY: 0,
+          translateY: -14,
+          translateX: 50,
+          rotate: 60,
+        }
+      },
+      leaf: {
+        imageId: `leaf`,
+        x: 102.3,
+        y: 41.4,
+        size: 22,
+        opacity: 1,
+        transforms: {
+          scaleX: 0,
+          scaleY: 0,
+          translateY: 14,
+          translateX: -46,
+          rotate: -40,
+        }
+      },
+      snowflake: {
+        imageId: `snowflake`,
+        x: 81.8,
+        y: 59.8,
+        size: 14.5,
+        opacity: 1,
+        transforms: {
+          scaleX: 0,
+          scaleY: 0,
+          translateY: -5,
+          translateX: -26,
+          rotate: -60,
+        }
+      },
+      saturn: {
+        imageId: `saturn`,
+        x: 101,
+        y: 79.1,
+        size: 17.2,
+        opacity: 1,
+        transforms: {
+          scaleX: 0,
+          scaleY: 0,
+          translateY: -23,
+          translateX: -43,
+          rotate: 50,
+        }
+      },
+      crocodile: {
+        imageId: `crocodile`,
+        x: 57,
+        y: 63.5,
+        size: 93,
+        opacity: 1,
+        transforms: {
+          translateY: -15,
+          translateX: 45,
+          rotate: 15,
+        }
+      },
+
+    }),
+    locals: Object.freeze({
+      drop: {
+        centerX: 54.4,
+        centerY: 69.7,
+        radius: 2.6,
+        endX: 54.4,
+        endY: 65,
+        angle: 55,
+        deltasLength: 3,
         opacity: 0
       }
     })

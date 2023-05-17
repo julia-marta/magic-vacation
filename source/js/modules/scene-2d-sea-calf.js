@@ -26,8 +26,6 @@ export default class Scene2DSeaCalf extends Scene2D {
     this.initEventListeners();
     this.initObjects();
     this.start();
-
-
   }
 
   // метод создания анимаций
@@ -313,7 +311,5 @@ export default class Scene2DSeaCalf extends Scene2D {
     // this.ctx.lineTo(b.endX * s,
     //     b.endY * s);
     // this.ctx.stroke();
-
   }
-
 }
