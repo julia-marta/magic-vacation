@@ -1,10 +1,12 @@
 import Scene2DSeaCalf from "./scene-2d-sea-calf";
+import Scene2DCrocodile from "./scene-2d-crocodile";
 import {
   RESULT_ANIMATIONS
 } from "../common/const.js";
 
 const resultScenes = {
-  result: (options) => new Scene2DSeaCalf(options)
+  result: (options) => new Scene2DSeaCalf(options),
+  result3: (options) => new Scene2DCrocodile(options)
 };
 
 export default () => {
