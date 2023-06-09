@@ -440,3 +440,26 @@ export const RESULT_ANIMATIONS = [
 ];
 
 export const TIMER_DURATION_MIN = 5;
+
+export const PLANES = [
+  {
+    name: `top`,
+    url: `img/scenes-textures/scene-0.png`,
+  },
+  {
+    name: `story1`,
+    url: `img/scenes-textures/scene-1.png`,
+  },
+  {
+    name: `story2`,
+    url: `img/scenes-textures/scene-2.png`,
+  },
+  {
+    name: `story3`,
+    url: `img/scenes-textures/scene-3.png`,
+  },
+  {
+    name: `story4`,
+    url: `img/scenes-textures/scene-4.png`,
+  }
+];

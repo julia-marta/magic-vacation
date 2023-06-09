@@ -2,18 +2,19 @@ import throttle from "lodash/throttle";
 import PageSwitchHandler from "./page-switch-handler.js";
 import Timer from "./timer.js";
 import PrizesAnimation from "./prizes-animation.js";
-import {Screens, ColorThemes} from "../common/enums.js";
+import {Screens, ColorThemes, Slider3DPlanes} from "../common/enums.js";
 import {setColorTheme} from "../common/utils.js";
 import {PRIZES_ANIMATIONS} from "../common/const.js";
 
 export default class FullPageScroll {
-  constructor() {
+  constructor(plane3DView) {
     this.THROTTLE_TIMEOUT = 1000;
     this.scrollFlag = true;
     this.timeout = null;
     this.pageAnimationSwitcher = new PageSwitchHandler();
     this.prizesAnimation = new PrizesAnimation(PRIZES_ANIMATIONS);
     this.gameTimer = new Timer();
+    this.plane3DView = plane3DView;
 
     this.screenElements = document.querySelectorAll(
         `.screen:not(.screen--result)`
@@ -84,7 +85,14 @@ export default class FullPageScroll {
     );
     this.emitChangeDisplayEvent();
 
+    if (this.activeScreen === Screens.TOP) {
+      this.plane3DView.setPlane(`top`);
+    }
+
     if (this.activeScreen === Screens.STORY) {
+      const slider = this.screenElements[this.activeScreen].children[0].dom7ElementDataStorage.swiper;
+      const activeSlide = slider.realIndex;
+      this.plane3DView.setPlane(Slider3DPlanes[activeSlide]);
       setColorTheme(ColorThemes, 0);
     } else {
       setColorTheme(ColorThemes, 6);
