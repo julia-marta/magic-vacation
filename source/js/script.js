@@ -9,11 +9,15 @@ import result from './modules/result.js';
 import form from './modules/form.js';
 import social from './modules/social.js';
 import FullPageScroll from './modules/full-page-scroll';
+import PlaneView from "./modules/scene-3d-plane.js";
+
+const plane3DView = new PlaneView();
+plane3DView.init();
 
 // init modules
 mobileHeight();
 pageLoad();
-slider();
+slider(plane3DView);
 menu();
 footer();
 chat();
@@ -21,5 +25,5 @@ result();
 form();
 social();
 
-const fullPageScroll = new FullPageScroll();
+const fullPageScroll = new FullPageScroll(plane3DView);
 fullPageScroll.init();

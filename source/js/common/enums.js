@@ -12,3 +12,14 @@ export const ColorThemes = {
   4: `blue-light`,
   6: `purple-dark`,
 };
+
+export const Slider3DPlanes = {
+  0: `story1`,
+  1: `story1`,
+  2: `story2`,
+  3: `story2`,
+  4: `story3`,
+  5: `story3`,
+  6: `story4`,
+  7: `story4`,
+};
