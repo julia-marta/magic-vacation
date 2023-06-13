@@ -9,7 +9,7 @@ import result from './modules/result.js';
 import form from './modules/form.js';
 import social from './modules/social.js';
 import FullPageScroll from './modules/full-page-scroll';
-import PlaneView from "./modules/scene-3d-plane.js";
+import PlaneView from "./modules/3d/scene-3d-plane.js";
 
 const plane3DView = new PlaneView();
 plane3DView.init();
