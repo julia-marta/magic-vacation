@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import Scene3D from './scene-3d.js';
-import {PLANES} from "../common/const.js";
+import CustomMaterial from './materials/custom-material.js';
+import {PLANES} from "../../common/const.js";
 
 export default class PlaneView extends Scene3D {
   constructor() {
@@ -24,11 +25,14 @@ export default class PlaneView extends Scene3D {
     this.setupPlaneObjects();
   }
 
+  createCustomMaterial(texture) {
+    const material = new CustomMaterial(texture);
+    return material;
+  }
+
   createPlaneObject(texture, width, height, position) {
     const geometry = new THREE.PlaneBufferGeometry(width, height);
-    const material = new THREE.MeshBasicMaterial({
-      map: texture
-    });
+    const material = this.createCustomMaterial(texture);
     const plane = new THREE.Mesh(geometry, material);
     plane.position.x = position;
 
