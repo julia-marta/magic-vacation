@@ -9,6 +9,9 @@ export default class CustomMaterial extends THREE.RawShaderMaterial {
         map: {
           value: texture,
         },
+        hueShift: {
+          value: 0,
+        }
       },
       vertexShader,
       fragmentShader,

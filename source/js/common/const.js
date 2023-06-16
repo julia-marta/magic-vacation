@@ -445,21 +445,28 @@ export const PLANES = [
   {
     name: `top`,
     url: `img/scenes-textures/scene-0.png`,
+    effects: {}
   },
   {
     name: `story1`,
     url: `img/scenes-textures/scene-1.png`,
+    effects: {}
   },
   {
     name: `story2`,
     url: `img/scenes-textures/scene-2.png`,
+    effects: {
+      hueShift: -0.025,
+    }
   },
   {
     name: `story3`,
     url: `img/scenes-textures/scene-3.png`,
+    effects: {}
   },
   {
     name: `story4`,
     url: `img/scenes-textures/scene-4.png`,
+    effects: {}
   }
 ];

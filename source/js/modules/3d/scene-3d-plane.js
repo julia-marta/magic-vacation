@@ -25,14 +25,18 @@ export default class PlaneView extends Scene3D {
     this.setupPlaneObjects();
   }
 
-  createCustomMaterial(texture) {
+  createCustomMaterial(texture, effects) {
     const material = new CustomMaterial(texture);
+    if (effects.hueShift) {
+      material.uniforms.hueShift.value = effects.hueShift;
+    }
     return material;
   }
 
-  createPlaneObject(texture, width, height, position) {
+  createPlaneObject(texture, options) {
+    const {width, height, position, effects} = options;
     const geometry = new THREE.PlaneBufferGeometry(width, height);
-    const material = this.createCustomMaterial(texture);
+    const material = this.createCustomMaterial(texture, effects);
     const plane = new THREE.Mesh(geometry, material);
     plane.position.x = position;
 
@@ -42,13 +46,15 @@ export default class PlaneView extends Scene3D {
 
   setupPlaneObjects() {
     PLANES.forEach((item, i) => {
-      this.loadTexture({
-        url: item.url,
-        width: this.planeWidth,
-        height: this.planeHeight,
-        position: this.planeWidth * i,
-      },
-      this.createPlaneObject);
+      this.loadTexture(
+          item.url,
+          this.createPlaneObject,
+          {
+            width: this.planeWidth,
+            height: this.planeHeight,
+            position: this.planeWidth * i,
+            effects: item.effects
+          });
       this.planePositions[item.name] = this.planeWidth * i;
     });
   }
