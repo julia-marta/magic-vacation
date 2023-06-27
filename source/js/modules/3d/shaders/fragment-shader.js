@@ -2,6 +2,18 @@ export default `
 precision mediump float;
 uniform sampler2D map;
 uniform float hueShift;
+
+struct Blob {
+  float radius;
+  vec2 position;
+  float glowOffset;
+  float glowClippingPosition;
+};
+uniform Blob blobs[ BLOBS_COUNT ];
+
+uniform vec2 resolution;
+uniform vec2 position;
+
 varying vec2 vUv;
 
 vec3 rgb2hsv(vec3 color) {
@@ -27,10 +39,39 @@ vec3 shiftHue(vec3 color) {
   return hsv2rgb(hsv);
 }
 
+void addBlob(inout vec4 texel, in Blob blob) {
+  vec2 direction = blob.position - gl_FragCoord.xy;
+	float distance = length(direction);
+
+  if (distance < blob.radius) {
+		float exp = 1.0;
+		vec2 offset = (1.0 - pow(distance / blob.radius, exp)) * direction;
+
+		texel = texture2D(map, vUv + offset / vec2(BLOB_RESOLUTION));
+    if (distance >= blob.radius - float(BLOB_BORDER_WIDTH)) {
+      texel = texel * vec4(BLOB_BORDER_COLOR);
+    }
+    if (distance <= blob.radius - blob.glowOffset && distance >= blob.radius - (blob.glowOffset + float(BLOB_BORDER_WIDTH)) && gl_FragCoord.x < blob.position.x - blob.glowClippingPosition && gl_FragCoord.y > blob.position.y + blob.glowClippingPosition) {
+      texel = texel * vec4(BLOB_BORDER_COLOR);
+    }
+	}
+
+}
+
 void main() {
-  vec4 texel = texture2D( map, vUv );
+
+	vec4 texel = texture2D( map, vUv );
+
+  if (blobs[0].radius > 0.0) {
+    addBlob(texel, blobs[0]);
+  }
+  if (blobs[1].radius > 0.0) {
+   addBlob(texel, blobs[1]);
+  }
+  if (blobs[2].radius > 0.0) {
+    addBlob(texel, blobs[2]);
+  }
   gl_FragColor = texel;
   gl_FragColor.rgb = shiftHue(texel.rgb);
 }
 `;
-

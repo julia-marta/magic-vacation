@@ -1,6 +1,6 @@
-import * as THREE from 'three';
-import Scene3D from './scene-3d.js';
-import CustomMaterial from './materials/custom-material.js';
+import * as THREE from "three";
+import Scene3D from "./scene-3d.js";
+import CustomMaterial from "./materials/custom-material.js";
 import {PLANES} from "../../common/const.js";
 
 export default class PlaneView extends Scene3D {
@@ -11,7 +11,6 @@ export default class PlaneView extends Scene3D {
       alpha: 1,
       far: 1600,
       near: 1,
-
     });
     this.planeWidth = 2048;
     this.planeHeight = 1024;
@@ -30,6 +29,9 @@ export default class PlaneView extends Scene3D {
     if (effects.hueShift) {
       material.uniforms.hueShift.value = effects.hueShift;
     }
+    if (effects.blobs) {
+      material.uniforms.blobs.value = effects.blobs;
+    }
     return material;
   }
 
@@ -46,21 +48,17 @@ export default class PlaneView extends Scene3D {
 
   setupPlaneObjects() {
     PLANES.forEach((item, i) => {
-      this.loadTexture(
-          item.url,
-          this.createPlaneObject,
-          {
-            width: this.planeWidth,
-            height: this.planeHeight,
-            position: this.planeWidth * i,
-            effects: item.effects
-          });
+      this.loadTexture(item.url, this.createPlaneObject, {
+        width: this.planeWidth,
+        height: this.planeHeight,
+        position: this.planeWidth * i,
+        effects: item.effects,
+      });
       this.planePositions[item.name] = this.planeWidth * i;
     });
   }
 
   setPlane(name) {
-
     if (!this.planePositions.hasOwnProperty(name)) {
       return;
     }
