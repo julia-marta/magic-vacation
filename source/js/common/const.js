@@ -1,3 +1,5 @@
+import * as THREE from "three";
+
 export const ACCENT_TYPOGRAPHY_ANIMATIONS = [
   {
     name: `introTitle1`,
@@ -227,7 +229,7 @@ export const RESULT_ANIMATIONS = [
       tree2: `img/tree-2.png`,
       ice: `img/ice.png`,
       seaCalf: `img/sea-calf-2.png`,
-      snowflake: `img/snowflake.png`
+      snowflake: `img/snowflake.png`,
     }),
     objects: Object.freeze({
       plane: {
@@ -237,8 +239,8 @@ export const RESULT_ANIMATIONS = [
         size: 10,
         opacity: 0,
         transforms: {
-          translateY: -10
-        }
+          translateY: -10,
+        },
       },
       tree: {
         imageId: `tree`,
@@ -247,8 +249,8 @@ export const RESULT_ANIMATIONS = [
         size: 5,
         opacity: 0,
         transforms: {
-          translateY: 30
-        }
+          translateY: 30,
+        },
       },
       tree2: {
         imageId: `tree2`,
@@ -257,8 +259,8 @@ export const RESULT_ANIMATIONS = [
         size: 5,
         opacity: 0,
         transforms: {
-          translateY: 30
-        }
+          translateY: 30,
+        },
       },
       ice: {
         imageId: `ice`,
@@ -267,8 +269,8 @@ export const RESULT_ANIMATIONS = [
         size: 50,
         opacity: 0,
         transforms: {
-          translateY: 30
-        }
+          translateY: 30,
+        },
       },
       seaCalf: {
         imageId: `seaCalf`,
@@ -277,8 +279,8 @@ export const RESULT_ANIMATIONS = [
         size: 50,
         opacity: 0,
         transforms: {
-          translateY: 30
-        }
+          translateY: 30,
+        },
       },
       snowflake: {
         imageId: `snowflake`,
@@ -287,8 +289,8 @@ export const RESULT_ANIMATIONS = [
         size: 30,
         opacity: 0,
         transforms: {
-          rotate: -30
-        }
+          rotate: -30,
+        },
       },
       snowflake2: {
         imageId: `snowflake`,
@@ -298,8 +300,8 @@ export const RESULT_ANIMATIONS = [
         opacity: 0,
         transforms: {
           rotate: 30,
-          scaleX: -1
-        }
+          scaleX: -1,
+        },
       },
     }),
     locals: Object.freeze({
@@ -311,9 +313,9 @@ export const RESULT_ANIMATIONS = [
         endY: 53,
         angle: 45,
         deltasLength: 10,
-        opacity: 0
-      }
-    })
+        opacity: 0,
+      },
+    }),
   },
   {
     id: `result3`,
@@ -337,7 +339,7 @@ export const RESULT_ANIMATIONS = [
         transforms: {
           scaleX: 0.8,
           scaleY: 0.8,
-        }
+        },
       },
 
       flamingo: {
@@ -352,7 +354,7 @@ export const RESULT_ANIMATIONS = [
           translateY: 6,
           translateX: 23,
           rotate: 60,
-        }
+        },
       },
       watermelon: {
         imageId: `watermelon`,
@@ -366,7 +368,7 @@ export const RESULT_ANIMATIONS = [
           translateY: -14,
           translateX: 50,
           rotate: 60,
-        }
+        },
       },
       leaf: {
         imageId: `leaf`,
@@ -380,7 +382,7 @@ export const RESULT_ANIMATIONS = [
           translateY: 14,
           translateX: -46,
           rotate: -40,
-        }
+        },
       },
       snowflake: {
         imageId: `snowflake`,
@@ -394,7 +396,7 @@ export const RESULT_ANIMATIONS = [
           translateY: -5,
           translateX: -26,
           rotate: -60,
-        }
+        },
       },
       saturn: {
         imageId: `saturn`,
@@ -408,7 +410,7 @@ export const RESULT_ANIMATIONS = [
           translateY: -23,
           translateX: -43,
           rotate: 50,
-        }
+        },
       },
       crocodile: {
         imageId: `crocodile`,
@@ -420,9 +422,8 @@ export const RESULT_ANIMATIONS = [
           translateY: -15,
           translateX: 45,
           rotate: 15,
-        }
+        },
       },
-
     }),
     locals: Object.freeze({
       drop: {
@@ -433,10 +434,10 @@ export const RESULT_ANIMATIONS = [
         endY: 65,
         angle: 55,
         deltasLength: 3,
-        opacity: 0
-      }
-    })
-  }
+        opacity: 0,
+      },
+    }),
+  },
 ];
 
 export const TIMER_DURATION_MIN = 5;
@@ -445,28 +446,57 @@ export const PLANES = [
   {
     name: `top`,
     url: `img/scenes-textures/scene-0.png`,
-    effects: {}
+    effects: {},
   },
   {
     name: `story1`,
     url: `img/scenes-textures/scene-1.png`,
-    effects: {}
+    effects: {},
   },
   {
     name: `story2`,
     url: `img/scenes-textures/scene-2.png`,
     effects: {
       hueShift: -0.025,
-    }
+      blobs: [
+        {
+          radius: 90,
+          position: new THREE.Vector2(
+              0.22 * window.innerWidth,
+              0.4 * window.innerHeight
+          ).multiplyScalar(window.devicePixelRatio),
+          glowOffset: 20,
+          glowClippingPosition: 20,
+        },
+        {
+          radius: 125,
+          position: new THREE.Vector2(
+              0.37 * window.innerWidth,
+              0.85 * window.innerHeight
+          ).multiplyScalar(window.devicePixelRatio),
+          glowOffset: 20,
+          glowClippingPosition: 30,
+        },
+        {
+          radius: 50,
+          position: new THREE.Vector2(
+              0.48 * window.innerWidth,
+              0.17 * window.innerHeight
+          ).multiplyScalar(window.devicePixelRatio),
+          glowOffset: 15,
+          glowClippingPosition: 1,
+        },
+      ],
+    },
   },
   {
     name: `story3`,
     url: `img/scenes-textures/scene-3.png`,
-    effects: {}
+    effects: {},
   },
   {
     name: `story4`,
     url: `img/scenes-textures/scene-4.png`,
-    effects: {}
-  }
+    effects: {},
+  },
 ];

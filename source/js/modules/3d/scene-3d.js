@@ -24,6 +24,7 @@ export default class Scene3D {
     // 1.1.1. Renderer
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
+      alpha: true,
     });
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(this.width, this.height);
