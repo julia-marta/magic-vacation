@@ -5,6 +5,7 @@ export default class Scene3D {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
     this.canvas = document.getElementById(options.canvas);
+    this.resizeInProgress = false;
     this.color = options.color;
     this.alpha = options.alpha;
     this.far = options.far;
@@ -15,12 +16,15 @@ export default class Scene3D {
 
   init() {
     this.setup();
+    this.initEventListeners();
   }
 
-  setup() {
-    this.canvas.width = this.width;
-    this.canvas.height = this.height;
+  initEventListeners() {
+    window.addEventListener(`resize`, this.updateSize.bind(this));
+  }
 
+
+  setup() {
     // 1.1.1. Renderer
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
@@ -55,5 +59,12 @@ export default class Scene3D {
 
   render() {
     this.renderer.render(this.scene, this.camera);
+  }
+
+  updateSize() {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 }

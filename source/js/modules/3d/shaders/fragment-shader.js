@@ -42,6 +42,8 @@ vec3 shiftHue(vec3 color) {
 void addBlob(inout vec4 texel, in Blob blob) {
   vec2 direction = blob.position - gl_FragCoord.xy;
 	float distance = length(direction);
+  bool isGlowArea = distance <= blob.radius - blob.glowOffset && distance >= blob.radius - (blob.glowOffset + float(BLOB_BORDER_WIDTH));
+  bool isGlowPosition = gl_FragCoord.x < blob.position.x - blob.glowClippingPosition && gl_FragCoord.y > blob.position.y + blob.glowClippingPosition;
 
   if (distance < blob.radius) {
 		float exp = 1.0;
@@ -51,11 +53,10 @@ void addBlob(inout vec4 texel, in Blob blob) {
     if (distance >= blob.radius - float(BLOB_BORDER_WIDTH)) {
       texel = texel * vec4(BLOB_BORDER_COLOR);
     }
-    if (distance <= blob.radius - blob.glowOffset && distance >= blob.radius - (blob.glowOffset + float(BLOB_BORDER_WIDTH)) && gl_FragCoord.x < blob.position.x - blob.glowClippingPosition && gl_FragCoord.y > blob.position.y + blob.glowClippingPosition) {
+    if (isGlowArea && isGlowPosition) {
       texel = texel * vec4(BLOB_BORDER_COLOR);
     }
 	}
-
 }
 
 void main() {
