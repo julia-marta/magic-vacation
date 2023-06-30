@@ -24,13 +24,39 @@ export default class PlaneView extends Scene3D {
     this.setupPlaneObjects();
   }
 
+  getBlobsUniforms(params) {
+    return params.reduce((acc, item) => {
+      const blobParams = {
+        radius: item.radius,
+        position: new THREE.Vector2(
+            item.position.x * window.innerWidth,
+            item.position.y * window.innerHeight
+        ).multiplyScalar(window.devicePixelRatio),
+        glowOffset: item.glowOffset,
+        glowClippingPosition: item.glowClippingPosition,
+      };
+      acc.push(blobParams);
+      return acc;
+    }, []);
+  }
+
+  updateBlobs(material, params) {
+    material.uniforms.blobs.value = this.getBlobsUniforms(params);
+    material.needsUpdate = true;
+  }
+
   createCustomMaterial(texture, effects) {
     const material = new CustomMaterial(texture);
     if (effects.hueShift) {
       material.uniforms.hueShift.value = effects.hueShift;
     }
     if (effects.blobs) {
-      material.uniforms.blobs.value = effects.blobs;
+      let update = () => {
+        this.updateBlobs(material, effects.blobs);
+        requestAnimationFrame(update);
+      };
+
+      requestAnimationFrame(update);
     }
     return material;
   }

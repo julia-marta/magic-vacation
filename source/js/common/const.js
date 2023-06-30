@@ -1,5 +1,3 @@
-import * as THREE from "three";
-
 export const ACCENT_TYPOGRAPHY_ANIMATIONS = [
   {
     name: `introTitle1`,
@@ -461,28 +459,28 @@ export const PLANES = [
       blobs: [
         {
           radius: 90,
-          position: new THREE.Vector2(
-              0.22 * window.innerWidth,
-              0.4 * window.innerHeight
-          ).multiplyScalar(window.devicePixelRatio),
+          position: {
+            x: 0.22,
+            y: 0.4,
+          },
           glowOffset: 20,
           glowClippingPosition: 20,
         },
         {
           radius: 125,
-          position: new THREE.Vector2(
-              0.37 * window.innerWidth,
-              0.85 * window.innerHeight
-          ).multiplyScalar(window.devicePixelRatio),
+          position: {
+            x: 0.37,
+            y: 0.85,
+          },
           glowOffset: 20,
           glowClippingPosition: 30,
         },
         {
           radius: 50,
-          position: new THREE.Vector2(
-              0.48 * window.innerWidth,
-              0.17 * window.innerHeight
-          ).multiplyScalar(window.devicePixelRatio),
+          position: {
+            x: 0.48,
+            y: 0.17,
+          },
           glowOffset: 15,
           glowClippingPosition: 1,
         },

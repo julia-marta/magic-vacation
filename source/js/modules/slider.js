@@ -53,6 +53,7 @@ export default (plane3DView) => {
         observeParents: true,
       });
     }
+    plane3DView.setPlane(Slider3DPlanes[storySlider.activeIndex]);
   };
 
   window.addEventListener(`resize`, function () {
