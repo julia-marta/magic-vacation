@@ -15,12 +15,14 @@ export default class Scene3D {
 
   init() {
     this.setup();
+    this.initEventListeners();
+  }
+
+  initEventListeners() {
+    window.addEventListener(`resize`, this.updateSize.bind(this));
   }
 
   setup() {
-    this.canvas.width = this.width;
-    this.canvas.height = this.height;
-
     // 1.1.1. Renderer
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
@@ -55,5 +57,13 @@ export default class Scene3D {
 
   render() {
     this.renderer.render(this.scene, this.camera);
+  }
+
+  updateSize() {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.render();
   }
 }
