@@ -455,7 +455,10 @@ export const PLANES = [
     name: `story2`,
     url: `img/scenes-textures/scene-2.png`,
     effects: {
-      hueShift: -0.025,
+      hue: {
+        shift: -0.025,
+        duration: 2000,
+      },
       blobs: [
         {
           radius: 90,

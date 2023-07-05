@@ -43,6 +43,7 @@ export default (plane3DView) => {
         on: {
           slideChange: () => {
             plane3DView.setPlane(Slider3DPlanes[storySlider.activeIndex]);
+            plane3DView.setEffect(Slider3DPlanes[storySlider.activeIndex]);
             setColorTheme(ColorThemes, storySlider.activeIndex);
           },
           resize: () => {
