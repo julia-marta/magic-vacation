@@ -16,6 +16,7 @@ export default class Scene3D {
   init() {
     this.setup();
     this.initEventListeners();
+    this.updateSize();
   }
 
   initEventListeners() {
@@ -64,6 +65,5 @@ export default class Scene3D {
     this.camera.updateProjectionMatrix();
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.render();
   }
 }
