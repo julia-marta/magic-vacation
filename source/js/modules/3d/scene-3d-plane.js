@@ -58,40 +58,44 @@ export default class PlaneView extends Scene3D {
   }
 
   startBlobsAnimation(name, options) {
+    const {params, duration, frequency} = options;
     const plane = this.scene.children.filter((item) => {
       return item.name === name;
     });
     const material = plane[0].material;
     const animation = new Animation({
-      func: () => {
-        material.uniforms.blobs.value = this.getBlobsUniforms(options);
+      func: (progress) => {
+        const progressReversed = 1 - progress;
+
+        material.uniforms.blobs.value = params.reduce((acc, item) => {
+          const amplitude = item.radius / 2;
+          const offsetX =
+            amplitude *
+            Math.pow(progressReversed, 1) *
+            Math.sin(progress * Math.PI * frequency);
+          const x = item.position.x * window.innerWidth + offsetX;
+          const y =
+            0 +
+            progress *
+              (window.innerHeight + item.position.y * window.innerHeight);
+
+          const blobParams = {
+            radius: item.radius,
+            position: new THREE.Vector2(x, y).multiplyScalar(
+                window.devicePixelRatio
+            ),
+            glowOffset: item.glowOffset,
+            glowClippingPosition: item.glowClippingPosition,
+          };
+          acc.push(blobParams);
+          return acc;
+        }, []);
         material.needsUpdate = true;
       },
-      duration: `infinite`,
+      duration,
       fps: 60,
     });
     animation.start();
-  }
-
-  getBlobsUniforms(params) {
-    return params.reduce((acc, item) => {
-      const blobParams = {
-        radius: item.radius,
-        position: new THREE.Vector2(
-            item.position.x * window.innerWidth,
-            item.position.y * window.innerHeight
-        ).multiplyScalar(window.devicePixelRatio),
-        glowOffset: item.glowOffset,
-        glowClippingPosition: item.glowClippingPosition,
-      };
-      acc.push(blobParams);
-      return acc;
-    }, []);
-  }
-
-  updateBlobs(material, params) {
-    material.uniforms.blobs.value = this.getBlobsUniforms(params);
-    material.needsUpdate = true;
   }
 
   createCustomMaterial(texture) {

@@ -459,35 +459,39 @@ export const PLANES = [
         shift: -0.025,
         duration: 2000,
       },
-      blobs: [
-        {
-          radius: 90,
-          position: {
-            x: 0.22,
-            y: 0.4,
+      blobs: {
+        params: [
+          {
+            radius: 90,
+            position: {
+              x: 0.22,
+              y: 0.7,
+            },
+            glowOffset: 20,
+            glowClippingPosition: 20,
           },
-          glowOffset: 20,
-          glowClippingPosition: 20,
-        },
-        {
-          radius: 125,
-          position: {
-            x: 0.37,
-            y: 0.85,
+          {
+            radius: 125,
+            position: {
+              x: 0.37,
+              y: 1.85,
+            },
+            glowOffset: 20,
+            glowClippingPosition: 30,
           },
-          glowOffset: 20,
-          glowClippingPosition: 30,
-        },
-        {
-          radius: 50,
-          position: {
-            x: 0.48,
-            y: 0.17,
+          {
+            radius: 50,
+            position: {
+              x: 0.48,
+              y: 0.1,
+            },
+            glowOffset: 15,
+            glowClippingPosition: 1,
           },
-          glowOffset: 15,
-          glowClippingPosition: 1,
-        },
-      ],
+        ],
+        duration: 2500,
+        frequency: 13,
+      },
     },
   },
   {
