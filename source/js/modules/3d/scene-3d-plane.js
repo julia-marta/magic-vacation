@@ -11,11 +11,10 @@ export default class PlaneView extends Scene3D {
       canvas: `animation-screen`,
       color: new THREE.Color(0x5f458c),
       alpha: 1,
-      far: 1600,
+      far: 750,
       near: 1,
     });
-    this.planeWidth = 2048;
-    this.planeHeight = 1024;
+    this.planeRatio = 2;
     this.planePositions = {};
     this.planeEffects = {};
     this.createPlaneObject = this.createPlaneObject.bind(this);
@@ -115,15 +114,102 @@ export default class PlaneView extends Scene3D {
     this.render();
   }
 
+  createSphereObject(options) {
+    const geometry = new THREE.SphereGeometry(options.radius, options.widthSegments, options.heightSegments);
+    const material = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(options.color),
+      metalness: options.metalness,
+      emissive: options.emissive,
+      roughness: options.roughness,
+    });
+    const sphere = new THREE.Mesh(geometry, material);
+    this.scene.add(sphere);
+    this.render();
+  }
+
+  createCubeObject(options) {
+    const geometry = new THREE.BoxGeometry(options.width, options.height, options.depth);
+    const material = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(options.color),
+      metalness: options.metalness,
+      emissive: options.emissive,
+      roughness: options.roughness,
+    });
+    const cube = new THREE.Mesh(geometry, material);
+    cube.rotation.x = 4;
+    cube.rotation.y = 4;
+    cube.rotation.z = 7;
+    this.scene.add(cube);
+    this.render();
+  }
+
+  setLight(options) {
+    const {directional, point1, point2} = options;
+    this.light = new THREE.Group();
+    let lightUnit;
+
+    // 1.1 DirectionalLight
+    // направлен в сторону направления камеры вниз на 15deg
+    // схема осей: https://i.stack.imgur.com/qM4IJ.jpg
+    // направление света = положение камеры по оси z умноженное на тангенс угла направления света
+    const radian = (directional.angle * Math.PI) / 180;
+
+    lightUnit = new THREE.DirectionalLight(
+        new THREE.Color(directional.color),
+        directional.intensity
+    );
+
+    const targetObject = new THREE.Object3D();
+    targetObject.position.y = this.camera.position.z * Math.tan(radian);
+
+    this.scene.add(targetObject);
+    lightUnit.target = targetObject;
+    this.light.add(lightUnit);
+
+    // 2.2 PointLight
+    lightUnit = new THREE.PointLight(
+        new THREE.Color(point1.color),
+        point1.intensity,
+        point1.distance,
+        point1.decay
+    );
+
+    lightUnit.position.set(point1.x, point1.y, point1.z);
+    this.light.add(lightUnit);
+
+    // 2.3 PointLight
+    lightUnit = new THREE.PointLight(
+        new THREE.Color(point2.color),
+        point2.intensity,
+        point2.distance,
+        point2.decay
+    );
+
+    lightUnit.position.set(point2.x, point2.y, point2.z);
+    this.light.add(lightUnit);
+
+    this.light.position.z = this.camera.position.z;
+    this.scene.add(this.light);
+  }
+
   setupPlaneObjects() {
+    // вычисляем высоту плоскости в зависимости от угла и удаленности камеры
+    // схема: https://i.stack.imgur.com/PgSn3.jpg
+    // отношение половины высоты к удаленности равно тангенсу половины угла камеры
+    // соответственно половина высоты = удаленность * тангенс половины угла в радианах
+    // а целая высота = 2 x удаленность * тангенс половины угла в радианах
+    const angle = (this.fov * Math.PI) / 180 / 2;
+    const planeHeight = 2 * (Math.tan(angle) * this.far);
+    const planeWidth = planeHeight * this.planeRatio;
+
     PLANES.forEach((item, i) => {
       this.loadTexture(item.url, this.createPlaneObject, {
-        width: this.planeWidth,
-        height: this.planeHeight,
-        position: this.planeWidth * i,
+        width: planeWidth,
+        height: planeHeight,
+        position: planeWidth * i,
         name: item.name,
       });
-      this.planePositions[item.name] = this.planeWidth * i;
+      this.planePositions[item.name] = planeWidth * i;
 
       this.planeEffects[item.name] = item.effects;
     });
@@ -148,5 +234,18 @@ export default class PlaneView extends Scene3D {
       return;
     }
     this.camera.position.x = this.planePositions[name];
+  }
+
+  setObject(options) {
+    const {object, light} = options;
+    if (object.type === `sphere`) {
+      this.createSphereObject(object);
+    }
+    if (object.type === `cube`) {
+      this.createCubeObject(object);
+    }
+    if (light) {
+      this.setLight(light);
+    }
   }
 }

@@ -505,3 +505,55 @@ export const PLANES = [
     effects: {},
   },
 ];
+
+export const SceneObjects = {
+  top: {
+    object: {
+      type: `sphere`,
+      radius: 100,
+      widthSegments: 32,
+      heightSegments: 32,
+      color: `rgb(255,0,0)`,
+      metalness: 0.05,
+      emissive: 0x0,
+      roughness: 0.5
+    },
+    object2: {
+      type: `cube`,
+      width: 200,
+      height: 200,
+      depth: 200,
+      color: `rgb(138,43,226)`,
+      metalness: 0.0,
+      emissive: 0x0,
+      roughness: 0.0
+    },
+    light: {
+      directional: {
+        angle: 15,
+        color: `rgb (255,255,255)`,
+        intensity: 0.84
+      },
+      point1: {
+        color: `rgb (246,242,255)`,
+        intensity: 0.60,
+        distance: 975,
+        decay: 2,
+        x: -785,
+        y: -350,
+        z: -710,
+
+      },
+      point2: {
+        color: `rgb (245,254,255)`,
+        intensity: 0.95,
+        distance: 975,
+        decay: 2,
+        x: 730,
+        y: 800,
+        z: -985,
+
+      }
+    }
+  }
+};
