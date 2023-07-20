@@ -4,7 +4,7 @@ import Timer from "./timer.js";
 import PrizesAnimation from "./prizes-animation.js";
 import {Screens, ColorThemes, Slider3DPlanes} from "../common/enums.js";
 import {setColorTheme} from "../common/utils.js";
-import {PRIZES_ANIMATIONS} from "../common/const.js";
+import {PRIZES_ANIMATIONS, SceneObjects} from "../common/const.js";
 
 export default class FullPageScroll {
   constructor(plane3DView) {
@@ -86,7 +86,8 @@ export default class FullPageScroll {
     this.emitChangeDisplayEvent();
 
     if (this.activeScreen === Screens.TOP) {
-      this.plane3DView.setPlane(`top`);
+      this.plane3DView.setPlane(this.screenElements[this.activeScreen].id);
+      this.plane3DView.setObject(SceneObjects[this.screenElements[this.activeScreen].id]);
     }
 
     if (this.activeScreen === Screens.STORY) {

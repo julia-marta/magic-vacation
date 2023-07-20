@@ -48,13 +48,18 @@ export default (plane3DView) => {
           },
           resize: () => {
             storySlider.update();
+
           },
         },
         observer: true,
         observeParents: true,
       });
     }
-    plane3DView.setPlane(Slider3DPlanes[storySlider.activeIndex]);
+
+    const isCurrentScreen = window.location.hash === `#story`;
+    if (isCurrentScreen) {
+      plane3DView.setPlane(Slider3DPlanes[storySlider.activeIndex]);
+    }
   };
 
   window.addEventListener(`resize`, function () {
