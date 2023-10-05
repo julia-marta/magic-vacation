@@ -508,7 +508,7 @@ export const PLANES = [
 
 export const SceneObjects = {
   top: {
-    object: {
+    object1: {
       type: `sphere`,
       radius: 100,
       widthSegments: 32,
@@ -528,11 +528,122 @@ export const SceneObjects = {
       emissive: 0x0,
       roughness: 0.0
     },
+    object: {
+      type: `scene`,
+      pyramid: {
+        base: 250,
+        height: 280,
+        radialSegments: 4,
+        x: 0,
+        y: 140,
+        z: 0,
+        color: `rgb(29, 105, 222)`,
+        metalness: 0.0,
+        emissive: 0x0,
+        roughness: 0.0
+      },
+      lantern: {
+        x: 400,
+        y: 435,
+        z: 0,
+        lamp: {
+          top: {
+            widthTop: 45,
+            widthBottom: 57,
+            height: 6,
+            radialSegments: 4,
+            color: `rgb(19, 114, 244)`,
+            metalness: 0.0,
+            emissive: 0x0,
+            roughness: 0.0
+          },
+          plafon: {
+            widthTop: 42,
+            widthBottom: 34,
+            height: 70,
+            radialSegments: 4,
+            color: `rgb(144, 176, 249)`,
+            metalness: 0.0,
+            emissive: 0x0,
+            roughness: 0.0
+          },
+          base: {
+            widthTop: 37,
+            widthBottom: 37,
+            height: 4,
+            color: `rgb(19, 114, 244)`,
+            metalness: 0.0,
+            emissive: 0x0,
+            roughness: 0.0
+          }
+        },
+        post: {
+          radius: 7,
+          height: 230,
+          color: `rgb(19, 114, 244)`,
+          metalness: 0.0,
+          emissive: 0x0,
+          roughness: 0.0
+        },
+        base: {
+          top: {
+            radius: 16,
+            height: 16,
+            color: `rgb(19, 114, 244)`,
+            metalness: 0.0,
+            emissive: 0x0,
+            roughness: 0.0
+          },
+          bottom: {
+            radius: 16,
+            height: 120,
+            color: `rgb(19, 114, 244)`,
+            metalness: 0.0,
+            emissive: 0x0,
+            roughness: 0.0
+          },
+        }
+
+      },
+      snowman: {
+        x: -400,
+        y: 0,
+        z: 0,
+        top: {
+          radius: 44,
+          height: 44,
+          y: 173,
+          color: `rgb(255,255,255)`,
+          metalness: 0.0,
+          emissive: 0x0,
+          roughness: 0.0
+        },
+        bottom: {
+          radius: 75,
+          height: 75,
+          y: 65,
+          color: `rgb(255,255,255)`,
+          metalness: 0.0,
+          emissive: 0x0,
+          roughness: 0.0
+        },
+        carrot: {
+          radius: 18,
+          height: 75,
+          y: 173,
+          z: 32,
+          color: `rgb(248,64,0)`,
+          metalness: 0.0,
+          emissive: 0x0,
+          roughness: 0.0
+        }
+      },
+    },
     light: {
       directional: {
-        angle: 15,
+        angle: 0,
         color: `rgb (255,255,255)`,
-        intensity: 0.84
+        intensity: 1.5
       },
       point1: {
         color: `rgb (246,242,255)`,
@@ -552,7 +663,6 @@ export const SceneObjects = {
         x: 730,
         y: 800,
         z: -985,
-
       }
     }
   }

@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 
 export default class Scene3D {
   constructor(options) {
@@ -9,6 +10,7 @@ export default class Scene3D {
     this.alpha = options.alpha;
     this.far = options.far;
     this.near = options.near;
+    this.cameraPozitionZ = options.cameraPozitionZ;
     this.aspectRatio = this.width / this.height;
     this.fov = 35;
   }
@@ -17,6 +19,7 @@ export default class Scene3D {
     this.setup();
     this.initEventListeners();
     this.updateSize();
+    this.initHelpers();
   }
 
   initEventListeners() {
@@ -28,6 +31,9 @@ export default class Scene3D {
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
       alpha: true,
+      antialias: false,
+      logarithmicDepthBuffer: false,
+      powerPreference: `high-performance`
     });
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(this.width, this.height);
@@ -43,7 +49,13 @@ export default class Scene3D {
         this.near,
         this.far
     );
-    this.camera.position.z = this.far;
+    this.camera.position.z = this.cameraPozitionZ;
+  }
+
+  initHelpers() {
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    const axesHelper = new THREE.AxesHelper(1000);
+    this.scene.add(axesHelper);
   }
 
   loadTexture(url, callback, options) {
@@ -57,6 +69,7 @@ export default class Scene3D {
   }
 
   render() {
+    this.controls.update();
     this.renderer.render(this.scene, this.camera);
   }
 
