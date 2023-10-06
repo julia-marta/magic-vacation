@@ -13,7 +13,6 @@ uniform Blob blobs[ BLOBS_COUNT ];
 
 uniform vec2 resolution;
 uniform vec2 position;
-
 varying vec2 vUv;
 
 vec3 rgb2hsv(vec3 color) {
@@ -74,5 +73,6 @@ void main() {
   }
   gl_FragColor = texel;
   gl_FragColor.rgb = shiftHue(texel.rgb);
+  gl_FragColor.a = 0;
 }
 `;

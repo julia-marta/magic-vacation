@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import Scene3D from "./scene-3d.js";
+import SceneGroup from "./scenes/scene-group.js";
 import CustomMaterial from "./materials/custom-material.js";
 import Animation from "../animation.js";
 import {PLANES} from "../../common/const.js";
@@ -11,12 +12,14 @@ export default class PlaneView extends Scene3D {
       canvas: `animation-screen`,
       color: new THREE.Color(0x5f458c),
       alpha: 1,
-      far: 750,
+      far: 5500,
       near: 1,
+      cameraPozitionZ: 1750,
     });
     this.planeRatio = 2;
     this.planePositions = {};
     this.planeEffects = {};
+    this.isLightAdded = false;
     this.createPlaneObject = this.createPlaneObject.bind(this);
     this.setPlane = this.setPlane.bind(this);
   }
@@ -143,7 +146,14 @@ export default class PlaneView extends Scene3D {
     this.render();
   }
 
+  addSceneGroup(options) {
+    const sceneGroup = new SceneGroup(options);
+    this.scene.add(sceneGroup);
+    this.render();
+  }
+
   setLight(options) {
+    this.isLightAdded = true;
     const {directional, point1, point2} = options;
     this.light = new THREE.Group();
     let lightUnit;
@@ -244,7 +254,13 @@ export default class PlaneView extends Scene3D {
     if (object.type === `cube`) {
       this.createCubeObject(object);
     }
+    if (object.type === `scene`) {
+      this.addSceneGroup(object);
+    }
     if (light) {
+      if (this.isLightAdded) {
+        return;
+      }
       this.setLight(light);
     }
   }
