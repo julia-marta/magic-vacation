@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
+import {SVGLoader} from 'three/examples/jsm/loaders/SVGLoader';
 
 export default class Scene3D {
   constructor(options) {
@@ -66,6 +67,21 @@ export default class Scene3D {
     manager.onLoad = () => {
       callback(texture, options);
     };
+  }
+
+  loadSVG(url, callback, options) {
+    // instantiate a loader
+    const loader = new SVGLoader();
+
+    // load a SVG resource
+    loader.load(
+        url, (data) => {
+          const paths = data.paths;
+          const extrudeObj = callback(paths, options);
+          this.scene.add(extrudeObj);
+          this.render();
+        }
+    );
   }
 
   render() {

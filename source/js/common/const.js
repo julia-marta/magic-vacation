@@ -506,8 +506,93 @@ export const PLANES = [
   },
 ];
 
+export const SVG_SHAPES = [
+  {
+    name: `flamingo`,
+    url: `img/svg-forms/flamingo.svg`,
+    options: {
+      extrude: {},
+      scale: [3, 3, 3],
+      rotation: [Math.PI, Math.PI, 0.3],
+      position: [-450, 350, 0],
+
+    },
+  },
+  {
+    name: `snowflake`,
+    url: `img/svg-forms/snowflake.svg`,
+    options: {
+      extrude: {},
+      scale: [2, 2, 2],
+      rotation: [-0.4, 0.6, 0],
+      position: [-350, -50, 0],
+
+    },
+  },
+  {
+    name: `question`,
+    url: `img/svg-forms/question.svg`,
+    options: {
+      extrude: {},
+      scale: [1.5, 1.5, 1.5],
+      rotation: [-0.7, Math.PI, 2.8],
+      position: [100, -300, 0],
+
+    },
+  },
+  {
+    name: `leaf`,
+    url: `img/svg-forms/leaf.svg`,
+    options: {
+      extrude: {},
+      scale: [1.5, 1.5, 1.5],
+      rotation: [Math.PI, 0.6, 1.2],
+      position: [400, 350, 0],
+
+    },
+  },
+  {
+    name: `keyhole`,
+    url: `img/svg-forms/keyhole.svg`,
+    options: {
+      extrude: {
+        depth: 20,
+      },
+      scale: [1, 1, 1],
+      rotation: [Math.PI, Math.PI, 0],
+      position: [1000, 1000, -200],
+
+    },
+  },
+  {
+    name: `flower`,
+    url: `img/svg-forms/flower.svg`,
+    options: {
+      extrude: {
+        depth: 4,
+      },
+      scale: [1, 1, 1],
+      rotation: [Math.PI, Math.PI, 0],
+      position: [900, -100, 0],
+
+    },
+  },
+];
+
 export const SceneObjects = {
   top: {
+    object: {
+      type: `extrude`,
+      options: {
+        steps: 2,
+        depth: 8,
+        bevelEnabled: true,
+        bevelThickness: 2,
+        bevelSize: 1,
+        bevelOffset: 0,
+        bevelSegments: 10
+      }
+    },
     object1: {
       type: `sphere`,
       radius: 100,
@@ -528,7 +613,7 @@ export const SceneObjects = {
       emissive: 0x0,
       roughness: 0.0
     },
-    object: {
+    object3: {
       type: `scene`,
       pyramid: {
         base: 250,
@@ -643,7 +728,7 @@ export const SceneObjects = {
       directional: {
         angle: 0,
         color: `rgb (255,255,255)`,
-        intensity: 1.5
+        intensity: 0.8
       },
       point1: {
         color: `rgb (246,242,255)`,
