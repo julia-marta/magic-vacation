@@ -3,7 +3,7 @@ import Scene3D from "./scene-3d.js";
 import SceneGroup from "./scenes/scene-group.js";
 import CustomMaterial from "./materials/custom-material.js";
 import Animation from "../animation.js";
-import {PLANES} from "../../common/const.js";
+import {PLANES, SVG_SHAPES} from "../../common/const.js";
 import _ from "../../common/easings.js";
 
 export default class PlaneView extends Scene3D {
@@ -146,10 +146,52 @@ export default class PlaneView extends Scene3D {
     this.render();
   }
 
+  createExtrudeObjectFromSVG(paths, options) {
+    const {extrude, scale, position, rotation} = options;
+
+    const group = new THREE.Group();
+    paths.forEach((path) => {
+
+      const material = new THREE.MeshStandardMaterial({
+        color: path.color,
+        side: THREE.DoubleSide,
+      });
+      const shapes = path.toShapes();
+      shapes.forEach((shape) => {
+        const geometry = new THREE.ExtrudeGeometry(shape, extrude);
+
+        const mesh = new THREE.Mesh(geometry, material);
+
+        if (position) {
+          mesh.position.set(...position);
+        }
+        if (scale) {
+          mesh.scale.set(...scale);
+        }
+        if (rotation) {
+          mesh.rotation.set(...rotation);
+        }
+
+        group.add(mesh);
+      });
+
+    });
+    return group;
+  }
+
   addSceneGroup(options) {
     const sceneGroup = new SceneGroup(options);
     this.scene.add(sceneGroup);
     this.render();
+  }
+
+  addExtrudeObjectsGroup(options) {
+    SVG_SHAPES.forEach((item) => {
+      this.loadSVG(
+          item.url,
+          this.createExtrudeObjectFromSVG,
+          {...item.options, extrude: {...options, ...item.options.extrude}});
+    });
   }
 
   setLight(options) {
@@ -256,6 +298,9 @@ export default class PlaneView extends Scene3D {
     }
     if (object.type === `scene`) {
       this.addSceneGroup(object);
+    }
+    if (object.type === `extrude`) {
+      this.addExtrudeObjectsGroup(object.options);
     }
     if (light) {
       if (this.isLightAdded) {
