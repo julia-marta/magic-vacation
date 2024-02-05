@@ -581,7 +581,7 @@ export const SVG_SHAPES = [
 
 export const SceneObjects = {
   top: {
-    object: {
+    object1: {
       type: `extrude`,
       options: {
         steps: 2,
@@ -593,7 +593,7 @@ export const SceneObjects = {
         bevelSegments: 10
       }
     },
-    object1: {
+    object2: {
       type: `sphere`,
       radius: 100,
       widthSegments: 32,
@@ -603,7 +603,7 @@ export const SceneObjects = {
       emissive: 0x0,
       roughness: 0.5
     },
-    object2: {
+    object3: {
       type: `cube`,
       width: 200,
       height: 200,
@@ -613,7 +613,7 @@ export const SceneObjects = {
       emissive: 0x0,
       roughness: 0.0
     },
-    object3: {
+    object4: {
       type: `scene`,
       pyramid: {
         base: 250,
@@ -723,6 +723,82 @@ export const SceneObjects = {
           roughness: 0.0
         }
       },
+    },
+    object: {
+      type: `scene`,
+      carpet: {
+        x: 0,
+        y: 0,
+        z: 0,
+        width: 180,
+        height: 3,
+        radius: 763,
+        startAngle: 16,
+        endAngle: 74,
+        segments: 30,
+        color: `rgb(166, 126, 229)`,
+      },
+      road: {
+        x: 0,
+        y: 200,
+        z: 0,
+        width: 160,
+        height: 3,
+        radius: 732,
+        startAngle: 0,
+        endAngle: 90,
+        segments: 30,
+        color: `rgb(99, 106, 122)`,
+      },
+      saturn: {
+        x: 0,
+        y: 300,
+        z: 0,
+        planet: {
+          radius: 60,
+          height: 60,
+          widthSegments: 32,
+          heightSegments: 32,
+          // y: 173,
+          color: `rgb(255, 0, 56)`,
+          metalness: 0.0,
+          emissive: 0x0,
+          roughness: 0.0
+        },
+        rings: {
+          height: 2,
+          radiusInner: 80,
+          radiusOut: 120,
+          angle: 18,
+          segments: 30,
+          color: `rgb(126, 70, 233)`,
+          metalness: 0.0,
+          emissive: 0x0,
+          roughness: 0.0
+        },
+        ball: {
+          radius: 10,
+          height: 10,
+          widthSegments: 16,
+          heightSegments: 16,
+          y: 120,
+          color: `rgb(255, 0, 56)`,
+          metalness: 0.0,
+          emissive: 0x0,
+          roughness: 0.0
+        },
+        cable: {
+          radiusTop: 1,
+          radiusBottom: 1,
+          height: 1000,
+          radialSegments: 30,
+          color: `rgb(107, 122, 147)`,
+          y: 500,
+          metalness: 0.0,
+          emissive: 0x0,
+          roughness: 0.0
+        },
+      }
     },
     light: {
       directional: {
