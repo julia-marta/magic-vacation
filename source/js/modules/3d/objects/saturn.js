@@ -48,7 +48,7 @@ class Saturn extends THREE.Group {
         geometry,
         this.materials.rings
     );
-    const rotateAngle = angle * Math.PI / 180;
+    const rotateAngle = THREE.MathUtils.degToRad(angle);
 
     ringsMesh.rotateZ(rotateAngle);
     ringsMesh.position.set(0, 0, 0);

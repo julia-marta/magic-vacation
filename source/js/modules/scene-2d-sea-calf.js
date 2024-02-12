@@ -1,6 +1,7 @@
 import Animation from './animation.js';
 import Scene2D from './scene-2d.js';
 import _ from "../common/easings.js";
+import * as THREE from 'three';
 
 // модуль для анимации 2D-сцены с моржом
 export default class Scene2DSeaCalf extends Scene2D {
@@ -244,7 +245,7 @@ export default class Scene2DSeaCalf extends Scene2D {
     // объект с параметрами в константу
     const b = this.locals.blob;
     // переводим угол в радианы
-    const angle = b.angle * Math.PI / 180;
+    const angle = THREE.MathUtils.degToRad(b.angle);
     // если элемент невидим, прерываем отрисовку
     if (b.opacity === 0) {
       return;

@@ -23,8 +23,8 @@ class Carpet extends THREE.Group {
     points.push(new THREE.Vector2(radius + width, 0));
 
     // переводим угол в радианы
-    const phiStart = startAngle * Math.PI / 180;
-    const phiLength = (endAngle - startAngle) * Math.PI / 180;
+    const phiStart = THREE.MathUtils.degToRad(startAngle);
+    const phiLength = THREE.MathUtils.degToRad(endAngle - startAngle);
     const geometry = new THREE.LatheGeometry(
         points,
         segments,

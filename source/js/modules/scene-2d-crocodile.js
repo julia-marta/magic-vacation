@@ -1,6 +1,7 @@
 import Animation from "./animation.js";
 import Scene2D from "./scene-2d.js";
 import _ from "../common/easings.js";
+import * as THREE from 'three';
 
 // модуль для анимации 2D-сцены с крокодилом
 export default class Scene2DCrocodile extends Scene2D {
@@ -288,7 +289,7 @@ export default class Scene2DCrocodile extends Scene2D {
     // чтобы остальные предметы на канвасе были видны
     this.ctx.restore();
     const drop = this.locals.drop;
-    const angle = drop.angle * Math.PI / 180;
+    const angle = THREE.MathUtils.degToRad(drop.angle);
     if (drop.opacity === 0) {
       return;
     }
