@@ -110,7 +110,7 @@ export default class PlaneView extends Scene3D {
     const {width, height, material, position} = options;
 
     const planeGeometry = new THREE.PlaneGeometry(width, height);
-    const planeMaterial = this.materialsFactory.get(material.type, material.options);
+    const planeMaterial = this.materialsFactory.get(material);
     const plane = new THREE.Mesh(planeGeometry, planeMaterial);
 
     if (position) {
@@ -167,7 +167,7 @@ export default class PlaneView extends Scene3D {
     const group = new THREE.Group();
     paths.forEach((path) => {
 
-      const materialMesh = factory.get(material.type, material.options);
+      const materialMesh = factory.get(material);
 
       const shapes = path.toShapes();
       shapes.forEach((shape) => {

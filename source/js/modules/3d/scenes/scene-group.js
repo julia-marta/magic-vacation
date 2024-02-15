@@ -7,14 +7,15 @@ import Road from "../objects/road";
 import Saturn from "../objects/saturn";
 
 class SceneGroup extends THREE.Group {
-  constructor(options) {
+  constructor(options, materialsFactory) {
     super();
     this.options = options;
+    this.materialsFactory = materialsFactory;
     this.constructChildren();
   }
 
   constructChildren() {
-    const {pyramid, lantern, snowman, carpet, road, saturn} = this.options;
+    const {pyramid, lantern, snowman, carpet, road, saturnRoom1, saturnRoom4} = this.options;
 
     if (pyramid) {
       this.addPyramid(pyramid);
@@ -31,86 +32,76 @@ class SceneGroup extends THREE.Group {
     if (road) {
       this.addRoad(road);
     }
-    if (saturn) {
-      this.addSaturnLantern(saturn);
+    if (saturnRoom1) {
+      this.addSaturnLantern(saturnRoom1);
+    }
+    if (saturnRoom4) {
+      this.addSaturnLantern(saturnRoom4);
     }
   }
 
-  getStandardMaterial(options) {
-    return new THREE.MeshStandardMaterial({
-      color: new THREE.Color(options.color),
-      metalness: options.metalness,
-      emissive: options.emissive,
-      roughness: options.roughness,
-    });
-  }
-
-  getBasicMaterial(options) {
-    return new THREE.MeshBasicMaterial({color: options.color});
-  }
-
-  addPyramid(options) {
-    const material = this.getStandardMaterial(options);
-    const pyramid = new Pyramid(material, options);
-    pyramid.position.set(options.x, options.y, options.z);
+  addPyramid(object) {
+    const material = this.materialsFactory.get(object.material);
+    const pyramid = new Pyramid(material, object);
+    pyramid.position.set(...object.position);
     this.add(pyramid);
   }
 
-  addLantern(options) {
-    const {lamp, post, base} = options;
+  addLantern(object) {
+    const {lamp, post, base} = object;
     const materials = {
       lamp: {
-        top: this.getStandardMaterial(lamp.top),
-        plafon: this.getStandardMaterial(lamp.plafon),
-        base: this.getStandardMaterial(lamp.base),
+        top: this.materialsFactory.get(lamp.top.material),
+        plafon: this.materialsFactory.get(lamp.plafon.material),
+        base: this.materialsFactory.get(lamp.base.material),
       },
-      post: this.getStandardMaterial(post),
+      post: this.materialsFactory.get(post.material),
       base: {
-        top: this.getStandardMaterial(base.top),
-        bottom: this.getStandardMaterial(base.bottom),
+        top: this.materialsFactory.get(base.top.material),
+        bottom: this.materialsFactory.get(base.bottom.material),
       }
     };
-    const lantern = new Lantern(materials, options);
-    lantern.position.set(options.x, options.y, options.z);
+    const lantern = new Lantern(materials, object);
+    lantern.position.set(...object.position);
     this.add(lantern);
   }
 
-  addSnowman(options) {
-    const {top, bottom, carrot} = options;
+  addSnowman(object) {
+    const {top, bottom, carrot} = object;
     const materials = {
-      top: this.getStandardMaterial(top),
-      bottom: this.getStandardMaterial(bottom),
-      carrot: this.getStandardMaterial(carrot),
+      top: this.materialsFactory.get(top.material),
+      bottom: this.materialsFactory.get(bottom.material),
+      carrot: this.materialsFactory.get(carrot.material),
     };
-    const snowman = new Snowman(materials, options);
-    snowman.position.set(options.x, options.y, options.z);
+    const snowman = new Snowman(materials, object);
+    snowman.position.set(...object.position);
     this.add(snowman);
   }
 
-  addCarpet(options) {
-    const material = this.getBasicMaterial(options);
-    const carpet = new Carpet(material, options);
-    carpet.position.set(options.x, options.y, options.z);
+  addCarpet(object) {
+    const material = this.materialsFactory.get(object.material);
+    const carpet = new Carpet(material, object);
+    carpet.position.set(...object.position);
     this.add(carpet);
   }
 
-  addRoad(options) {
-    const material = this.getBasicMaterial(options);
-    const road = new Road(material, options);
-    road.position.set(options.x, options.y, options.z);
+  addRoad(object) {
+    const material = this.materialsFactory.get(object.material);
+    const road = new Road(material, object);
+    road.position.set(...object.position);
     this.add(road);
   }
 
-  addSaturnLantern(options) {
-    const {planet, rings, ball, cable} = options;
+  addSaturnLantern(object) {
+    const {planet, rings, ball, cable} = object;
     const materials = {
-      planet: this.getStandardMaterial(planet),
-      rings: this.getStandardMaterial(rings),
-      ball: this.getStandardMaterial(ball),
-      cable: this.getStandardMaterial(cable),
+      planet: this.materialsFactory.get(planet.material),
+      rings: this.materialsFactory.get(rings.material),
+      ball: this.materialsFactory.get(ball.material),
+      cable: this.materialsFactory.get(cable.material),
     };
-    const saturn = new Saturn(materials, options);
-    saturn.position.set(options.x, options.y, options.z);
+    const saturn = new Saturn(materials, object);
+    saturn.position.set(...object.position);
     this.add(saturn);
   }
 }

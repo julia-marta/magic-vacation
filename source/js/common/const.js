@@ -519,9 +519,9 @@ export const SVG_SHAPES = [
       position: [-450, 350, -300],
       material: {
         type: `standard`,
+        reflection: `soft`,
         options: {
           color: `LightDominantRed`,
-          reflection: `soft`,
           side: THREE.DoubleSide,
         },
       },
@@ -537,9 +537,9 @@ export const SVG_SHAPES = [
       position: [-350, -50, -250],
       material: {
         type: `standard`,
+        reflection: `basic`,
         options: {
           color: `Blue`,
-          reflection: `basic`,
           side: THREE.DoubleSide,
         },
       },
@@ -555,9 +555,9 @@ export const SVG_SHAPES = [
       position: [100, -300, -300],
       material: {
         type: `standard`,
+        reflection: `basic`,
         options: {
           color: `Blue`,
-          reflection: `basic`,
           side: THREE.DoubleSide,
         },
       },
@@ -573,9 +573,9 @@ export const SVG_SHAPES = [
       position: [400, 350, -250],
       material: {
         type: `standard`,
+        reflection: `basic`,
         options: {
           color: `Green`,
-          reflection: `basic`,
           side: THREE.DoubleSide,
         },
       },
@@ -593,9 +593,9 @@ export const SVG_SHAPES = [
       position: [1000, 1000, -400],
       material: {
         type: `standard`,
+        reflection: `soft`,
         options: {
           color: `DarkPurple`,
-          reflection: `soft`,
           side: THREE.DoubleSide,
         },
       },
@@ -610,12 +610,12 @@ export const SVG_SHAPES = [
       },
       scale: [1, 1, 1],
       rotation: [Math.PI, Math.PI, 0],
-      position: [900, -100, -300],
+      position: [700, -100, -300],
       material: {
         type: `standard`,
+        reflection: `basic`,
         options: {
           color: `Green`,
-          reflection: `basic`,
           side: THREE.DoubleSide,
         },
 
@@ -633,124 +633,148 @@ export const SceneObjects = {
           base: 250,
           height: 280,
           radialSegments: 4,
-          x: 0,
-          y: 0,
-          z: 0,
-          color: `rgb(29, 105, 222)`,
-          metalness: 0.0,
-          emissive: 0x0,
-          roughness: 0.0
+          position: [0, 0, 0],
+          material: {
+            type: `standard`,
+            reflection: `soft`,
+            options: {
+              color: `Blue`,
+            },
+          },
         },
         lantern: {
-          x: 450,
-          y: 435,
-          z: 0,
+          position: [450, 435, 0],
           lamp: {
             top: {
               widthTop: 45,
               widthBottom: 57,
               height: 6,
               radialSegments: 4,
-              color: `rgb(19, 114, 244)`,
-              metalness: 0.0,
-              emissive: 0x0,
-              roughness: 0.0
+              material: {
+                type: `standard`,
+                reflection: `soft`,
+                options: {
+                  color: `Blue`,
+                },
+              },
             },
             plafon: {
               widthTop: 42,
               widthBottom: 34,
               height: 70,
               radialSegments: 4,
-              color: `rgb(144, 176, 249)`,
-              metalness: 0.0,
-              emissive: 0x0,
-              roughness: 0.0
+              material: {
+                type: `standard`,
+                reflection: `soft`,
+                options: {
+                  color: `LightBlue`,
+                },
+              },
             },
             base: {
               widthTop: 37,
               widthBottom: 37,
               height: 4,
-              color: `rgb(19, 114, 244)`,
-              metalness: 0.0,
-              emissive: 0x0,
-              roughness: 0.0
+              material: {
+                type: `standard`,
+                reflection: `soft`,
+                options: {
+                  color: `Blue`,
+                },
+              },
             }
           },
           post: {
             radius: 7,
             height: 230,
-            color: `rgb(19, 114, 244)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `Blue`,
+              },
+            },
           },
           base: {
             top: {
               radius: 16,
               height: 16,
-              color: `rgb(19, 114, 244)`,
-              metalness: 0.0,
-              emissive: 0x0,
-              roughness: 0.0
+              material: {
+                type: `standard`,
+                reflection: `soft`,
+                options: {
+                  color: `Blue`,
+                },
+              },
             },
             bottom: {
               radius: 16,
               height: 120,
-              color: `rgb(19, 114, 244)`,
-              metalness: 0.0,
-              emissive: 0x0,
-              roughness: 0.0
+              material: {
+                type: `standard`,
+                reflection: `soft`,
+                options: {
+                  color: `Blue`,
+                },
+              },
             },
           }
 
         },
         snowman: {
-          x: -450,
-          y: -300,
-          z: 0,
+          position: [-450, -300, 0],
           top: {
             radius: 44,
             height: 44,
             y: 173,
-            color: `rgb(255,255,255)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
+            material: {
+              type: `phong`,
+              reflection: `strong`,
+              options: {
+                color: `SnowColor`,
+              },
+            },
           },
           bottom: {
             radius: 75,
             height: 75,
             y: 65,
-            color: `rgb(255,255,255)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
+            material: {
+              type: `phong`,
+              reflection: `strong`,
+              options: {
+                color: `SnowColor`,
+              },
+            },
           },
           carrot: {
             radius: 18,
             height: 75,
             y: 173,
             z: 32,
-            color: `rgb(248,64,0)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `Orange`,
+              },
+            },
           }
         },
-        saturn: {
-          x: 0,
-          y: 300,
-          z: 0,
+        saturnRoom1: {
+          position: [0, 300, 0],
           planet: {
             radius: 60,
             height: 60,
             widthSegments: 32,
             heightSegments: 32,
-            // y: 173,
-            color: `rgb(255, 0, 56)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `DominantRed`,
+              },
+            },
           },
           rings: {
             height: 2,
@@ -758,10 +782,13 @@ export const SceneObjects = {
             radiusOut: 120,
             angle: 18,
             segments: 30,
-            color: `rgb(126, 70, 233)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `BrightPurple`,
+              },
+            },
           },
           ball: {
             radius: 10,
@@ -769,21 +796,85 @@ export const SceneObjects = {
             widthSegments: 16,
             heightSegments: 16,
             y: 120,
-            color: `rgb(255, 0, 56)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `BrightPurple`,
+              },
+            },
           },
           cable: {
             radiusTop: 1,
             radiusBottom: 1,
             height: 1000,
             radialSegments: 30,
-            color: `rgb(107, 122, 147)`,
             y: 500,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `MetalGrey`,
+              },
+            },
+          },
+        },
+        saturnRoom4: {
+          position: [-250, 350, 0],
+          planet: {
+            radius: 60,
+            height: 60,
+            widthSegments: 32,
+            heightSegments: 32,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `ShadowedDominantRed`,
+              },
+            },
+          },
+          rings: {
+            height: 2,
+            radiusInner: 80,
+            radiusOut: 120,
+            angle: 18,
+            segments: 30,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `ShadowedBrightPurple`,
+              },
+            },
+          },
+          ball: {
+            radius: 10,
+            height: 10,
+            widthSegments: 16,
+            heightSegments: 16,
+            y: 120,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `ShadowedBrightPurple`,
+              },
+            },
+          },
+          cable: {
+            radiusTop: 1,
+            radiusBottom: 1,
+            height: 1000,
+            radialSegments: 30,
+            y: 500,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `MetalGrey`,
+              },
+            },
           },
         },
       },
@@ -806,9 +897,9 @@ export const SceneObjects = {
         position: [0, 0, -400],
         material: {
           type: `standard`,
+          reflection: `basic`,
           options: {
             color: `Purple`,
-            reflection: `basic`,
             side: THREE.DoubleSide,
           },
         },

@@ -6,16 +6,17 @@ class MaterialsFactory {
   }
 
   // возвращает материал в зависимости от типа
-  get(type, options) {
+  get(material) {
+    const {type, reflection, options} = material;
     switch (type) {
       case `basic`: {
         return this._getBasicMaterial(options);
       }
       case `phong`: {
-        return this._getPhongMaterial(options);
+        return this._getPhongMaterial(options, reflection);
       }
       default: {
-        return this._getStandardMaterial(options);
+        return this._getStandardMaterial(options, reflection);
       }
     }
 
@@ -36,6 +37,13 @@ class MaterialsFactory {
           metalness: 0.6,
         };
       }
+      // сильное отражение
+      case `strong`: {
+        return {
+          shininess: 0,
+          specular: 0xffffff,
+        };
+      }
       // по дефолту значения soft (слабое отражение)
       default: {
         return {
@@ -47,23 +55,27 @@ class MaterialsFactory {
   }
 
   // заливает фигуру однородным цветом, не обрабатывая информацию об освещении
-  _getBasicMaterial() {
-
+  _getBasicMaterial(options) {
+    options = {...options, color: this.getMaterialColor(options.color)};
+    return new THREE.MeshBasicMaterial(options);
   }
   // моделирует физически реалистичные модели отражения, использует параметры roughness (шероховатость) и metalness (металличность)
-  _getStandardMaterial(options) {
-    if (options.reflection) {
-      options = {...options, ...this.getMaterialReflectionOptions(options.reflection)};
+  _getStandardMaterial(options, reflection) {
+    if (reflection) {
+      options = {...options, ...this.getMaterialReflectionOptions(reflection)};
     }
     options = {...options, color: this.getMaterialColor(options.color)};
     return new THREE.MeshStandardMaterial(options);
   }
 
   // вычисляет освещение в каждом пикселе и генерирует выраженное отражение от поверхности (блик)
-  _getPhongMaterial() {
-
+  _getPhongMaterial(options, reflection) {
+    if (reflection) {
+      options = {...options, ...this.getMaterialReflectionOptions(reflection)};
+    }
+    options = {...options, color: this.getMaterialColor(options.color)};
+    return new THREE.MeshPhongMaterial(options);
   }
-
 }
 
 MaterialsFactory.Colors = {
