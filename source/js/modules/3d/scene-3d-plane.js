@@ -28,6 +28,7 @@ export default class PlaneView extends Scene3D {
     super.init();
     this.setupPlaneObjects();
     this.startAnimations();
+
   }
 
   startAnimations() {
@@ -105,6 +106,20 @@ export default class PlaneView extends Scene3D {
     return material;
   }
 
+  createSimplePlaneObject(options) {
+    const {width, height, material, position} = options;
+
+    const planeGeometry = new THREE.PlaneGeometry(width, height);
+    const planeMaterial = this.materialsFactory.get(material.type, material.options);
+    const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+
+    if (position) {
+      plane.position.set(...position);
+    }
+    this.scene.add(plane);
+    this.render();
+  }
+
   createPlaneObject(texture, options) {
     const {width, height, position, name} = options;
     const geometry = new THREE.PlaneBufferGeometry(width, height);
@@ -146,21 +161,19 @@ export default class PlaneView extends Scene3D {
     this.render();
   }
 
-  createExtrudeObjectFromSVG(paths, options) {
-    const {extrude, scale, position, rotation} = options;
+  createExtrudeObjectFromSVG(paths, options, factory) {
+    const {extrude, scale, position, rotation, material} = options;
 
     const group = new THREE.Group();
     paths.forEach((path) => {
 
-      const material = new THREE.MeshStandardMaterial({
-        color: path.color,
-        side: THREE.DoubleSide,
-      });
+      const materialMesh = factory.get(material.type, material.options);
+
       const shapes = path.toShapes();
       shapes.forEach((shape) => {
         const geometry = new THREE.ExtrudeGeometry(shape, extrude);
 
-        const mesh = new THREE.Mesh(geometry, material);
+        const mesh = new THREE.Mesh(geometry, materialMesh);
 
         if (position) {
           mesh.position.set(...position);
@@ -180,7 +193,7 @@ export default class PlaneView extends Scene3D {
   }
 
   addSceneGroup(options) {
-    const sceneGroup = new SceneGroup(options);
+    const sceneGroup = new SceneGroup(options, this.materialsFactory);
     this.scene.add(sceneGroup);
     this.render();
   }
@@ -289,19 +302,25 @@ export default class PlaneView extends Scene3D {
   }
 
   setObject(options) {
-    const {object, light} = options;
-    if (object.type === `sphere`) {
-      this.createSphereObject(object);
-    }
-    if (object.type === `cube`) {
-      this.createCubeObject(object);
-    }
-    if (object.type === `scene`) {
-      this.addSceneGroup(object);
-    }
-    if (object.type === `extrude`) {
-      this.addExtrudeObjectsGroup(object.options);
-    }
+    const {objects, light} = options;
+    objects.forEach((object) => {
+      if (object.type === `plane`) {
+        this.createSimplePlaneObject(object);
+      }
+      if (object.type === `sphere`) {
+        this.createSphereObject(object);
+      }
+      if (object.type === `cube`) {
+        this.createCubeObject(object);
+      }
+      if (object.type === `scene`) {
+        this.addSceneGroup(object);
+      }
+      if (object.type === `extrude`) {
+        this.addExtrudeObjectsGroup(object.options);
+      }
+    });
+
     if (light) {
       if (this.isLightAdded) {
         return;
