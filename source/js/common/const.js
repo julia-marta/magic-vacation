@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 export const ACCENT_TYPOGRAPHY_ANIMATIONS = [
   {
     name: `introTitle1`,
@@ -514,8 +516,15 @@ export const SVG_SHAPES = [
       extrude: {},
       scale: [3, 3, 3],
       rotation: [Math.PI, Math.PI, 0.3],
-      position: [-450, 350, 0],
-
+      position: [-450, 350, -300],
+      material: {
+        type: `standard`,
+        reflection: `soft`,
+        options: {
+          color: `LightDominantRed`,
+          side: THREE.DoubleSide,
+        },
+      },
     },
   },
   {
@@ -525,8 +534,15 @@ export const SVG_SHAPES = [
       extrude: {},
       scale: [2, 2, 2],
       rotation: [-0.4, 0.6, 0],
-      position: [-350, -50, 0],
-
+      position: [-350, -50, -250],
+      material: {
+        type: `standard`,
+        reflection: `basic`,
+        options: {
+          color: `Blue`,
+          side: THREE.DoubleSide,
+        },
+      },
     },
   },
   {
@@ -536,8 +552,15 @@ export const SVG_SHAPES = [
       extrude: {},
       scale: [1.5, 1.5, 1.5],
       rotation: [-0.7, Math.PI, 2.8],
-      position: [100, -300, 0],
-
+      position: [100, -300, -300],
+      material: {
+        type: `standard`,
+        reflection: `basic`,
+        options: {
+          color: `Blue`,
+          side: THREE.DoubleSide,
+        },
+      },
     },
   },
   {
@@ -547,8 +570,15 @@ export const SVG_SHAPES = [
       extrude: {},
       scale: [1.5, 1.5, 1.5],
       rotation: [Math.PI, 0.6, 1.2],
-      position: [400, 350, 0],
-
+      position: [400, 350, -250],
+      material: {
+        type: `standard`,
+        reflection: `basic`,
+        options: {
+          color: `Green`,
+          side: THREE.DoubleSide,
+        },
+      },
     },
   },
   {
@@ -560,8 +590,15 @@ export const SVG_SHAPES = [
       },
       scale: [1, 1, 1],
       rotation: [Math.PI, Math.PI, 0],
-      position: [1000, 1000, -200],
-
+      position: [1000, 1000, -400],
+      material: {
+        type: `standard`,
+        reflection: `soft`,
+        options: {
+          color: `DarkPurple`,
+          side: THREE.DoubleSide,
+        },
+      },
     },
   },
   {
@@ -573,232 +610,521 @@ export const SVG_SHAPES = [
       },
       scale: [1, 1, 1],
       rotation: [Math.PI, Math.PI, 0],
-      position: [900, -100, 0],
+      position: [700, -100, -300],
+      material: {
+        type: `standard`,
+        reflection: `basic`,
+        options: {
+          color: `Green`,
+          side: THREE.DoubleSide,
+        },
 
+      },
     },
   },
 ];
 
 export const SceneObjects = {
   top: {
-    object1: {
-      type: `extrude`,
-      options: {
-        steps: 2,
-        depth: 8,
-        bevelEnabled: true,
-        bevelThickness: 2,
-        bevelSize: 1,
-        bevelOffset: 0,
-        bevelSegments: 10
-      }
-    },
-    object2: {
-      type: `sphere`,
-      radius: 100,
-      widthSegments: 32,
-      heightSegments: 32,
-      color: `rgb(255,0,0)`,
-      metalness: 0.05,
-      emissive: 0x0,
-      roughness: 0.5
-    },
-    object3: {
-      type: `cube`,
-      width: 200,
-      height: 200,
-      depth: 200,
-      color: `rgb(138,43,226)`,
-      metalness: 0.0,
-      emissive: 0x0,
-      roughness: 0.0
-    },
-    object4: {
-      type: `scene`,
-      pyramid: {
-        base: 250,
-        height: 280,
-        radialSegments: 4,
-        x: 0,
-        y: 140,
-        z: 0,
-        color: `rgb(29, 105, 222)`,
+    objects: [
+      {
+        type: `scene`,
+        pyramid: {
+          base: 250,
+          height: 280,
+          radialSegments: 4,
+          position: [0, 0, 0],
+          material: {
+            type: `standard`,
+            reflection: `soft`,
+            options: {
+              color: `Blue`,
+            },
+          },
+        },
+        lantern: {
+          position: [450, 435, 0],
+          lamp: {
+            top: {
+              widthTop: 45,
+              widthBottom: 57,
+              height: 6,
+              radialSegments: 4,
+              material: {
+                type: `standard`,
+                reflection: `soft`,
+                options: {
+                  color: `Blue`,
+                },
+              },
+            },
+            plafon: {
+              widthTop: 42,
+              widthBottom: 34,
+              height: 70,
+              radialSegments: 4,
+              material: {
+                type: `standard`,
+                reflection: `soft`,
+                options: {
+                  color: `LightBlue`,
+                },
+              },
+            },
+            base: {
+              widthTop: 37,
+              widthBottom: 37,
+              height: 4,
+              material: {
+                type: `standard`,
+                reflection: `soft`,
+                options: {
+                  color: `Blue`,
+                },
+              },
+            }
+          },
+          post: {
+            radius: 7,
+            height: 230,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `Blue`,
+              },
+            },
+          },
+          base: {
+            top: {
+              radius: 16,
+              height: 16,
+              material: {
+                type: `standard`,
+                reflection: `soft`,
+                options: {
+                  color: `Blue`,
+                },
+              },
+            },
+            bottom: {
+              radius: 16,
+              height: 120,
+              material: {
+                type: `standard`,
+                reflection: `soft`,
+                options: {
+                  color: `Blue`,
+                },
+              },
+            },
+          }
+
+        },
+        snowman: {
+          position: [-450, -300, 0],
+          top: {
+            radius: 44,
+            height: 44,
+            y: 173,
+            material: {
+              type: `phong`,
+              reflection: `strong`,
+              options: {
+                color: `SnowColor`,
+              },
+            },
+          },
+          bottom: {
+            radius: 75,
+            height: 75,
+            y: 65,
+            material: {
+              type: `phong`,
+              reflection: `strong`,
+              options: {
+                color: `SnowColor`,
+              },
+            },
+          },
+          carrot: {
+            radius: 18,
+            height: 75,
+            y: 173,
+            z: 32,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `Orange`,
+              },
+            },
+          }
+        },
+        saturnRoom1: {
+          position: [0, 300, 0],
+          planet: {
+            radius: 60,
+            height: 60,
+            widthSegments: 32,
+            heightSegments: 32,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `DominantRed`,
+              },
+            },
+          },
+          rings: {
+            height: 2,
+            radiusInner: 80,
+            radiusOut: 120,
+            angle: 18,
+            segments: 30,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `BrightPurple`,
+              },
+            },
+          },
+          ball: {
+            radius: 10,
+            height: 10,
+            widthSegments: 16,
+            heightSegments: 16,
+            y: 120,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `BrightPurple`,
+              },
+            },
+          },
+          cable: {
+            radiusTop: 1,
+            radiusBottom: 1,
+            height: 1000,
+            radialSegments: 30,
+            y: 500,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `MetalGrey`,
+              },
+            },
+          },
+        },
+        saturnRoom4: {
+          position: [-250, 350, 0],
+          planet: {
+            radius: 60,
+            height: 60,
+            widthSegments: 32,
+            heightSegments: 32,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `ShadowedDominantRed`,
+              },
+            },
+          },
+          rings: {
+            height: 2,
+            radiusInner: 80,
+            radiusOut: 120,
+            angle: 18,
+            segments: 30,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `ShadowedBrightPurple`,
+              },
+            },
+          },
+          ball: {
+            radius: 10,
+            height: 10,
+            widthSegments: 16,
+            heightSegments: 16,
+            y: 120,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `ShadowedBrightPurple`,
+              },
+            },
+          },
+          cable: {
+            radiusTop: 1,
+            radiusBottom: 1,
+            height: 1000,
+            radialSegments: 30,
+            y: 500,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `MetalGrey`,
+              },
+            },
+          },
+        },
+      },
+      {
+        type: `extrude`,
+        options: {
+          steps: 2,
+          depth: 8,
+          bevelEnabled: true,
+          bevelThickness: 2,
+          bevelSize: 1,
+          bevelOffset: 0,
+          bevelSegments: 10
+        }
+      },
+      {
+        type: `plane`,
+        width: 2000,
+        height: 1995,
+        position: [0, 0, -400],
+        material: {
+          type: `standard`,
+          reflection: `basic`,
+          options: {
+            color: `Purple`,
+            side: THREE.DoubleSide,
+          },
+        },
+      },
+    ],
+    testObjects: {
+      object1: {
+        type: `extrude`,
+        options: {
+          steps: 2,
+          depth: 8,
+          bevelEnabled: true,
+          bevelThickness: 2,
+          bevelSize: 1,
+          bevelOffset: 0,
+          bevelSegments: 10
+        }
+      },
+      object2: {
+        type: `sphere`,
+        radius: 100,
+        widthSegments: 32,
+        heightSegments: 32,
+        color: `rgb(255,0,0)`,
+        metalness: 0.05,
+        emissive: 0x0,
+        roughness: 0.5
+      },
+      object3: {
+        type: `cube`,
+        width: 200,
+        height: 200,
+        depth: 200,
+        color: `rgb(138,43,226)`,
         metalness: 0.0,
         emissive: 0x0,
         roughness: 0.0
       },
-      lantern: {
-        x: 400,
-        y: 435,
-        z: 0,
-        lamp: {
-          top: {
-            widthTop: 45,
-            widthBottom: 57,
-            height: 6,
-            radialSegments: 4,
-            color: `rgb(19, 114, 244)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
+      object4: {
+        type: `scene`,
+        pyramid: {
+          base: 250,
+          height: 280,
+          radialSegments: 4,
+          x: 0,
+          y: 140,
+          z: 0,
+          color: `rgb(29, 105, 222)`,
+          metalness: 0.0,
+          emissive: 0x0,
+          roughness: 0.0
+        },
+        lantern: {
+          x: 400,
+          y: 435,
+          z: 0,
+          lamp: {
+            top: {
+              widthTop: 45,
+              widthBottom: 57,
+              height: 6,
+              radialSegments: 4,
+              color: `rgb(19, 114, 244)`,
+              metalness: 0.0,
+              emissive: 0x0,
+              roughness: 0.0
+            },
+            plafon: {
+              widthTop: 42,
+              widthBottom: 34,
+              height: 70,
+              radialSegments: 4,
+              color: `rgb(144, 176, 249)`,
+              metalness: 0.0,
+              emissive: 0x0,
+              roughness: 0.0
+            },
+            base: {
+              widthTop: 37,
+              widthBottom: 37,
+              height: 4,
+              color: `rgb(19, 114, 244)`,
+              metalness: 0.0,
+              emissive: 0x0,
+              roughness: 0.0
+            }
           },
-          plafon: {
-            widthTop: 42,
-            widthBottom: 34,
-            height: 70,
-            radialSegments: 4,
-            color: `rgb(144, 176, 249)`,
+          post: {
+            radius: 7,
+            height: 230,
+            color: `rgb(19, 114, 244)`,
             metalness: 0.0,
             emissive: 0x0,
             roughness: 0.0
           },
           base: {
-            widthTop: 37,
-            widthBottom: 37,
-            height: 4,
-            color: `rgb(19, 114, 244)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
+            top: {
+              radius: 16,
+              height: 16,
+              color: `rgb(19, 114, 244)`,
+              metalness: 0.0,
+              emissive: 0x0,
+              roughness: 0.0
+            },
+            bottom: {
+              radius: 16,
+              height: 120,
+              color: `rgb(19, 114, 244)`,
+              metalness: 0.0,
+              emissive: 0x0,
+              roughness: 0.0
+            },
           }
+
         },
-        post: {
-          radius: 7,
-          height: 230,
-          color: `rgb(19, 114, 244)`,
-          metalness: 0.0,
-          emissive: 0x0,
-          roughness: 0.0
-        },
-        base: {
+        snowman: {
+          x: -400,
+          y: 0,
+          z: 0,
           top: {
-            radius: 16,
-            height: 16,
-            color: `rgb(19, 114, 244)`,
+            radius: 44,
+            height: 44,
+            y: 173,
+            color: `rgb(255,255,255)`,
             metalness: 0.0,
             emissive: 0x0,
             roughness: 0.0
           },
           bottom: {
-            radius: 16,
-            height: 120,
-            color: `rgb(19, 114, 244)`,
+            radius: 75,
+            height: 75,
+            y: 65,
+            color: `rgb(255,255,255)`,
+            metalness: 0.0,
+            emissive: 0x0,
+            roughness: 0.0
+          },
+          carrot: {
+            radius: 18,
+            height: 75,
+            y: 173,
+            z: 32,
+            color: `rgb(248,64,0)`,
+            metalness: 0.0,
+            emissive: 0x0,
+            roughness: 0.0
+          }
+        },
+      },
+      object5: {
+        type: `scene`,
+        carpet: {
+          x: 0,
+          y: 0,
+          z: 0,
+          width: 180,
+          height: 3,
+          radius: 763,
+          startAngle: 16,
+          endAngle: 74,
+          segments: 30,
+          color: `rgb(166, 126, 229)`,
+        },
+        road: {
+          x: 0,
+          y: 200,
+          z: 0,
+          width: 160,
+          height: 3,
+          radius: 732,
+          startAngle: 0,
+          endAngle: 90,
+          segments: 30,
+          color: `rgb(99, 106, 122)`,
+        },
+        saturn: {
+          x: 0,
+          y: 300,
+          z: 0,
+          planet: {
+            radius: 60,
+            height: 60,
+            widthSegments: 32,
+            heightSegments: 32,
+            // y: 173,
+            color: `rgb(255, 0, 56)`,
+            metalness: 0.0,
+            emissive: 0x0,
+            roughness: 0.0
+          },
+          rings: {
+            height: 2,
+            radiusInner: 80,
+            radiusOut: 120,
+            angle: 18,
+            segments: 30,
+            color: `rgb(126, 70, 233)`,
+            metalness: 0.0,
+            emissive: 0x0,
+            roughness: 0.0
+          },
+          ball: {
+            radius: 10,
+            height: 10,
+            widthSegments: 16,
+            heightSegments: 16,
+            y: 120,
+            color: `rgb(255, 0, 56)`,
+            metalness: 0.0,
+            emissive: 0x0,
+            roughness: 0.0
+          },
+          cable: {
+            radiusTop: 1,
+            radiusBottom: 1,
+            height: 1000,
+            radialSegments: 30,
+            color: `rgb(107, 122, 147)`,
+            y: 500,
             metalness: 0.0,
             emissive: 0x0,
             roughness: 0.0
           },
         }
-
       },
-      snowman: {
-        x: -400,
-        y: 0,
-        z: 0,
-        top: {
-          radius: 44,
-          height: 44,
-          y: 173,
-          color: `rgb(255,255,255)`,
-          metalness: 0.0,
-          emissive: 0x0,
-          roughness: 0.0
-        },
-        bottom: {
-          radius: 75,
-          height: 75,
-          y: 65,
-          color: `rgb(255,255,255)`,
-          metalness: 0.0,
-          emissive: 0x0,
-          roughness: 0.0
-        },
-        carrot: {
-          radius: 18,
-          height: 75,
-          y: 173,
-          z: 32,
-          color: `rgb(248,64,0)`,
-          metalness: 0.0,
-          emissive: 0x0,
-          roughness: 0.0
-        }
-      },
-    },
-    object: {
-      type: `scene`,
-      carpet: {
-        x: 0,
-        y: 0,
-        z: 0,
-        width: 180,
-        height: 3,
-        radius: 763,
-        startAngle: 16,
-        endAngle: 74,
-        segments: 30,
-        color: `rgb(166, 126, 229)`,
-      },
-      road: {
-        x: 0,
-        y: 200,
-        z: 0,
-        width: 160,
-        height: 3,
-        radius: 732,
-        startAngle: 0,
-        endAngle: 90,
-        segments: 30,
-        color: `rgb(99, 106, 122)`,
-      },
-      saturn: {
-        x: 0,
-        y: 300,
-        z: 0,
-        planet: {
-          radius: 60,
-          height: 60,
-          widthSegments: 32,
-          heightSegments: 32,
-          // y: 173,
-          color: `rgb(255, 0, 56)`,
-          metalness: 0.0,
-          emissive: 0x0,
-          roughness: 0.0
-        },
-        rings: {
-          height: 2,
-          radiusInner: 80,
-          radiusOut: 120,
-          angle: 18,
-          segments: 30,
-          color: `rgb(126, 70, 233)`,
-          metalness: 0.0,
-          emissive: 0x0,
-          roughness: 0.0
-        },
-        ball: {
-          radius: 10,
-          height: 10,
-          widthSegments: 16,
-          heightSegments: 16,
-          y: 120,
-          color: `rgb(255, 0, 56)`,
-          metalness: 0.0,
-          emissive: 0x0,
-          roughness: 0.0
-        },
-        cable: {
-          radiusTop: 1,
-          radiusBottom: 1,
-          height: 1000,
-          radialSegments: 30,
-          color: `rgb(107, 122, 147)`,
-          y: 500,
-          metalness: 0.0,
-          emissive: 0x0,
-          roughness: 0.0
-        },
-      }
     },
     light: {
       directional: {

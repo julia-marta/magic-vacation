@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import MaterialsFactory from './materials/materials-factory';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 import {SVGLoader} from 'three/examples/jsm/loaders/SVGLoader';
 
@@ -14,6 +15,7 @@ export default class Scene3D {
     this.cameraPozitionZ = options.cameraPozitionZ;
     this.aspectRatio = this.width / this.height;
     this.fov = 35;
+    this.materialsFactory = new MaterialsFactory();
   }
 
   init() {
@@ -77,7 +79,7 @@ export default class Scene3D {
     loader.load(
         url, (data) => {
           const paths = data.paths;
-          const extrudeObj = callback(paths, options);
+          const extrudeObj = callback(paths, options, this.materialsFactory);
           this.scene.add(extrudeObj);
           this.render();
         }
