@@ -1,4 +1,4 @@
-export default `
+export default /* glsl */`
 precision mediump float;
 uniform sampler2D map;
 uniform float hueShift;

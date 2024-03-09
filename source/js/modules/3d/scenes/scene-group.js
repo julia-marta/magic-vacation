@@ -15,7 +15,7 @@ class SceneGroup extends THREE.Group {
   }
 
   constructChildren() {
-    const {pyramid, lantern, snowman, carpet, road, saturnRoom1, saturnRoom4} = this.options;
+    const {pyramid, lantern, snowman, carpetRoom1, carpetRoom2, road, saturnRoom1, saturnRoom4} = this.options;
 
     if (pyramid) {
       this.addPyramid(pyramid);
@@ -26,8 +26,11 @@ class SceneGroup extends THREE.Group {
     if (lantern) {
       this.addSnowman(snowman);
     }
-    if (carpet) {
-      this.addCarpet(carpet);
+    if (carpetRoom1) {
+      this.addCarpet(carpetRoom1);
+    }
+    if (carpetRoom2) {
+      this.addCarpet(carpetRoom2);
     }
     if (road) {
       this.addRoad(road);

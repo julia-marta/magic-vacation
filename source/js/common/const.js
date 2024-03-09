@@ -629,6 +629,97 @@ export const SceneObjects = {
     objects: [
       {
         type: `scene`,
+        carpetRoom1: {
+          position: [0, 0, 0],
+          width: 180,
+          height: 3,
+          radius: 763,
+          startAngle: 16,
+          endAngle: 74,
+          segments: 30,
+          material: {
+            type: `custom`,
+            reflection: `soft`,
+            options: {
+              name: `standard`,
+              shaders: `carpet`,
+              colors: [
+                {
+                  name: `mainColor`,
+                  value: `LightPurple`,
+                },
+                {
+                  name: `stripesColor`,
+                  value: `AdditionalPurple`,
+                }
+              ],
+              additional: {
+                stripesCount: new THREE.Uniform(7)
+              }
+            },
+          },
+        },
+        carpetRoom2: {
+          position: [0, -100, 0],
+          width: 180,
+          height: 3,
+          radius: 763,
+          startAngle: 16,
+          endAngle: 74,
+          segments: 30,
+          material: {
+            type: `custom`,
+            reflection: `soft`,
+            options: {
+              name: `standard`,
+              shaders: `carpet`,
+              colors: [
+                {
+                  name: `mainColor`,
+                  value: `ShadowedLightPurple`,
+                },
+                {
+                  name: `stripesColor`,
+                  value: `ShadowedAdditionalPurple`,
+                }
+              ],
+              additional: {
+                stripesCount: new THREE.Uniform(7)
+              }
+            },
+          },
+        },
+        road: {
+          position: [0, 200, 0],
+          width: 160,
+          height: 3,
+          radius: 732,
+          startAngle: 0,
+          endAngle: 90,
+          segments: 30,
+          material: {
+            type: `custom`,
+            reflection: `soft`,
+            options: {
+              name: `standard`,
+              shaders: `road`,
+              colors: [
+                {
+                  name: `mainColor`,
+                  value: `Grey`,
+                },
+                {
+                  name: `stripesColor`,
+                  value: `White`,
+                }
+              ],
+              additional: {
+                stripesCount: new THREE.Uniform(9),
+                stripesSize: new THREE.Uniform(20),
+              }
+            },
+          },
+        },
         pyramid: {
           base: 250,
           height: 280,
@@ -1128,9 +1219,9 @@ export const SceneObjects = {
     },
     light: {
       directional: {
-        angle: 0,
+        angle: 100,
         color: `rgb (255,255,255)`,
-        intensity: 0.8
+        intensity: 1.6,
       },
       point1: {
         color: `rgb (246,242,255)`,
