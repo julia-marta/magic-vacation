@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import CustomShaderMaterial from "./custom-shader-material";
 
 class MaterialsFactory {
   constructor() {
@@ -14,6 +15,9 @@ class MaterialsFactory {
       }
       case `phong`: {
         return this._getPhongMaterial(options, reflection);
+      }
+      case `custom`: {
+        return this._getCustomMaterial(options, reflection);
       }
       default: {
         return this._getStandardMaterial(options, reflection);
@@ -53,6 +57,23 @@ class MaterialsFactory {
       }
     }
   }
+  // возвращает uniform переменные для кастомного материала
+  getCustomMaterialUniforms(reflection, colors, additionalUniforms) {
+    const reflectionOptions = this.getMaterialReflectionOptions(reflection);
+    const colorUniforms = colors.reduce((acc, color) => {
+      const materialColor = this.getMaterialColor(color.value);
+      acc[color.name] = {value: new THREE.Color(materialColor)};
+
+      return acc;
+    }, {});
+
+    return {
+      roughness: {value: reflectionOptions.roughness},
+      metalness: {value: reflectionOptions.metalness},
+      ...colorUniforms,
+      ...additionalUniforms
+    };
+  }
 
   // заливает фигуру однородным цветом, не обрабатывая информацию об освещении
   _getBasicMaterial(options) {
@@ -75,6 +96,15 @@ class MaterialsFactory {
     }
     options = {...options, color: this.getMaterialColor(options.color)};
     return new THREE.MeshPhongMaterial(options);
+  }
+
+  _getCustomMaterial(options, reflection) {
+
+    const {name, colors, shaders, additional} = options;
+
+    const uniforms = this.getCustomMaterialUniforms(reflection, colors, additional);
+
+    return new CustomShaderMaterial(name, shaders, uniforms);
   }
 }
 

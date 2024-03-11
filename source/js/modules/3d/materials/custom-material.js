@@ -43,6 +43,9 @@ export default class CustomMaterial extends THREE.RawShaderMaterial {
       },
       vertexShader,
       fragmentShader,
+      extensions: {
+        derivatives: true,
+      }
     });
   }
 }
