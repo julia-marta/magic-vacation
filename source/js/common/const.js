@@ -970,6 +970,38 @@ export const SceneObjects = {
         },
       },
       {
+        type: `OBJ`,
+        url: `./3d/module-6/scene-0-objects/airplane.obj`,
+        options: {
+          scale: [5, 5, 5],
+          position: [0, 0, 200],
+          material: {
+            type: `standard`,
+            reflection: `basic`,
+            options: {
+              color: `White`,
+            },
+          },
+        }
+      },
+      {
+        type: `glTF`,
+        url: `./3d/module-6/scene-0-objects/suitcase.gltf`,
+        options: {
+          rotation: [0, Math.PI / 2, 0],
+          scale: [1, 1, 1],
+          position: [450, 0, 0],
+        }
+      },
+      {
+        type: `glTF`,
+        url: `./3d/module-6/scene-0-objects/watermelon.gltf`,
+        options: {
+          scale: [3, 3, 3],
+          position: [-450, 0, 0],
+        }
+      },
+      {
         type: `extrude`,
         options: {
           steps: 2,
@@ -1219,9 +1251,9 @@ export const SceneObjects = {
     },
     light: {
       directional: {
-        angle: 100,
+        angle: 120,
         color: `rgb (255,255,255)`,
-        intensity: 1.6,
+        intensity: 1.8,
       },
       point1: {
         color: `rgb (246,242,255)`,
