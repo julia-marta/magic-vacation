@@ -2,6 +2,8 @@ import * as THREE from "three";
 import MaterialsFactory from './materials/materials-factory';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 import {SVGLoader} from 'three/examples/jsm/loaders/SVGLoader';
+import {OBJLoader} from "three/examples/jsm/loaders/OBJLoader";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 
 export default class Scene3D {
   constructor(options) {
@@ -81,6 +83,34 @@ export default class Scene3D {
           const paths = data.paths;
           const extrudeObj = callback(paths, options, this.materialsFactory);
           this.scene.add(extrudeObj);
+          this.render();
+        }
+    );
+  }
+
+  loadOBJ(url, callback, options) {
+    // instantiate a loader
+    const loader = new OBJLoader();
+
+    // load a resource
+    loader.load(
+        url, (data) => {
+          const object = callback(data, options, this.materialsFactory);
+          this.scene.add(object);
+          this.render();
+        }
+    );
+  }
+
+  loadGLTF(url, callback, options) {
+    // instantiate a loader
+    const loader = new GLTFLoader();
+
+    // load a resource
+    loader.load(
+        url, (gltf) => {
+          const object = callback(gltf.scene, options);
+          this.scene.add(object);
           this.render();
         }
     );

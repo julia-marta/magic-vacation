@@ -192,6 +192,39 @@ export default class PlaneView extends Scene3D {
     return group;
   }
 
+  create3DObjectObjectFromOBJ(obj, options, factory) {
+    const {scale, position, rotation, material} = options;
+    const objMaterial = factory.get(material);
+    obj.material = objMaterial;
+    if (position) {
+      obj.position.set(...position);
+    }
+    if (scale) {
+      obj.scale.set(...scale);
+    }
+    if (rotation) {
+      obj.rotation.set(...rotation);
+    }
+
+    return obj;
+  }
+
+  create3DObjectObjectFromGLTF(obj, options) {
+    const {scale, position, rotation} = options;
+
+    if (position) {
+      obj.position.set(...position);
+    }
+    if (scale) {
+      obj.scale.set(...scale);
+    }
+    if (rotation) {
+      obj.rotation.set(...rotation);
+    }
+
+    return obj;
+  }
+
   addSceneGroup(options) {
     const sceneGroup = new SceneGroup(options, this.materialsFactory);
     this.scene.add(sceneGroup);
@@ -205,6 +238,24 @@ export default class PlaneView extends Scene3D {
           this.createExtrudeObjectFromSVG,
           {...item.options, extrude: {...options, ...item.options.extrude}});
     });
+  }
+
+  add3DObjectOBJ(data) {
+    const {url, options} = data;
+    this.loadOBJ(
+        url,
+        this.create3DObjectObjectFromOBJ,
+        options,
+    );
+  }
+
+  add3DObjectGLTF(data) {
+    const {url, options} = data;
+    this.loadGLTF(
+        url,
+        this.create3DObjectObjectFromGLTF,
+        options,
+    );
   }
 
   setLight(options) {
@@ -307,17 +358,23 @@ export default class PlaneView extends Scene3D {
       if (object.type === `plane`) {
         this.createSimplePlaneObject(object);
       }
-      if (object.type === `sphere`) {
-        this.createSphereObject(object);
-      }
-      if (object.type === `cube`) {
-        this.createCubeObject(object);
-      }
-      if (object.type === `scene`) {
-        this.addSceneGroup(object);
-      }
+      // if (object.type === `sphere`) {
+      //   this.createSphereObject(object);
+      // }
+      // if (object.type === `cube`) {
+      //   this.createCubeObject(object);
+      // }
+      // if (object.type === `scene`) {
+      //   this.addSceneGroup(object);
+      // }
       if (object.type === `extrude`) {
         this.addExtrudeObjectsGroup(object.options);
+      }
+      if (object.type === `OBJ`) {
+        this.add3DObjectOBJ(object);
+      }
+      if (object.type === `glTF`) {
+        this.add3DObjectGLTF(object);
       }
     });
 
