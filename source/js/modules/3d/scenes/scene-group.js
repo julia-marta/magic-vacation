@@ -100,11 +100,20 @@ class SceneGroup extends THREE.Group {
     const materials = {
       planet: this.materialsFactory.get(planet.material),
       rings: this.materialsFactory.get(rings.material),
-      ball: this.materialsFactory.get(ball.material),
-      cable: this.materialsFactory.get(cable.material),
+      ball: ball ? this.materialsFactory.get(ball.material) : null,
+      cable: cable ? this.materialsFactory.get(cable.material) : null,
     };
     const saturn = new Saturn(materials, object);
     saturn.position.set(...object.position);
+
+    if (object.scale) {
+      saturn.scale.set(...object.scale);
+    }
+
+    if (object.rotation) {
+      saturn.rotation.set(...object.rotation);
+    }
+
     this.add(saturn);
   }
 }

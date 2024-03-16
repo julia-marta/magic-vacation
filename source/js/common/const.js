@@ -508,126 +508,255 @@ export const PLANES = [
   },
 ];
 
-export const SVG_SHAPES = [
-  {
-    name: `flamingo`,
-    url: `img/svg-forms/flamingo.svg`,
-    options: {
-      extrude: {},
-      scale: [3, 3, 3],
-      rotation: [Math.PI, Math.PI, 0.3],
-      position: [-450, 350, -300],
-      material: {
-        type: `standard`,
-        reflection: `soft`,
-        options: {
-          color: `LightDominantRed`,
-          side: THREE.DoubleSide,
-        },
-      },
-    },
-  },
-  {
-    name: `snowflake`,
-    url: `img/svg-forms/snowflake.svg`,
-    options: {
-      extrude: {},
-      scale: [2, 2, 2],
-      rotation: [-0.4, 0.6, 0],
-      position: [-350, -50, -250],
-      material: {
-        type: `standard`,
-        reflection: `basic`,
-        options: {
-          color: `Blue`,
-          side: THREE.DoubleSide,
-        },
-      },
-    },
-  },
-  {
-    name: `question`,
-    url: `img/svg-forms/question.svg`,
-    options: {
-      extrude: {},
-      scale: [1.5, 1.5, 1.5],
-      rotation: [-0.7, Math.PI, 2.8],
-      position: [100, -300, -300],
-      material: {
-        type: `standard`,
-        reflection: `basic`,
-        options: {
-          color: `Blue`,
-          side: THREE.DoubleSide,
-        },
-      },
-    },
-  },
-  {
-    name: `leaf`,
-    url: `img/svg-forms/leaf.svg`,
-    options: {
-      extrude: {},
-      scale: [1.5, 1.5, 1.5],
-      rotation: [Math.PI, 0.6, 1.2],
-      position: [400, 350, -250],
-      material: {
-        type: `standard`,
-        reflection: `basic`,
-        options: {
-          color: `Green`,
-          side: THREE.DoubleSide,
-        },
-      },
-    },
-  },
-  {
-    name: `keyhole`,
-    url: `img/svg-forms/keyhole.svg`,
-    options: {
-      extrude: {
-        depth: 20,
-      },
-      scale: [1, 1, 1],
-      rotation: [Math.PI, Math.PI, 0],
-      position: [1000, 1000, -400],
-      material: {
-        type: `standard`,
-        reflection: `soft`,
-        options: {
-          color: `DarkPurple`,
-          side: THREE.DoubleSide,
-        },
-      },
-    },
-  },
-  {
-    name: `flower`,
-    url: `img/svg-forms/flower.svg`,
-    options: {
-      extrude: {
-        depth: 4,
-      },
-      scale: [1, 1, 1],
-      rotation: [Math.PI, Math.PI, 0],
-      position: [700, -100, -300],
-      material: {
-        type: `standard`,
-        reflection: `basic`,
-        options: {
-          color: `Green`,
-          side: THREE.DoubleSide,
-        },
-
-      },
-    },
-  },
-];
-
 export const SceneObjects = {
   top: {
     objects: [
       {
+        type: `OBJ`,
+        url: `./3d/module-6/scene-0-objects/airplane.obj`,
+        options: {
+          scale: [1, 1, 1],
+          rotation: [0.8, 2.5, 0],
+          position: [190, 75, 100],
+          material: {
+            type: `standard`,
+            reflection: `basic`,
+            options: {
+              color: `White`,
+            },
+          },
+        }
+      },
+      {
+        type: `glTF`,
+        url: `./3d/module-6/scene-0-objects/suitcase.gltf`,
+        options: {
+          scale: [0.4, 0.4, 0.4],
+          rotation: [0.5, 3.8, 0.3],
+          position: [-50, -130, 150],
+        }
+      },
+      {
+        type: `glTF`,
+        url: `./3d/module-6/scene-0-objects/watermelon.gltf`,
+        options: {
+          scale: [1.5, 1.5, 1.5],
+          rotation: [0.2, 3.1, 0.7],
+          position: [-450, -190, 200],
+        }
+      },
+      {
+        type: `extrude`,
+        options: {
+          steps: 2,
+          depth: 8,
+          bevelEnabled: true,
+          bevelThickness: 2,
+          bevelSize: 1,
+          bevelOffset: 0,
+          bevelSegments: 10
+        },
+        shapes: [
+          {
+            name: `flamingo`,
+            url: `img/svg-forms/flamingo.svg`,
+            options: {
+              extrude: {},
+              scale: [1.35, 1.35, 1.35],
+              rotation: [6.1, 0.2, 3.5],
+              position: [-345, 250, 50],
+              material: {
+                type: `standard`,
+                reflection: `soft`,
+                options: {
+                  color: `LightDominantRed`,
+                  side: THREE.DoubleSide,
+                },
+              },
+            },
+          },
+          {
+            name: `snowflake`,
+            url: `img/svg-forms/snowflake.svg`,
+            options: {
+              extrude: {},
+              scale: [1, 1, 1],
+              rotation: [6.1, 0.8, 0.25],
+              position: [-310, -20, 70],
+              material: {
+                type: `standard`,
+                reflection: `basic`,
+                options: {
+                  color: `Blue`,
+                  side: THREE.DoubleSide,
+                },
+              },
+            },
+          },
+          {
+            name: `question`,
+            url: `img/svg-forms/question.svg`,
+            options: {
+              extrude: {},
+              scale: [1, 1, 1],
+              rotation: [5.4, 3.1, 2.8],
+              position: [70, -230, 125],
+              material: {
+                type: `standard`,
+                reflection: `basic`,
+                options: {
+                  color: `Blue`,
+                  side: THREE.DoubleSide,
+                },
+              },
+            },
+          },
+          {
+            name: `leaf`,
+            url: `img/svg-forms/leaf.svg`,
+            options: {
+              extrude: {},
+              scale: [1, 1, 1],
+              rotation: [6.1, 2.5, 4.4],
+              position: [440, 220, 170],
+              material: {
+                type: `standard`,
+                reflection: `basic`,
+                options: {
+                  color: `Green`,
+                  side: THREE.DoubleSide,
+                },
+              },
+            },
+          },
+          {
+            name: `keyhole`,
+            url: `img/svg-forms/keyhole.svg`,
+            options: {
+              extrude: {
+                depth: 20,
+              },
+              scale: [1, 1, 1],
+              rotation: [Math.PI, Math.PI, 0],
+              position: [1000, 1000, 0],
+              material: {
+                type: `standard`,
+                reflection: `soft`,
+                options: {
+                  color: `DarkPurple`,
+                  side: THREE.DoubleSide,
+                },
+              },
+            },
+          },
+        ],
+      },
+      {
+        type: `plane`,
+        width: 2000,
+        height: 1995,
+        position: [0, 0, 0],
+        material: {
+          type: `standard`,
+          reflection: `basic`,
+          options: {
+            color: `Purple`,
+            side: THREE.DoubleSide,
+          },
+        },
+      },
+      {
+        type: `scene`,
+        saturnRoom1: {
+          scale: [0.5, 0.5, 0.5],
+          position: [300, -100, 185],
+          rotation: [0.3, -0.3, 0.2],
+          planet: {
+            radius: 60,
+            height: 60,
+            widthSegments: 32,
+            heightSegments: 32,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `DominantRed`,
+              },
+            },
+          },
+          rings: {
+            height: 2,
+            radiusInner: 80,
+            radiusOut: 120,
+            angle: 18,
+            segments: 30,
+            material: {
+              type: `standard`,
+              reflection: `soft`,
+              options: {
+                color: `BrightPurple`,
+              },
+            },
+          },
+        },
+      }
+    ],
+    testObjects: {
+      object1: {
+        type: `extrude`,
+        options: {
+          steps: 2,
+          depth: 8,
+          bevelEnabled: true,
+          bevelThickness: 2,
+          bevelSize: 1,
+          bevelOffset: 0,
+          bevelSegments: 10
+        },
+        shapes: [
+          {
+            name: `flower`,
+            url: `img/svg-forms/flower.svg`,
+            options: {
+              extrude: {
+                depth: 4,
+              },
+              scale: [1, 1, 1],
+              rotation: [Math.PI, Math.PI, 0],
+              position: [700, -100, -300],
+              material: {
+                type: `standard`,
+                reflection: `basic`,
+                options: {
+                  color: `Green`,
+                  side: THREE.DoubleSide,
+                },
+              },
+            },
+          },
+        ]
+      },
+      object2: {
+        type: `sphere`,
+        radius: 100,
+        widthSegments: 32,
+        heightSegments: 32,
+        color: `rgb(255,0,0)`,
+        metalness: 0.05,
+        emissive: 0x0,
+        roughness: 0.5
+      },
+      object3: {
+        type: `cube`,
+        width: 200,
+        height: 200,
+        depth: 200,
+        color: `rgb(138,43,226)`,
+        metalness: 0.0,
+        emissive: 0x0,
+        roughness: 0.0
+      },
+      object4: {
         type: `scene`,
         carpetRoom1: {
           position: [0, 0, 0],
@@ -968,285 +1097,6 @@ export const SceneObjects = {
             },
           },
         },
-      },
-      {
-        type: `OBJ`,
-        url: `./3d/module-6/scene-0-objects/airplane.obj`,
-        options: {
-          scale: [5, 5, 5],
-          position: [0, 0, 200],
-          material: {
-            type: `standard`,
-            reflection: `basic`,
-            options: {
-              color: `White`,
-            },
-          },
-        }
-      },
-      {
-        type: `glTF`,
-        url: `./3d/module-6/scene-0-objects/suitcase.gltf`,
-        options: {
-          rotation: [0, Math.PI / 2, 0],
-          scale: [1, 1, 1],
-          position: [450, 0, 0],
-        }
-      },
-      {
-        type: `glTF`,
-        url: `./3d/module-6/scene-0-objects/watermelon.gltf`,
-        options: {
-          scale: [3, 3, 3],
-          position: [-450, 0, 0],
-        }
-      },
-      {
-        type: `extrude`,
-        options: {
-          steps: 2,
-          depth: 8,
-          bevelEnabled: true,
-          bevelThickness: 2,
-          bevelSize: 1,
-          bevelOffset: 0,
-          bevelSegments: 10
-        }
-      },
-      {
-        type: `plane`,
-        width: 2000,
-        height: 1995,
-        position: [0, 0, -400],
-        material: {
-          type: `standard`,
-          reflection: `basic`,
-          options: {
-            color: `Purple`,
-            side: THREE.DoubleSide,
-          },
-        },
-      },
-    ],
-    testObjects: {
-      object1: {
-        type: `extrude`,
-        options: {
-          steps: 2,
-          depth: 8,
-          bevelEnabled: true,
-          bevelThickness: 2,
-          bevelSize: 1,
-          bevelOffset: 0,
-          bevelSegments: 10
-        }
-      },
-      object2: {
-        type: `sphere`,
-        radius: 100,
-        widthSegments: 32,
-        heightSegments: 32,
-        color: `rgb(255,0,0)`,
-        metalness: 0.05,
-        emissive: 0x0,
-        roughness: 0.5
-      },
-      object3: {
-        type: `cube`,
-        width: 200,
-        height: 200,
-        depth: 200,
-        color: `rgb(138,43,226)`,
-        metalness: 0.0,
-        emissive: 0x0,
-        roughness: 0.0
-      },
-      object4: {
-        type: `scene`,
-        pyramid: {
-          base: 250,
-          height: 280,
-          radialSegments: 4,
-          x: 0,
-          y: 140,
-          z: 0,
-          color: `rgb(29, 105, 222)`,
-          metalness: 0.0,
-          emissive: 0x0,
-          roughness: 0.0
-        },
-        lantern: {
-          x: 400,
-          y: 435,
-          z: 0,
-          lamp: {
-            top: {
-              widthTop: 45,
-              widthBottom: 57,
-              height: 6,
-              radialSegments: 4,
-              color: `rgb(19, 114, 244)`,
-              metalness: 0.0,
-              emissive: 0x0,
-              roughness: 0.0
-            },
-            plafon: {
-              widthTop: 42,
-              widthBottom: 34,
-              height: 70,
-              radialSegments: 4,
-              color: `rgb(144, 176, 249)`,
-              metalness: 0.0,
-              emissive: 0x0,
-              roughness: 0.0
-            },
-            base: {
-              widthTop: 37,
-              widthBottom: 37,
-              height: 4,
-              color: `rgb(19, 114, 244)`,
-              metalness: 0.0,
-              emissive: 0x0,
-              roughness: 0.0
-            }
-          },
-          post: {
-            radius: 7,
-            height: 230,
-            color: `rgb(19, 114, 244)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
-          },
-          base: {
-            top: {
-              radius: 16,
-              height: 16,
-              color: `rgb(19, 114, 244)`,
-              metalness: 0.0,
-              emissive: 0x0,
-              roughness: 0.0
-            },
-            bottom: {
-              radius: 16,
-              height: 120,
-              color: `rgb(19, 114, 244)`,
-              metalness: 0.0,
-              emissive: 0x0,
-              roughness: 0.0
-            },
-          }
-
-        },
-        snowman: {
-          x: -400,
-          y: 0,
-          z: 0,
-          top: {
-            radius: 44,
-            height: 44,
-            y: 173,
-            color: `rgb(255,255,255)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
-          },
-          bottom: {
-            radius: 75,
-            height: 75,
-            y: 65,
-            color: `rgb(255,255,255)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
-          },
-          carrot: {
-            radius: 18,
-            height: 75,
-            y: 173,
-            z: 32,
-            color: `rgb(248,64,0)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
-          }
-        },
-      },
-      object5: {
-        type: `scene`,
-        carpet: {
-          x: 0,
-          y: 0,
-          z: 0,
-          width: 180,
-          height: 3,
-          radius: 763,
-          startAngle: 16,
-          endAngle: 74,
-          segments: 30,
-          color: `rgb(166, 126, 229)`,
-        },
-        road: {
-          x: 0,
-          y: 200,
-          z: 0,
-          width: 160,
-          height: 3,
-          radius: 732,
-          startAngle: 0,
-          endAngle: 90,
-          segments: 30,
-          color: `rgb(99, 106, 122)`,
-        },
-        saturn: {
-          x: 0,
-          y: 300,
-          z: 0,
-          planet: {
-            radius: 60,
-            height: 60,
-            widthSegments: 32,
-            heightSegments: 32,
-            // y: 173,
-            color: `rgb(255, 0, 56)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
-          },
-          rings: {
-            height: 2,
-            radiusInner: 80,
-            radiusOut: 120,
-            angle: 18,
-            segments: 30,
-            color: `rgb(126, 70, 233)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
-          },
-          ball: {
-            radius: 10,
-            height: 10,
-            widthSegments: 16,
-            heightSegments: 16,
-            y: 120,
-            color: `rgb(255, 0, 56)`,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
-          },
-          cable: {
-            radiusTop: 1,
-            radiusBottom: 1,
-            height: 1000,
-            radialSegments: 30,
-            color: `rgb(107, 122, 147)`,
-            y: 500,
-            metalness: 0.0,
-            emissive: 0x0,
-            roughness: 0.0
-          },
-        }
       },
     },
     light: {

@@ -3,18 +3,18 @@ import Scene3D from "./scene-3d.js";
 import SceneGroup from "./scenes/scene-group.js";
 import CustomMaterial from "./materials/custom-material.js";
 import Animation from "../animation.js";
-import {PLANES, SVG_SHAPES} from "../../common/const.js";
+import {PLANES} from "../../common/const.js";
 import _ from "../../common/easings.js";
 
 export default class PlaneView extends Scene3D {
   constructor() {
     super({
       canvas: `animation-screen`,
-      color: new THREE.Color(0x5f458c),
+      color: new THREE.Color(`rgb(76, 49, 121)`),
       alpha: 1,
       far: 5500,
       near: 1,
-      cameraPozitionZ: 1750,
+      cameraPozitionZ: 1405,
     });
     this.planeRatio = 2;
     this.planePositions = {};
@@ -231,8 +231,8 @@ export default class PlaneView extends Scene3D {
     this.render();
   }
 
-  addExtrudeObjectsGroup(options) {
-    SVG_SHAPES.forEach((item) => {
+  addExtrudeObjectsGroup(options, shapes) {
+    shapes.forEach((item) => {
       this.loadSVG(
           item.url,
           this.createExtrudeObjectFromSVG,
@@ -364,11 +364,11 @@ export default class PlaneView extends Scene3D {
       // if (object.type === `cube`) {
       //   this.createCubeObject(object);
       // }
-      // if (object.type === `scene`) {
-      //   this.addSceneGroup(object);
-      // }
+      if (object.type === `scene`) {
+        this.addSceneGroup(object);
+      }
       if (object.type === `extrude`) {
-        this.addExtrudeObjectsGroup(object.options);
+        this.addExtrudeObjectsGroup(object.options, object.shapes);
       }
       if (object.type === `OBJ`) {
         this.add3DObjectOBJ(object);
