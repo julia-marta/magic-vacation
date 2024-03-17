@@ -57,6 +57,10 @@ class Saturn extends THREE.Group {
 
   addBall() {
     const {ball} = this.options;
+
+    if (!ball) {
+      return;
+    }
     const {radius, widthSegments, heightSegments, y} = ball;
     let ballSphere = new THREE.Mesh(
         new THREE.SphereGeometry(radius, widthSegments, heightSegments),
@@ -69,6 +73,11 @@ class Saturn extends THREE.Group {
 
   addCable() {
     const {cable} = this.options;
+
+    if (!cable) {
+      return;
+    }
+
     const {radiusTop, radiusBottom, height, radialSegments, y} = cable;
 
     let cableCylinder = new THREE.Mesh(
