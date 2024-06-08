@@ -9,15 +9,17 @@ import result from './modules/result.js';
 import form from './modules/form.js';
 import social from './modules/social.js';
 import FullPageScroll from './modules/full-page-scroll';
-import PlaneView from "./modules/3d/scene-3d-plane.js";
+import Scene3D from "./modules/3d/scene-3d.js";
+// const
+import {Scene3DSettings} from "./common/const.js";
 
-const plane3DView = new PlaneView();
-plane3DView.init();
+const scene3D = new Scene3D(Scene3DSettings);
+scene3D.init();
 
 // init modules
 mobileHeight();
 pageLoad();
-slider(plane3DView);
+slider(scene3D);
 menu();
 footer();
 chat();
@@ -25,5 +27,5 @@ result();
 form();
 social();
 
-const fullPageScroll = new FullPageScroll(plane3DView);
+const fullPageScroll = new FullPageScroll(scene3D);
 fullPageScroll.init();

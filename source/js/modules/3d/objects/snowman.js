@@ -1,9 +1,9 @@
 import * as THREE from "three";
 
 class Snowman extends THREE.Group {
-  constructor(materials, options) {
+  constructor(materialsFactory, options) {
     super();
-    this.materials = materials;
+    this.materialsFactory = materialsFactory;
     this.options = options;
     this.topBallPositionZ = null;
     this.constructChildren();
@@ -17,10 +17,11 @@ class Snowman extends THREE.Group {
 
   addTopBall() {
     const {top} = this.options;
+    const materialTop = this.materialsFactory.get(top.material);
 
     let topBall = new THREE.Mesh(
         new THREE.SphereGeometry(top.radius, 40, 40),
-        this.materials.top
+        materialTop,
     );
 
     topBall.position.set(0, top.y, 0);
@@ -30,10 +31,11 @@ class Snowman extends THREE.Group {
 
   addBottomBall() {
     const {bottom} = this.options;
+    const materialBottom = this.materialsFactory.get(bottom.material);
 
     let bottomBall = new THREE.Mesh(
         new THREE.SphereGeometry(bottom.radius, 40, 40),
-        this.materials.bottom
+        materialBottom,
     );
 
     bottomBall.position.set(0, bottom.y, 0);
@@ -42,11 +44,11 @@ class Snowman extends THREE.Group {
 
   addCarrot() {
     const {carrot} = this.options;
+    const materialCarrot = this.materialsFactory.get(carrot.material);
 
     let carrotMesh = new THREE.Mesh(
         new THREE.ConeGeometry(carrot.radius, carrot.height, 40),
-
-        this.materials.carrot
+        materialCarrot,
     );
 
     // сначала морковь помещаем по оси z на положение верхнего шара:

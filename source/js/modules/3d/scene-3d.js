@@ -1,9 +1,8 @@
 import * as THREE from "three";
-import MaterialsFactory from './materials/materials-factory';
+import ScenesFactory from "./scenes/scenes-factory";
+import LightsFactory from "./light/lights-factory";
+import Animation from "../animation.js";
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
-import {SVGLoader} from 'three/examples/jsm/loaders/SVGLoader';
-import {OBJLoader} from "three/examples/jsm/loaders/OBJLoader";
-import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 
 export default class Scene3D {
   constructor(options) {
@@ -13,24 +12,35 @@ export default class Scene3D {
     this.color = options.color;
     this.alpha = options.alpha;
     this.far = options.far;
+    this.fov = options.fov;
     this.near = options.near;
     this.cameraPozitionZ = options.cameraPozitionZ;
+    this.cameraPozitionY = options.cameraPozitionY;
     this.aspectRatio = this.width / this.height;
-    this.fov = 35;
-    this.materialsFactory = new MaterialsFactory();
+    this.sceneGroups = {};
+    this.lights = null;
+    this.isLightAdded = false;
+    this.scenesFactory = new ScenesFactory();
+    this.lightsFactory = new LightsFactory();
+    this.addSceneGroup = this.addSceneGroup.bind(this);
+    this.setScenePlane = this.setScenePlane.bind(this);
   }
 
+  // инициирует глобальную сцену
   init() {
     this.setup();
     this.initEventListeners();
     this.updateSize();
     this.initHelpers();
+    this.startAnimations();
   }
 
+  // устанавливает обработчик события ресайза на окно
   initEventListeners() {
     window.addEventListener(`resize`, this.updateSize.bind(this));
   }
 
+  // производит настройки отрисовщика, сцены и камеры
   setup() {
     // 1.1.1. Renderer
     this.renderer = new THREE.WebGLRenderer({
@@ -55,76 +65,100 @@ export default class Scene3D {
         this.far
     );
     this.camera.position.z = this.cameraPozitionZ;
+    this.camera.position.y = this.cameraPozitionY;
   }
 
+  // добавляет контролы и оси для управления глобальной сценой (хелперы)
   initHelpers() {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     const axesHelper = new THREE.AxesHelper(1000);
     this.scene.add(axesHelper);
   }
 
-  loadTexture(url, callback, options) {
-    const manager = new THREE.LoadingManager();
-    const loader = new THREE.TextureLoader(manager);
-    const texture = loader.load(url);
+  // получает из фабрики сцен локальную сцену (группу объектов), добавляет ее на глобальную сцену и делает перерендер
+  addSceneGroup(group) {
+    const {name, lights, position, rotation} = group;
+    this.scenesFactory.create(group);
+    const sceneGroup = this.scenesFactory.get(name);
+    if (sceneGroup) {
+      this.sceneGroups[group.name] = sceneGroup;
 
-    manager.onLoad = () => {
-      callback(texture, options);
-    };
+      if (position) {
+        sceneGroup.position.set(...position);
+      }
+
+      if (rotation) {
+        sceneGroup.rotation.set(...rotation);
+      }
+
+      this.scene.add(sceneGroup);
+      this.render();
+    }
+
+    if (lights) {
+      if (this.isLightAdded) {
+        return;
+      }
+      this.setLights(group.lights);
+    }
   }
 
-  loadSVG(url, callback, options) {
-    // instantiate a loader
-    const loader = new SVGLoader();
-
-    // load a SVG resource
-    loader.load(
-        url, (data) => {
-          const paths = data.paths;
-          const extrudeObj = callback(paths, options, this.materialsFactory);
-          this.scene.add(extrudeObj);
-          this.render();
-        }
-    );
+  // получает из фабрики света нужные типы света, добавляет их на глобальную сцену
+  setLights(lights) {
+    this.isLightAdded = true;
+    this.lights = new THREE.Group();
+    lights.forEach((light) => {
+      if (light.angle || light.angle === 0) {
+        const radian = (light.angle * Math.PI) / 180;
+        const targetObject = new THREE.Object3D();
+        targetObject.position.y = this.camera.position.z * Math.tan(radian);
+        this.scene.add(targetObject);
+        light = {...light, target: targetObject};
+      }
+      this.lightsFactory.create(light);
+      const lightUnit = this.lightsFactory.get(light.name);
+      this.lights.add(lightUnit);
+    });
+    this.lights.position.z = this.camera.position.z;
+    this.scene.add(this.lights);
   }
 
-  loadOBJ(url, callback, options) {
-    // instantiate a loader
-    const loader = new OBJLoader();
+  // устанавливает позицию плоскости со сценой и применяет эффекты к данной плоскости
+  setScenePlane(name) {
+    if (!this.sceneGroups.planes) {
+      return;
+    }
+    const positions = this.sceneGroups.planes.getPositions();
 
-    // load a resource
-    loader.load(
-        url, (data) => {
-          const object = callback(data, options, this.materialsFactory);
-          this.scene.add(object);
-          this.render();
-        }
-    );
+    if (!positions.hasOwnProperty(name)) {
+      return;
+    }
+    this.sceneGroups.planes.position.x = -positions[name];
+    this.sceneGroups.planes.setEffect(name);
   }
 
-  loadGLTF(url, callback, options) {
-    // instantiate a loader
-    const loader = new GLTFLoader();
-
-    // load a resource
-    loader.load(
-        url, (gltf) => {
-          const object = callback(gltf.scene, options);
-          this.scene.add(object);
-          this.render();
-        }
-    );
-  }
-
+  // рендер глобальной сцены
   render() {
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
   }
 
+  // запускает анимацию перерендера
+  startAnimations() {
+    const animation = new Animation({
+      func: () => {
+        this.render();
+      },
+      duration: `infinite`,
+      fps: 60,
+    });
+    animation.start();
+  }
+
+  // обновляет размеры глобальной сцены
   updateSize() {
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
-
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 }

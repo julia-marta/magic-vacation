@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import CustomShaderMaterial from "./custom-shader-material";
+import CustomPlanesMaterial from "./custom-planes-material";
 
 class MaterialsFactory {
   constructor() {
@@ -18,6 +19,9 @@ class MaterialsFactory {
       }
       case `custom`: {
         return this._getCustomMaterial(options, reflection);
+      }
+      case `customPlanes`: {
+        return this._getCustomPlanesMaterial(options);
       }
       default: {
         return this._getStandardMaterial(options, reflection);
@@ -99,12 +103,14 @@ class MaterialsFactory {
   }
 
   _getCustomMaterial(options, reflection) {
-
     const {name, colors, shaders, additional} = options;
-
     const uniforms = this.getCustomMaterialUniforms(reflection, colors, additional);
-
     return new CustomShaderMaterial(name, shaders, uniforms);
+  }
+
+  _getCustomPlanesMaterial(options) {
+    const {texture} = options;
+    return new CustomPlanesMaterial(texture);
   }
 }
 

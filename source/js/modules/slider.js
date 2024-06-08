@@ -2,7 +2,7 @@ import Swiper from "swiper";
 import {ColorThemes, Slider3DPlanes} from "../common/enums";
 import {setColorTheme} from "../common/utils";
 
-export default (plane3DView) => {
+export default (scene3D) => {
   let storySlider;
   const setSlider = function () {
     if (window.innerWidth / window.innerHeight < 1 || window.innerWidth < 769) {
@@ -16,7 +16,8 @@ export default (plane3DView) => {
         },
         on: {
           slideChange: () => {
-            plane3DView.setPlane(Slider3DPlanes[storySlider.activeIndex]);
+            // TODO: заменить позже на создание разных сцен для разных слайдов
+            scene3D.setScenePlane(Slider3DPlanes[storySlider.activeIndex]);
           },
           resize: () => {
             storySlider.update();
@@ -42,8 +43,8 @@ export default (plane3DView) => {
         },
         on: {
           slideChange: () => {
-            plane3DView.setPlane(Slider3DPlanes[storySlider.activeIndex]);
-            plane3DView.setEffect(Slider3DPlanes[storySlider.activeIndex]);
+            // TODO: заменить позже на создание разных сцен для разных слайдов
+            scene3D.setScenePlane(Slider3DPlanes[storySlider.activeIndex]);
             setColorTheme(ColorThemes, storySlider.activeIndex);
           },
           resize: () => {
@@ -58,7 +59,8 @@ export default (plane3DView) => {
 
     const isCurrentScreen = window.location.hash === `#story`;
     if (isCurrentScreen) {
-      plane3DView.setPlane(Slider3DPlanes[storySlider.activeIndex]);
+      // TODO: заменить позже на создание разных сцен для разных слайдов
+      scene3D.setScenePlane(Slider3DPlanes[storySlider.activeIndex]);
     }
   };
 

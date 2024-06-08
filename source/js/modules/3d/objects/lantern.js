@@ -1,9 +1,9 @@
 import * as THREE from "three";
 
 class Lantern extends THREE.Group {
-  constructor(materials, options) {
+  constructor(materialsFactory, options) {
     super();
-    this.materials = materials;
+    this.materialsFactory = materialsFactory;
     this.options = options;
     this.lampBottomPosition = null;
     this.postBottomPosition = null;
@@ -26,6 +26,7 @@ class Lantern extends THREE.Group {
     // радиус окружности, описанной около квадрата, равняется длине его стороны, умноженной на квадратный корень из двух и деленной на два
     const radiusLampTop = (lamp.top.widthTop * Math.sqrt(2)) / 2;
     const radiusLampBottom = (lamp.top.widthBottom * Math.sqrt(2)) / 2;
+    const materialLampTop = this.materialsFactory.get(lamp.top.material);
 
     let top = new THREE.Mesh(
         new THREE.CylinderGeometry(
@@ -34,7 +35,7 @@ class Lantern extends THREE.Group {
             lamp.top.height,
             lamp.top.radialSegments
         ),
-        this.materials.lamp.top
+        materialLampTop
     );
 
     top.position.set(0, -lamp.top.height / 2, 0);
@@ -44,6 +45,7 @@ class Lantern extends THREE.Group {
     // аналогично берем геометрию цилиндра и задаем ему 4 стороны, рассчитываем радиусы оснований
     const radiusPlafonTop = (lamp.plafon.widthTop * Math.sqrt(2)) / 2;
     const radiusPlafonBottom = (lamp.plafon.widthBottom * Math.sqrt(2)) / 2;
+    const materialLampPlafon = this.materialsFactory.get(lamp.plafon.material);
 
     let plafon = new THREE.Mesh(
         new THREE.CylinderGeometry(
@@ -52,20 +54,22 @@ class Lantern extends THREE.Group {
             lamp.plafon.height,
             lamp.plafon.radialSegments
         ),
-        this.materials.lamp.plafon
+        materialLampPlafon
     );
 
     plafon.position.set(0, -(lamp.top.height / 2 + lamp.plafon.height / 2), 0);
     plafon.rotation.y = Math.PI / 4;
 
     // основание лампы представляет собой параллелепипед
+    const materialLampBase = this.materialsFactory.get(lamp.base.material);
+
     let base = new THREE.Mesh(
         new THREE.BoxGeometry(
             lamp.base.widthTop,
             lamp.base.height,
             lamp.base.widthTop
         ),
-        this.materials.lamp.base
+        materialLampBase
     );
 
     base.position.set(
@@ -84,9 +88,11 @@ class Lantern extends THREE.Group {
   // добавление столба
   addPost() {
     const {post} = this.options;
+    const materialPost = this.materialsFactory.get(post.material);
+
     let postMesh = new THREE.Mesh(
         new THREE.CylinderGeometry(post.radius, post.radius, post.height),
-        this.materials.post
+        materialPost
     );
 
     postMesh.position.set(0, -(this.lampBottomPosition + post.height / 2), 0);
@@ -97,9 +103,12 @@ class Lantern extends THREE.Group {
   // добавление основания фонаря
   addBase() {
     const {base} = this.options;
+    const materialBaseTop = this.materialsFactory.get(base.top.material);
+    const materialBaseBottom = this.materialsFactory.get(base.bottom.material);
+
     let baseTop = new THREE.Mesh(
         new THREE.SphereGeometry(base.top.radius),
-        this.materials.base.top
+        materialBaseTop
     );
 
     baseTop.position.set(
@@ -114,7 +123,7 @@ class Lantern extends THREE.Group {
             base.bottom.radius,
             base.bottom.height
         ),
-        this.materials.base.bottom
+        materialBaseBottom
     );
 
     baseBottom.position.set(
