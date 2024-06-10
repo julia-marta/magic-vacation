@@ -1,9 +1,9 @@
 import * as THREE from "three";
 
 class Carpet extends THREE.Group {
-  constructor(defaultMaterial, options) {
+  constructor(materialsFactory, options) {
     super();
-    this.defaultMaterial = defaultMaterial;
+    this.materialsFactory = materialsFactory;
     this.options = options;
     this.constructChildren();
   }
@@ -13,7 +13,7 @@ class Carpet extends THREE.Group {
   }
 
   addCarpet() {
-    const {width, height, radius, segments, startAngle, endAngle} = this.options;
+    const {width, height, radius, segments, startAngle, endAngle, material} = this.options;
     const points = [];
 
     points.push(new THREE.Vector2(radius + width, 0));
@@ -25,16 +25,16 @@ class Carpet extends THREE.Group {
     // переводим угол в радианы
     const phiStart = startAngle * Math.PI / 180;
     const phiLength = (endAngle - startAngle) * Math.PI / 180;
-    const geometry = new THREE.LatheGeometry(
+    const carpetGeometry = new THREE.LatheGeometry(
         points,
         segments,
         phiStart,
         phiLength
     );
-
+    const carpetMaterial = this.materialsFactory.get(material);
     let mesh = new THREE.Mesh(
-        geometry,
-        this.defaultMaterial
+        carpetGeometry,
+        carpetMaterial
     );
 
     this.add(mesh);

@@ -1,8 +1,7 @@
 import * as THREE from "three";
-import vertexShader from "../shaders/vertex-shader";
-import fragmentShader from "../shaders/fragment-shader";
+import Shaders from "../shaders/index";
 
-export default class CustomMaterial extends THREE.RawShaderMaterial {
+export default class CustomPlanesMaterial extends THREE.RawShaderMaterial {
   constructor(texture) {
     super({
       uniforms: {
@@ -41,8 +40,8 @@ export default class CustomMaterial extends THREE.RawShaderMaterial {
         BLOB_BORDER_COLOR: [1.0, 1.0, 1.0, 0.15],
         BLOB_RESOLUTION: [window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio],
       },
-      vertexShader,
-      fragmentShader,
+      fragmentShader: Shaders.planes.frag,
+      vertexShader: Shaders.planes.vert,
       extensions: {
         derivatives: true,
       }

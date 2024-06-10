@@ -4,17 +4,18 @@ import Timer from "./timer.js";
 import PrizesAnimation from "./prizes-animation.js";
 import {Screens, ColorThemes, Slider3DPlanes} from "../common/enums.js";
 import {setColorTheme} from "../common/utils.js";
-import {PRIZES_ANIMATIONS, SceneObjects} from "../common/const.js";
+import {PRIZES_ANIMATIONS} from "../data/animations.js";
+import {ScreensScenes} from "../data/scenes.js";
 
 export default class FullPageScroll {
-  constructor(plane3DView) {
+  constructor(scene3D) {
     this.THROTTLE_TIMEOUT = 1000;
     this.scrollFlag = true;
     this.timeout = null;
     this.pageAnimationSwitcher = new PageSwitchHandler();
     this.prizesAnimation = new PrizesAnimation(PRIZES_ANIMATIONS);
     this.gameTimer = new Timer();
-    this.plane3DView = plane3DView;
+    this.scene3D = scene3D;
 
     this.screenElements = document.querySelectorAll(
         `.screen:not(.screen--result)`
@@ -25,6 +26,7 @@ export default class FullPageScroll {
     );
 
     this.activeScreen = 0;
+    this.scene3D.addSceneGroup(ScreensScenes[`all`]);
     this.onScrollHandler = this.onScroll.bind(this);
     this.onUrlHashChengedHandler = this.onUrlHashChanged.bind(this);
   }
@@ -84,16 +86,25 @@ export default class FullPageScroll {
         this.screenElements[this.activeScreen].id
     );
     this.emitChangeDisplayEvent();
+    // добавляем сцену в зависимости от id экрана
+    const activeScreenId = this.screenElements[this.activeScreen].id;
+    const activeScreenScene = ScreensScenes[activeScreenId];
 
     if (this.activeScreen === Screens.TOP) {
-      this.plane3DView.setPlane(this.screenElements[this.activeScreen].id);
-      this.plane3DView.setObject(SceneObjects[this.screenElements[this.activeScreen].id]);
+      this.scene3D.setScenePlane(activeScreenId);
+      if (Array.isArray(activeScreenScene)) {
+        activeScreenScene.forEach((scene) => {
+          this.scene3D.addSceneGroup(scene);
+        });
+      } else {
+        this.scene3D.addSceneGroup(activeScreenScene);
+      }
     }
 
     if (this.activeScreen === Screens.STORY) {
       const slider = this.screenElements[this.activeScreen].children[0].dom7ElementDataStorage.swiper;
       const activeSlide = slider.realIndex;
-      this.plane3DView.setPlane(Slider3DPlanes[activeSlide]);
+      this.scene3D.setScenePlane(Slider3DPlanes[activeSlide]);
       setColorTheme(ColorThemes, 0);
     } else {
       setColorTheme(ColorThemes, 6);

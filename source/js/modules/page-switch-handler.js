@@ -1,5 +1,5 @@
 import AccentTypographyBuild from "./accent-typography-builder";
-import {ACCENT_TYPOGRAPHY_ANIMATIONS} from "../common/const.js";
+import {ACCENT_TYPOGRAPHY_ANIMATIONS} from "../data/animations.js";
 
 export default class PageSwitchHandler {
   constructor() {
