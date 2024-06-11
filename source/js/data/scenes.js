@@ -35,18 +35,6 @@ import {
   ExtrudeRoom2Group,
   ExtrudeRoom4Group,
 } from './objects';
-import {
-  Directional1,
-  Directional2,
-  Directional3,
-  Directional4,
-  Directional5,
-  Directional6,
-  Directional7,
-  Point1,
-  Point2,
-  Ambient1,
-} from './lights';
 
 const Scenes = {
   planes: {
@@ -56,62 +44,62 @@ const Scenes = {
   sphere: {
     name: `sphere`,
     objects: [Sphere],
-    lights: [Directional1, Point1, Point2],
+    lights: true,
   },
   cube: {
     name: `cube`,
     objects: [Cube],
-    lights: [Directional1, Point1, Point2],
+    lights: true,
   },
   parametric: {
     name: `parametric`,
     objects: [ParametricGroup],
-    lights: [Directional2, Point1, Point2],
+    lights: true,
   },
   extrude: {
     name: `extrude`,
     objects: [ExtrudeGroup],
-    lights: [Directional2, Point1, Point2],
+    lights: true,
   },
   lathe: {
     name: `lathe`,
     objects: [LatheGroup],
-    lights: [Directional3, Point1, Point2],
+    lights: true,
   },
   materials: {
     name: `materials`,
     objects: [ExtrudeMaterialsGroup, MaterialsGroup],
-    lights: [Directional4, Point1, Point2],
+    lights: true,
   },
   shader: {
     name: `shader`,
     objects: [ShaderMaterialGroup],
-    lights: [Directional5, Point1, Point2],
+    lights: true,
   },
   keyhole: {
     name: `keyhole`,
     objects: [KeyholeGroup, ExtrudeKeyholeGroup, KeyholeBack, Airplane, Suitcase, Watermelon],
-    lights: [Directional6, Point1, Point2],
+    lights: true,
   },
   room1: {
     name: `room1`,
     objects: [WallCornerUnitRoom1, FloorRoom1, Room1Group, SuitcaseRoom1, StaticGroupRoom1, ExtrudeRoom1Group],
-    lights: [Directional7, Point1, Point2, Ambient1],
+    lights: true,
   },
   room2: {
     name: `room2`,
     objects: [WallCornerUnitRoom2, FloorRoom2, Room2Group, SuitcaseRoom1, StaticGroupRoom2, ExtrudeRoom2Group],
-    lights: [Directional7, Point1, Point2, Ambient1],
+    lights: true,
   },
   room3: {
     name: `room3`,
     objects: [WallCornerUnitRoom3, FloorRoom3, Room3Group, StaticGroupRoom3],
-    lights: [Directional7, Point1, Point2, Ambient1],
+    lights: true,
   },
   room4: {
     name: `room4`,
     objects: [WallCornerUnitRoom4, FloorRoom4, Room4Group, SuitcaseRoom1, StaticGroupRoom4, ExtrudeRoom4Group],
-    lights: [Directional7, Point1, Point2, Ambient1],
+    lights: true,
   },
   get rooms() {
     return [
