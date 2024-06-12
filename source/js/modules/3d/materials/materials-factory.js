@@ -9,6 +9,37 @@ class MaterialsFactory {
 
   // возвращает материал в зависимости от типа
   get(material) {
+    const {type, color, doubleSide, options} = material;
+    const materialConfig = this.getMaterialConfig(type);
+    if (color) {
+      if (typeof color === `object`) {
+        materialConfig.options.colors = [];
+        Object.entries(color).forEach(([key, value]) => {
+          materialConfig.options.colors.push(
+              {
+                name: key,
+                value,
+              },
+          );
+        });
+      } else {
+        materialConfig.options.color = color;
+      }
+    }
+
+    if (doubleSide) {
+      materialConfig.options.side = THREE.DoubleSide;
+    }
+
+    if (options) {
+      materialConfig.options = {...materialConfig.options, ...options};
+    }
+
+    return this.create(materialConfig);
+  }
+
+  // возвращает материал в зависимости от типа
+  create(material) {
     const {type, reflection, options} = material;
     switch (type) {
       case `basic`: {
@@ -27,12 +58,17 @@ class MaterialsFactory {
         return this._getStandardMaterial(options, reflection);
       }
     }
-
   }
 
   // возвращает цвет материала из библиотеки цветов
   getMaterialColor(name) {
     return MaterialsFactory.Colors[name];
+  }
+
+  // возвращает конфиг материала из библиотеки конфигов
+  getMaterialConfig(type) {
+    return {...MaterialsFactory.Configs[type]};
+
   }
 
   // возвращает свойства шероховатости и металличности в зависимости от типа отражения
@@ -113,6 +149,51 @@ class MaterialsFactory {
     return new CustomPlanesMaterial(texture);
   }
 }
+
+MaterialsFactory.Configs = {
+  StandardSoft: {
+    type: `standard`,
+    reflection: `soft`,
+    options: {},
+  },
+  StandardBasic: {
+    type: `standard`,
+    reflection: `basic`,
+    options: {},
+  },
+  PhongStrong: {
+    type: `phong`,
+    reflection: `strong`,
+    options: {},
+  },
+  CustomPlanes: {
+    type: `customPlanes`,
+    options: {},
+  },
+  CustomSoftCarpet: {
+    type: `custom`,
+    reflection: `soft`,
+    options: {
+      name: `standard`,
+      shaders: `carpet`,
+      additional: {
+        stripesCount: new THREE.Uniform(7)
+      }
+    },
+  },
+  CustomSoftRoad: {
+    type: `custom`,
+    reflection: `soft`,
+    options: {
+      name: `standard`,
+      shaders: `road`,
+      additional: {
+        stripesCount: new THREE.Uniform(9),
+        stripesSize: new THREE.Uniform(20),
+      }
+    },
+  },
+};
 
 MaterialsFactory.Colors = {
   Blue: `rgb(51, 113, 235)`,

@@ -32,7 +32,7 @@ class SceneGroup extends THREE.Group {
       callback({
         ...options,
         material: {
-          type: `customPlanes`,
+          type: `CustomPlanes`,
           options: {
             texture,
           }
