@@ -102,7 +102,7 @@ export default class Scene3D {
 
   // инициирует локальные сцены и источники света
   initScenes(data) {
-    const {type, lights, scenes, objects, position, rotation} = data;
+    const {type, lights, scenes, objects, animations, position, rotation} = data;
 
     switch (type) {
       case `planes`:
@@ -110,11 +110,11 @@ export default class Scene3D {
         break;
       case `scenesGroup`:
         scenes.forEach((scene) => {
-          this.addSceneGroup(scene.objects, scene.position, scene.rotation);
+          this.addSceneGroup(scene.objects, scene.animations, scene.position, scene.rotation);
         });
         break;
       default:
-        this.addSceneGroup(objects, position, rotation);
+        this.addSceneGroup(objects, animations, position, rotation);
         break;
     }
 
@@ -127,8 +127,8 @@ export default class Scene3D {
   }
 
   // добавляет локальную сцену из группы объектов
-  addSceneGroup(objects, position, rotation) {
-    const sceneGroup = new SceneGroup(objects);
+  addSceneGroup(objects, animations = [], position, rotation) {
+    const sceneGroup = new SceneGroup(objects, animations);
     if (sceneGroup) {
 
       if (position) {

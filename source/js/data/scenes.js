@@ -555,22 +555,21 @@ const Scenes = {
           {
             type: `glTF`,
             options: {
-              name: `suitcase`,
-              scale: [1, 1, 1],
-              rotation: [0, -0.4, 0],
-              position: [-350, 0, 800],
-            }
-          },
-          {
-            type: `glTF`,
-            options: {
               name: `staticGroupRoom1`,
               scale: [1, 1, 1],
               rotation: [0, -Math.PI / 4, 0],
               position: [0, 0, 0],
             }
           },
-        ],
+          {
+            type: `glTF`,
+            options: {
+              name: `dog`,
+              rotation: [0, 0.4, 0],
+              position: [50, 0, 630],
+            }
+          },
+        ]
       },
       {
         type: `scene`,
@@ -724,6 +723,14 @@ const Scenes = {
               position: [0, 0, 0],
             }
           },
+          {
+            type: `glTF`,
+            options: {
+              name: `compass`,
+              rotation: [0, -0.8, 0],
+              position: [20, 0, -25],
+            }
+          }
         ],
       },
       {
@@ -834,7 +841,38 @@ const Scenes = {
               position: [0, 0, 0],
             }
           },
+          {
+            type: `glTF`,
+            options: {
+              name: `sonya`,
+              rotation: [0, -0.6, 0],
+              position: [120, 80, 330],
+            }
+          }
         ],
+      },
+      {
+        type: `scene`,
+        objects: [
+          {
+            type: `glTF`,
+            options: {
+              name: `suitcase`,
+              scale: [1, 1, 1],
+              rotation: [0, -0.4, 0],
+              position: [-350, 0, 750],
+            }
+          },
+        ],
+        animations: [
+          {
+            fps: 60,
+            duration: `infinite`,
+            func: (progress, scene) => {
+              scene.rotation.y = scene.rotation.y + progress / 200;
+            },
+          }
+        ]
       },
     ],
     lights: true,

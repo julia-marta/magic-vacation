@@ -697,6 +697,18 @@ ObjectsFactory.glTFConfigs = {
     name: `staticGroupRoom4`,
     url: `./3d/module-6/rooms-scenes/scenesStatic/scene4-static-output-1.gltf`,
   },
+  dog: {
+    name: `dog`,
+    url: `./3d/module-6/rooms-scenes/objects/dog.gltf`,
+  },
+  compass: {
+    name: `compass`,
+    url: `./3d/module-6/rooms-scenes/objects/compass.gltf`,
+  },
+  sonya: {
+    name: `sonya`,
+    url: `./3d/module-6/rooms-scenes/objects/sonya.gltf`,
+  },
 };
 
 export default ObjectsFactory;
