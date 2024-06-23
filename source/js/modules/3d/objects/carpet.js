@@ -1,10 +1,10 @@
 import * as THREE from "three";
 
 class Carpet extends THREE.Group {
-  constructor(materialsFactory, options) {
+  constructor(materialsFactory, config) {
     super();
     this.materialsFactory = materialsFactory;
-    this.options = options;
+    this.options = config.options;
     this.constructChildren();
   }
 

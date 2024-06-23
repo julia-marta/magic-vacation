@@ -7,7 +7,7 @@ class MaterialsFactory {
     this.get = this.get.bind(this);
   }
 
-  // возвращает материал в зависимости от типа
+  // берёт готовый конфиг для данного типа материала и на его основе создаёт материал
   get(material) {
     const {type, color, doubleSide, options} = material;
     const materialConfig = this.getMaterialConfig(type);
@@ -38,9 +38,9 @@ class MaterialsFactory {
     return this.create(materialConfig);
   }
 
-  // возвращает материал в зависимости от типа
-  create(material) {
-    const {type, reflection, options} = material;
+  // создаёт материал в зависимости от типа
+  create(materialConfig) {
+    const {type, reflection, options} = materialConfig;
     switch (type) {
       case `basic`: {
         return this._getBasicMaterial(options);
@@ -68,7 +68,6 @@ class MaterialsFactory {
   // возвращает конфиг материала из библиотеки конфигов
   getMaterialConfig(type) {
     return {...MaterialsFactory.Configs[type]};
-
   }
 
   // возвращает свойства шероховатости и металличности в зависимости от типа отражения

@@ -1,6 +1,8 @@
 import * as THREE from "three";
-import ScenesFactory from "./scenes/scenes-factory";
+import SceneGroup from "./scenes/scene-group.js";
+import PlanesGroup from "./scenes/planes-group.js";
 import Animation from "../animation.js";
+import {ScreensScenes} from "../../data/scenes.js";
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 
 export default class Scene3D {
@@ -16,11 +18,10 @@ export default class Scene3D {
     this.cameraPozitionZ = options.cameraPozitionZ;
     this.cameraPozitionY = options.cameraPozitionY;
     this.aspectRatio = this.width / this.height;
-    this.sceneGroups = {};
+    this.planes = {};
     this.lights = null;
     this.isLightAdded = false;
-    this.scenesFactory = new ScenesFactory();
-    this.addSceneGroup = this.addSceneGroup.bind(this);
+    this.initScenes = this.initScenes.bind(this);
     this.setScenePlane = this.setScenePlane.bind(this);
   }
 
@@ -31,6 +32,7 @@ export default class Scene3D {
     this.updateSize();
     this.initHelpers();
     this.startAnimations();
+    this.initScenes(ScreensScenes[`all`]);
   }
 
   // устанавливает обработчик события ресайза на окно
@@ -73,13 +75,61 @@ export default class Scene3D {
     this.scene.add(axesHelper);
   }
 
-  // получает из фабрики сцен локальную сцену (группу объектов), добавляет ее на глобальную сцену и делает перерендер
-  addSceneGroup(group) {
-    const {name, lights, position, rotation} = group;
-    this.scenesFactory.create(group);
-    const sceneGroup = this.scenesFactory.get(name);
+  // рендер глобальной сцены
+  render() {
+    this.controls.update();
+    this.renderer.render(this.scene, this.camera);
+  }
+
+  // запускает анимацию перерендера
+  startAnimations() {
+    const animation = new Animation({
+      func: () => {
+        this.render();
+      },
+      duration: `infinite`,
+      fps: 60,
+    });
+    animation.start();
+  }
+
+  // обновляет размеры глобальной сцены
+  updateSize() {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  // инициирует локальные сцены и источники света
+  initScenes(data) {
+    const {type, lights, scenes, objects, position, rotation} = data;
+
+    switch (type) {
+      case `planes`:
+        this.addPlanesGroup(objects);
+        break;
+      case `scenesGroup`:
+        scenes.forEach((scene) => {
+          this.addSceneGroup(scene.objects, scene.position, scene.rotation);
+        });
+        break;
+      default:
+        this.addSceneGroup(objects, position, rotation);
+        break;
+    }
+
+    if (lights) {
+      if (this.isLightAdded) {
+        return;
+      }
+      this.setLights();
+    }
+  }
+
+  // добавляет локальную сцену из группы объектов
+  addSceneGroup(objects, position, rotation) {
+    const sceneGroup = new SceneGroup(objects);
     if (sceneGroup) {
-      this.sceneGroups[group.name] = sceneGroup;
 
       if (position) {
         sceneGroup.position.set(...position);
@@ -92,13 +142,24 @@ export default class Scene3D {
       this.scene.add(sceneGroup);
       this.render();
     }
+  }
 
-    if (lights) {
-      if (this.isLightAdded) {
-        return;
-      }
-      this.setLights();
+  // добавляет группу плоскостей с текстурами
+  addPlanesGroup(objects) {
+    const scenePlanes = new PlanesGroup(objects, this.far, this.fov);
+    this.planes = scenePlanes;
+    this.scene.add(scenePlanes);
+    this.render();
+  }
+
+  // устанавливает позицию плоскости со сценой и применяет эффекты к данной плоскости
+  setScenePlane(name) {
+    if (!this.planes) {
+      return;
     }
+
+    this.planes.setPosition(name);
+    this.planes.setEffect(name);
   }
 
   // возвращает конфиг с настройками света для проекта
@@ -216,44 +277,5 @@ export default class Scene3D {
     });
     this.lights.position.z = this.camera.position.z;
     this.scene.add(this.lights);
-  }
-
-  // устанавливает позицию плоскости со сценой и применяет эффекты к данной плоскости
-  setScenePlane(name) {
-    if (!this.sceneGroups.planes) {
-      return;
-    }
-    const positions = this.sceneGroups.planes.getPositions();
-
-    if (!positions.hasOwnProperty(name)) {
-      return;
-    }
-    this.sceneGroups.planes.position.x = -positions[name];
-    this.sceneGroups.planes.setEffect(name);
-  }
-
-  // рендер глобальной сцены
-  render() {
-    this.controls.update();
-    this.renderer.render(this.scene, this.camera);
-  }
-
-  // запускает анимацию перерендера
-  startAnimations() {
-    const animation = new Animation({
-      func: () => {
-        this.render();
-      },
-      duration: `infinite`,
-      fps: 60,
-    });
-    animation.start();
-  }
-
-  // обновляет размеры глобальной сцены
-  updateSize() {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 }
