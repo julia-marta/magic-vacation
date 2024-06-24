@@ -24,9 +24,7 @@ export default class FullPageScroll {
     this.menuElements = document.querySelectorAll(
         `.page-header__menu .js-menu-link`
     );
-
     this.activeScreen = 0;
-    this.scene3D.addSceneGroup(ScreensScenes[`all`]);
     this.onScrollHandler = this.onScroll.bind(this);
     this.onUrlHashChengedHandler = this.onUrlHashChanged.bind(this);
   }
@@ -92,13 +90,7 @@ export default class FullPageScroll {
 
     if (this.activeScreen === Screens.TOP) {
       this.scene3D.setScenePlane(activeScreenId);
-      if (Array.isArray(activeScreenScene)) {
-        activeScreenScene.forEach((scene) => {
-          this.scene3D.addSceneGroup(scene);
-        });
-      } else {
-        this.scene3D.addSceneGroup(activeScreenScene);
-      }
+      this.scene3D.initScenes(activeScreenScene);
     }
 
     if (this.activeScreen === Screens.STORY) {

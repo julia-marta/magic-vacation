@@ -1,10 +1,11 @@
 import * as THREE from "three";
 
 class Saturn extends THREE.Group {
-  constructor(materialsFactory, options) {
+  constructor(materialsFactory, config) {
     super();
     this.materialsFactory = materialsFactory;
-    this.options = options;
+    this.options = config.options;
+    this.materials = config.options.materials;
     this.constructChildren();
   }
 
@@ -17,9 +18,9 @@ class Saturn extends THREE.Group {
 
   addPlanet() {
     const {planet} = this.options;
-    const {radius, widthSegments, heightSegments, material} = planet;
+    const {radius, widthSegments, heightSegments} = planet;
     const planetGeometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
-    const planetMaterial = this.materialsFactory.get(material);
+    const planetMaterial = this.materialsFactory.get(this.materials.planet);
     let planetSphere = new THREE.Mesh(
         planetGeometry,
         planetMaterial
@@ -31,7 +32,7 @@ class Saturn extends THREE.Group {
 
   addRings() {
     const {rings} = this.options;
-    const {height, radiusInner, radiusOut, segments, angle, material} = rings;
+    const {height, radiusInner, radiusOut, segments, angle} = rings;
     const width = radiusOut - radiusInner;
     const points = [];
 
@@ -45,7 +46,7 @@ class Saturn extends THREE.Group {
         points,
         segments
     );
-    const ringsMaterial = this.materialsFactory.get(material);
+    const ringsMaterial = this.materialsFactory.get(this.materials.rings);
 
     let ringsMesh = new THREE.Mesh(
         ringsGeometry,
@@ -64,9 +65,9 @@ class Saturn extends THREE.Group {
     if (!ball) {
       return;
     }
-    const {radius, widthSegments, heightSegments, y, material} = ball;
+    const {radius, widthSegments, heightSegments, y} = ball;
     const ballGeometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
-    const ballMaterial = this.materialsFactory.get(material);
+    const ballMaterial = this.materialsFactory.get(this.materials.ball);
 
     let ballSphere = new THREE.Mesh(
         ballGeometry,
@@ -84,9 +85,9 @@ class Saturn extends THREE.Group {
       return;
     }
 
-    const {radiusTop, radiusBottom, height, radialSegments, y, material} = cable;
+    const {radiusTop, radiusBottom, height, radialSegments, y} = cable;
     const cableGeometry = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments);
-    const cableMaterial = this.materialsFactory.get(material);
+    const cableMaterial = this.materialsFactory.get(this.materials.cable);
 
     let cableCylinder = new THREE.Mesh(
         cableGeometry,

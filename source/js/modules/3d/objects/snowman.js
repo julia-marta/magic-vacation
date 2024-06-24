@@ -1,10 +1,11 @@
 import * as THREE from "three";
 
 class Snowman extends THREE.Group {
-  constructor(materialsFactory, options) {
+  constructor(materialsFactory, config) {
     super();
     this.materialsFactory = materialsFactory;
-    this.options = options;
+    this.options = config.options;
+    this.materials = config.options.materials;
     this.topBallPositionZ = null;
     this.constructChildren();
   }
@@ -17,7 +18,7 @@ class Snowman extends THREE.Group {
 
   addTopBall() {
     const {top} = this.options;
-    const materialTop = this.materialsFactory.get(top.material);
+    const materialTop = this.materialsFactory.get(this.materials.top);
 
     let topBall = new THREE.Mesh(
         new THREE.SphereGeometry(top.radius, 40, 40),
@@ -31,7 +32,7 @@ class Snowman extends THREE.Group {
 
   addBottomBall() {
     const {bottom} = this.options;
-    const materialBottom = this.materialsFactory.get(bottom.material);
+    const materialBottom = this.materialsFactory.get(this.materials.bottom);
 
     let bottomBall = new THREE.Mesh(
         new THREE.SphereGeometry(bottom.radius, 40, 40),
@@ -44,7 +45,7 @@ class Snowman extends THREE.Group {
 
   addCarrot() {
     const {carrot} = this.options;
-    const materialCarrot = this.materialsFactory.get(carrot.material);
+    const materialCarrot = this.materialsFactory.get(this.materials.carrot);
 
     let carrotMesh = new THREE.Mesh(
         new THREE.ConeGeometry(carrot.radius, carrot.height, 40),

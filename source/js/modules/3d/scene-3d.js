@@ -1,7 +1,8 @@
 import * as THREE from "three";
-import ScenesFactory from "./scenes/scenes-factory";
-import LightsFactory from "./light/lights-factory";
+import SceneGroup from "./scenes/scene-group.js";
+import PlanesGroup from "./scenes/planes-group.js";
 import Animation from "../animation.js";
+import {ScreensScenes} from "../../data/scenes.js";
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 
 export default class Scene3D {
@@ -17,12 +18,10 @@ export default class Scene3D {
     this.cameraPozitionZ = options.cameraPozitionZ;
     this.cameraPozitionY = options.cameraPozitionY;
     this.aspectRatio = this.width / this.height;
-    this.sceneGroups = {};
+    this.planes = {};
     this.lights = null;
     this.isLightAdded = false;
-    this.scenesFactory = new ScenesFactory();
-    this.lightsFactory = new LightsFactory();
-    this.addSceneGroup = this.addSceneGroup.bind(this);
+    this.initScenes = this.initScenes.bind(this);
     this.setScenePlane = this.setScenePlane.bind(this);
   }
 
@@ -33,6 +32,7 @@ export default class Scene3D {
     this.updateSize();
     this.initHelpers();
     this.startAnimations();
+    this.initScenes(ScreensScenes[`all`]);
   }
 
   // устанавливает обработчик события ресайза на окно
@@ -75,68 +75,6 @@ export default class Scene3D {
     this.scene.add(axesHelper);
   }
 
-  // получает из фабрики сцен локальную сцену (группу объектов), добавляет ее на глобальную сцену и делает перерендер
-  addSceneGroup(group) {
-    const {name, lights, position, rotation} = group;
-    this.scenesFactory.create(group);
-    const sceneGroup = this.scenesFactory.get(name);
-    if (sceneGroup) {
-      this.sceneGroups[group.name] = sceneGroup;
-
-      if (position) {
-        sceneGroup.position.set(...position);
-      }
-
-      if (rotation) {
-        sceneGroup.rotation.set(...rotation);
-      }
-
-      this.scene.add(sceneGroup);
-      this.render();
-    }
-
-    if (lights) {
-      if (this.isLightAdded) {
-        return;
-      }
-      this.setLights(group.lights);
-    }
-  }
-
-  // получает из фабрики света нужные типы света, добавляет их на глобальную сцену
-  setLights(lights) {
-    this.isLightAdded = true;
-    this.lights = new THREE.Group();
-    lights.forEach((light) => {
-      if (light.angle || light.angle === 0) {
-        const radian = (light.angle * Math.PI) / 180;
-        const targetObject = new THREE.Object3D();
-        targetObject.position.y = this.camera.position.z * Math.tan(radian);
-        this.scene.add(targetObject);
-        light = {...light, target: targetObject};
-      }
-      this.lightsFactory.create(light);
-      const lightUnit = this.lightsFactory.get(light.name);
-      this.lights.add(lightUnit);
-    });
-    this.lights.position.z = this.camera.position.z;
-    this.scene.add(this.lights);
-  }
-
-  // устанавливает позицию плоскости со сценой и применяет эффекты к данной плоскости
-  setScenePlane(name) {
-    if (!this.sceneGroups.planes) {
-      return;
-    }
-    const positions = this.sceneGroups.planes.getPositions();
-
-    if (!positions.hasOwnProperty(name)) {
-      return;
-    }
-    this.sceneGroups.planes.position.x = -positions[name];
-    this.sceneGroups.planes.setEffect(name);
-  }
-
   // рендер глобальной сцены
   render() {
     this.controls.update();
@@ -160,5 +98,184 @@ export default class Scene3D {
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  // инициирует локальные сцены и источники света
+  initScenes(data) {
+    const {type, lights, scenes, objects, animations, position, rotation} = data;
+
+    switch (type) {
+      case `planes`:
+        this.addPlanesGroup(objects);
+        break;
+      case `scenesGroup`:
+        scenes.forEach((scene) => {
+          this.addSceneGroup(scene.objects, scene.animations, scene.position, scene.rotation);
+        });
+        break;
+      default:
+        this.addSceneGroup(objects, animations, position, rotation);
+        break;
+    }
+
+    if (lights) {
+      if (this.isLightAdded) {
+        return;
+      }
+      this.setLights();
+    }
+  }
+
+  // добавляет локальную сцену из группы объектов
+  addSceneGroup(objects, animations = [], position, rotation) {
+    const sceneGroup = new SceneGroup(objects, animations);
+    if (sceneGroup) {
+
+      if (position) {
+        sceneGroup.position.set(...position);
+      }
+
+      if (rotation) {
+        sceneGroup.rotation.set(...rotation);
+      }
+
+      this.scene.add(sceneGroup);
+      this.render();
+    }
+  }
+
+  // добавляет группу плоскостей с текстурами
+  addPlanesGroup(objects) {
+    const scenePlanes = new PlanesGroup(objects, this.far, this.fov);
+    this.planes = scenePlanes;
+    this.scene.add(scenePlanes);
+    this.render();
+  }
+
+  // устанавливает позицию плоскости со сценой и применяет эффекты к данной плоскости
+  setScenePlane(name) {
+    if (!this.planes) {
+      return;
+    }
+
+    this.planes.setPosition(name);
+    this.planes.setEffect(name);
+  }
+
+  // возвращает конфиг с настройками света для проекта
+  getLightsConfig(isDevelop) {
+    let config = [
+      {
+        type: `directional`,
+        angle: -55,
+        color: `rgb (255,255,255)`,
+        intensity: 0.75,
+      }, {
+        type: `point`,
+        color: `rgb (246,242,255)`,
+        intensity: 0.60,
+        distance: 975,
+        decay: 2,
+        position: [-785, -350, -710],
+      },
+      {
+        type: `point`,
+        color: `rgb (245,254,255)`,
+        intensity: 0.95,
+        distance: 975,
+        decay: 2,
+        position: [730, 800, -985],
+      },
+    ];
+
+    if (isDevelop) {
+      config.push(
+          {
+            type: `ambient`,
+            color: `0x404040`,
+            intensity: 0.7,
+          }
+      );
+    }
+
+    return config;
+  }
+  // DirectionalLight
+  // направлен в сторону направления камеры вниз на 15deg
+  // схема осей: https://i.stack.imgur.com/qM4IJ.jpg
+  // направление света = положение камеры по оси z умноженное на тангенс угла направления света
+  createDirectionalLight(options) {
+    const {color, intensity, target} = options;
+    let light = new THREE.DirectionalLight(
+        new THREE.Color(color),
+        intensity
+    );
+    light.target = target;
+    return light;
+  }
+
+  // PointLight
+  createPointLight(options) {
+    const {color, intensity, distance, decay, position} = options;
+    let light = new THREE.PointLight(
+        new THREE.Color(color),
+        intensity,
+        distance,
+        decay
+    );
+    if (position) {
+      light.position.set(...position);
+    }
+    light.castShadow = true;
+    light.shadow.mapSize.width = 512;
+    light.shadow.mapSize.height = 512;
+    light.shadow.camera.near = 0.5;
+    light.shadow.camera.far = distance;
+    return light;
+  }
+
+  // Ambient Light
+  createAmbientLight(options) {
+    const {color, intensity} = options;
+    let light = new THREE.AmbientLight(
+        new THREE.Color(color),
+        intensity,
+    );
+    return light;
+  }
+
+  // создаёт нужные типы света на основе конфига, добавляет их на глобальную сцену
+  setLights() {
+    this.isLightAdded = true;
+    this.lights = new THREE.Group();
+    const lightsOptions = this.getLightsConfig(true);
+    lightsOptions.forEach((light) => {
+      if (light.angle || light.angle === 0) {
+        const radian = (light.angle * Math.PI) / 180;
+        const targetObject = new THREE.Object3D();
+        targetObject.position.y = this.camera.position.z * Math.tan(radian);
+        this.scene.add(targetObject);
+        light = {...light, target: targetObject};
+      }
+      switch (light.type) {
+        case `point`: {
+          const lightUnit = this.createPointLight(light);
+          this.lights.add(lightUnit);
+          break;
+        }
+        case `directional`: {
+          const lightUnit = this.createDirectionalLight(light);
+          this.lights.add(lightUnit);
+          break;
+        }
+        case `ambient`: {
+          const lightUnit = this.createAmbientLight(light);
+          this.lights.add(lightUnit);
+          break;
+        }
+      }
+    });
+    this.lights.position.z = this.camera.position.z;
+    this.scene.add(this.lights);
   }
 }
