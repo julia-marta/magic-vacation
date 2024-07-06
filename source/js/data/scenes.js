@@ -569,6 +569,15 @@ const Scenes = {
               position: [50, 0, 630],
             }
           },
+        ],
+        animations: [
+          {
+            fps: 60,
+            duration: `infinite`,
+            func: (progress, scene) => {
+              scene.rotation.y = scene.rotation.y - progress / 200;
+            },
+          }
         ]
       },
       {
@@ -662,6 +671,15 @@ const Scenes = {
             }
           },
         ],
+        animations: [
+          {
+            fps: 60,
+            duration: `infinite`,
+            func: (progress, scene) => {
+              scene.rotation.y = scene.rotation.y - progress / 200;
+            },
+          }
+        ]
       },
       {
         type: `scene`,
@@ -732,6 +750,15 @@ const Scenes = {
             }
           }
         ],
+        animations: [
+          {
+            fps: 60,
+            duration: `infinite`,
+            func: (progress, scene) => {
+              scene.rotation.y = scene.rotation.y - progress / 200;
+            },
+          }
+        ]
       },
       {
         type: `scene`,
@@ -850,6 +877,15 @@ const Scenes = {
             }
           }
         ],
+        animations: [
+          {
+            fps: 60,
+            duration: `infinite`,
+            func: (progress, scene) => {
+              scene.rotation.y = scene.rotation.y - progress / 200;
+            },
+          }
+        ]
       },
       {
         type: `scene`,
@@ -869,7 +905,7 @@ const Scenes = {
             fps: 60,
             duration: `infinite`,
             func: (progress, scene) => {
-              scene.rotation.y = scene.rotation.y + progress / 200;
+              scene.rotation.y = scene.rotation.y + progress / 100;
             },
           }
         ]

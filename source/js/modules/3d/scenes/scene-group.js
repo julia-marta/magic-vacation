@@ -31,7 +31,12 @@ class SceneGroup extends THREE.Group {
         object.rotation.set(...rotation);
       }
     }
-
+    object.traverse((obj) => {
+      if (obj.isMesh) {
+        obj.castShadow = true;
+        obj.receiveShadow = true;
+      }
+    });
     this.add(object);
   }
 
