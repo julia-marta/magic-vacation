@@ -5,6 +5,7 @@ import PlanesGroup from "./scenes/planes-group.js";
 import Animation from "../animation.js";
 import {ScreensScenes} from "../../data/scenes.js";
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
+import Stats from 'three/examples/jsm/libs/stats.module';
 
 export default class Scene3D {
   constructor(options) {
@@ -76,11 +77,15 @@ export default class Scene3D {
     const axesHelper = new THREE.AxesHelper(1000);
     this.scene.add(axesHelper);
     this.gui = new GUI();
+    this.stats = new Stats();
+    this.stats.showPanel(0);
+    document.body.appendChild(this.stats.domElement);
   }
 
   // рендер глобальной сцены
   render() {
     this.controls.update();
+    this.stats.update();
     this.renderer.render(this.scene, this.camera);
   }
 
