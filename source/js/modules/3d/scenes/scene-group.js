@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import MaterialsFactory from '../materials/materials-factory.js';
 import ObjectsFactory from '../objects/objects-factory.js';
+import AnimationsFactory from "../animations/animations-factory.js";
 import Animation from '../../animation.js';
 class SceneGroup extends THREE.Group {
   constructor(sceneObjects, sceneAnimations) {
@@ -10,14 +11,15 @@ class SceneGroup extends THREE.Group {
     this.onCreateComplete = this.onCreateComplete.bind(this);
     this.objectsFactory = new ObjectsFactory(this.onCreateComplete);
     this.materialsFactory = new MaterialsFactory();
+    this.animationsFactory = new AnimationsFactory();
     this.createObjects();
     this.startAnimations();
   }
 
-  // получает готовый объект после создания и добавляет его на сцену
+  // получает готовый объект после создания, добавляет его на сцену и запускает анимации
   onCreateComplete(object, options) {
     if (options) {
-      const {scale, position, rotation} = options;
+      const {scale, position, rotation, animations} = options;
 
       if (scale) {
         object.scale.set(...scale);
@@ -29,6 +31,10 @@ class SceneGroup extends THREE.Group {
 
       if (rotation) {
         object.rotation.set(...rotation);
+      }
+
+      if (animations) {
+        this.animationsFactory.run(object, animations);
       }
     }
     object.traverse((obj) => {

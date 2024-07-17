@@ -48,11 +48,11 @@ export default class Scene3D {
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
       alpha: true,
-      antialias: false,
+      antialias: window.devicePixelRatio <= 1,
       logarithmicDepthBuffer: false,
       powerPreference: `high-performance`
     });
-    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     this.renderer.setSize(this.width, this.height);
     this.renderer.setClearColor(this.color, this.alpha);
     this.renderer.shadowMap.enabled = true;
@@ -290,7 +290,7 @@ export default class Scene3D {
     }
 
     if (shadow) {
-      light.castShadow = true;
+      light.castShadow = false;
       light.shadow.mapSize.width = shadow.mapSize;
       light.shadow.mapSize.height = shadow.mapSize;
       light.shadow.camera.near = shadow.near;

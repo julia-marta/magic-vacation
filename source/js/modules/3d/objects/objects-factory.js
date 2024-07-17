@@ -10,7 +10,6 @@ import Carpet from "./carpet.js";
 import Road from "./road.js";
 import Saturn from "./saturn.js";
 import Fence from "./fence.js";
-
 class ObjectsFactory {
   constructor(onCreate) {
     this.materialsFactory = new MaterialsFactory();
@@ -27,37 +26,29 @@ class ObjectsFactory {
     loader.load(
         url, (data) => {
           const paths = data.paths;
-          const {scale, position, rotation, material} = options;
+          const {material} = options;
           const materialMesh = this.materialsFactory.get(material);
           const group = new THREE.Group();
+
           paths.forEach((path) => {
             const shapes = path.toShapes();
+
             shapes.forEach((shape) => {
               const geometry = new THREE.ExtrudeGeometry(shape, extrude);
               const mesh = new THREE.Mesh(geometry, materialMesh);
 
-              if (position) {
-                mesh.position.set(...position);
-              }
-              if (scale) {
-                mesh.scale.set(...scale);
-              }
-              if (rotation) {
-                mesh.rotation.set(...rotation);
-              }
-
               group.add(mesh);
             });
-
           });
-          this.onCreate(group);
+
+          this.onCreate(group, options);
         }
     );
   }
 
   // загрузчик моделей OBJ
   loadOBJ(config) {
-    const {url, scale, position, rotation, material} = config;
+    const {url, material} = config;
     const loader = new OBJLoader();
 
     loader.load(
@@ -68,20 +59,20 @@ class ObjectsFactory {
               child.material = objMaterial;
             }
           });
-          this.onCreate(obj, {scale, position, rotation});
+          this.onCreate(obj, config);
         }
     );
   }
 
   // загрузчик моделей gLTF
   loadGLTF(config) {
-    const {url, scale, position, rotation} = config;
+    const {url} = config;
     const loader = new GLTFLoader();
 
     loader.load(
         url, (gltf) => {
           const {scene} = gltf;
-          this.onCreate(scene, {scale, position, rotation});
+          this.onCreate(scene, config);
         }
     );
   }
