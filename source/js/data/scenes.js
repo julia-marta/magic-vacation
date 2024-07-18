@@ -373,14 +373,42 @@ const Scenes = {
           children: [
             {
               name: `saturn`,
-              scale: [0.5, 0.5, 0.5],
-              position: [300, -100, 185],
               rotation: [0.3, -0.3, 0.2],
               options: {
                 ball: null,
                 cable: null,
               }
             },
+          ],
+          scale: [0, 0, 0],
+          position: [0, 0, 0],
+          animations: [
+            {
+              type: `appear`,
+              from: {
+                scale: 0,
+                x: 0,
+                y: 0,
+                z: 0,
+              },
+              to: {
+                scale: 0.5,
+                x: 300,
+                y: -100,
+                z: 185,
+              },
+              fps: 60,
+              delay: 500,
+              duration: 1500,
+              easing: `easeOutCubic`,
+            },
+            {
+              type: `bounce`,
+              fps: 60,
+              delay: 1500,
+              duration: `infinite`,
+              easing: `easeOutCubic`,
+            }
           ],
         }
       },
@@ -392,36 +420,148 @@ const Scenes = {
               type: `shape`,
               name: `flamingo`,
               options: {
-                scale: [1.35, 1.35, 1.35],
+                scale: [0, 0, 0],
+                position: [0, 0, 0],
                 rotation: [6.1, 0.2, 3.5],
-                position: [-345, 250, 50],
+                animations: [
+                  {
+                    type: `appear`,
+                    from: {
+                      scale: 0,
+                      x: 0,
+                      y: 0,
+                      z: 0,
+                    },
+                    to: {
+                      scale: 1.35,
+                      x: -345,
+                      y: 250,
+                      z: 100,
+                    },
+                    fps: 60,
+                    delay: 500,
+                    duration: 1500,
+                    easing: `easeOutCubic`,
+                  },
+                  {
+                    type: `bounce`,
+                    fps: 60,
+                    delay: 1500,
+                    duration: `infinite`,
+                    easing: `easeOutCubic`,
+                  }
+                ],
               },
             },
             {
               type: `shape`,
               name: `snowflake`,
               options: {
-                scale: [1, 1, 1],
+                scale: [0, 0, 0],
+                position: [0, 0, 0],
                 rotation: [6.1, 0.8, 0.25],
-                position: [-310, -20, 70],
+                animations: [
+                  {
+                    type: `appear`,
+                    from: {
+                      scale: 0,
+                      x: 0,
+                      y: 0,
+                      z: 0,
+                    },
+                    to: {
+                      scale: 1,
+                      x: -310,
+                      y: -20,
+                      z: 170,
+                    },
+                    fps: 60,
+                    delay: 500,
+                    duration: 1500,
+                    easing: `easeOutCubic`,
+                  },
+                  {
+                    type: `bounce`,
+                    fps: 60,
+                    delay: 1500,
+                    duration: `infinite`,
+                    easing: `easeOutCubic`,
+                  }
+                ],
               },
             },
             {
               type: `shape`,
               name: `question`,
               options: {
-                scale: [1, 1, 1],
+                scale: [0, 0, 0],
+                position: [0, 0, 0],
                 rotation: [5.4, 3.1, 2.8],
-                position: [70, -230, 125],
+                animations: [
+                  {
+                    type: `appear`,
+                    from: {
+                      scale: 0,
+                      x: 0,
+                      y: 0,
+                      z: 0,
+                    },
+                    to: {
+                      scale: 1,
+                      x: 70,
+                      y: -230,
+                      z: 125,
+                    },
+                    fps: 60,
+                    delay: 500,
+                    duration: 1500,
+                    easing: `easeOutCubic`,
+                  },
+                  {
+                    type: `bounce`,
+                    fps: 60,
+                    delay: 1500,
+                    duration: `infinite`,
+                    easing: `easeOutCubic`,
+                  }
+                ],
               },
             },
             {
               type: `shape`,
               name: `leaf`,
               options: {
-                scale: [1, 1, 1],
+                scale: [0, 0, 0],
+                position: [0, 0, 0],
                 rotation: [6.1, 2.5, 4.4],
-                position: [440, 220, 170],
+                animations: [
+                  {
+                    type: `appear`,
+                    from: {
+                      scale: 0,
+                      x: 0,
+                      y: 0,
+                      z: 0,
+                    },
+                    to: {
+                      scale: 1,
+                      x: 440,
+                      y: 220,
+                      z: 170,
+                    },
+                    fps: 60,
+                    delay: 500,
+                    duration: 1500,
+                    easing: `easeOutCubic`,
+                  },
+                  {
+                    type: `bounce`,
+                    fps: 60,
+                    delay: 1500,
+                    duration: `infinite`,
+                    easing: `easeOutCubic`,
+                  }
+                ],
               },
             },
             {
@@ -454,27 +594,111 @@ const Scenes = {
         type: `OBJ`,
         options: {
           name: `airplane`,
-          scale: [1, 1, 1],
+          scale: [0, 0, 0],
+          position: [0, 0, 0],
           rotation: [0.8, 2.5, 0],
-          position: [190, 75, 100],
+          animations: [
+            {
+              type: `appear`,
+              from: {
+                scale: 0,
+                x: 0,
+                y: 0,
+                z: 0,
+              },
+              to: {
+                scale: 1,
+                x: 190,
+                y: 75,
+                z: 100,
+              },
+              fps: 60,
+              delay: 500,
+              duration: 1500,
+              easing: `easeOutCubic`,
+            },
+            {
+              type: `bounce`,
+              fps: 60,
+              delay: 1500,
+              duration: `infinite`,
+              easing: `easeOutCubic`,
+            }
+          ],
         }
       },
       {
         type: `glTF`,
         options: {
           name: `suitcase`,
-          scale: [0.4, 0.4, 0.4],
+          scale: [0, 0, 0],
+          position: [0, 0, 0],
           rotation: [0.5, 3.8, 0.3],
-          position: [-50, -130, 150],
+          animations: [
+            {
+              type: `appear`,
+              from: {
+                scale: 0,
+                x: 0,
+                y: 0,
+                z: 0,
+              },
+              to: {
+                scale: 0.4,
+                x: -50,
+                y: -130,
+                z: 150,
+              },
+              fps: 60,
+              delay: 500,
+              duration: 1500,
+              easing: `easeOutCubic`,
+            },
+            {
+              type: `bounce`,
+              fps: 60,
+              delay: 1500,
+              duration: `infinite`,
+              easing: `easeOutCubic`,
+            }
+          ],
         }
       },
       {
         type: `glTF`,
         options: {
           name: `watermelon`,
-          scale: [1.5, 1.5, 1.5],
+          scale: [0, 0, 0],
+          position: [0, 0, 0],
           rotation: [0.2, 3.1, 0.7],
-          position: [-450, -190, 200],
+          animations: [
+            {
+              type: `appear`,
+              from: {
+                scale: 0,
+                x: 0,
+                y: 0,
+                z: 0,
+              },
+              to: {
+                scale: 1.5,
+                x: -450,
+                y: -190,
+                z: 200,
+              },
+              fps: 60,
+              delay: 500,
+              duration: 1500,
+              easing: `easeOutCubic`,
+            },
+            {
+              type: `bounce`,
+              fps: 60,
+              delay: 1500,
+              duration: `infinite`,
+              easing: `easeOutCubic`,
+            }
+          ],
         }
       },
     ],
@@ -569,6 +793,15 @@ const Scenes = {
               position: [50, 0, 630],
             }
           },
+        ],
+        animations: [
+          {
+            fps: 60,
+            duration: `infinite`,
+            func: (progress, scene) => {
+              scene.rotation.y = scene.rotation.y - progress / 200;
+            },
+          }
         ]
       },
       {
@@ -662,6 +895,15 @@ const Scenes = {
             }
           },
         ],
+        animations: [
+          {
+            fps: 60,
+            duration: `infinite`,
+            func: (progress, scene) => {
+              scene.rotation.y = scene.rotation.y - progress / 200;
+            },
+          }
+        ]
       },
       {
         type: `scene`,
@@ -732,6 +974,15 @@ const Scenes = {
             }
           }
         ],
+        animations: [
+          {
+            fps: 60,
+            duration: `infinite`,
+            func: (progress, scene) => {
+              scene.rotation.y = scene.rotation.y - progress / 200;
+            },
+          }
+        ]
       },
       {
         type: `scene`,
@@ -850,6 +1101,15 @@ const Scenes = {
             }
           }
         ],
+        animations: [
+          {
+            fps: 60,
+            duration: `infinite`,
+            func: (progress, scene) => {
+              scene.rotation.y = scene.rotation.y - progress / 200;
+            },
+          }
+        ]
       },
       {
         type: `scene`,
@@ -869,7 +1129,7 @@ const Scenes = {
             fps: 60,
             duration: `infinite`,
             func: (progress, scene) => {
-              scene.rotation.y = scene.rotation.y + progress / 200;
+              scene.rotation.y = scene.rotation.y + progress / 100;
             },
           }
         ]
@@ -881,5 +1141,5 @@ const Scenes = {
 
 export const ScreensScenes = {
   all: Scenes.planes,
-  top: Scenes.rooms,
+  top: Scenes.keyhole,
 };
