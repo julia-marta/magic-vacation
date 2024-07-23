@@ -11,8 +11,8 @@ class AnimationsFactory {
     animations.forEach((animation) => {
       const {type} = animation;
       switch (type) {
-        case `appear`:
-          this.createAppearAnimation(object, animation);
+        case `transform`:
+          this.createTransformAnimation(object, animation);
           break;
         case `bounce`:
           this.createBounceAnimation(object, animation);
@@ -23,18 +23,24 @@ class AnimationsFactory {
     });
   }
 
-  // создаёт анимацию вылета (появления)
-  createAppearAnimation(object, options) {
+  // создаёт анимации трансформаций (масштаб, положение)
+  createTransformAnimation(object, options) {
     const {fps, duration, delay, easing, from, to} = options;
     const animation = new Animation({
       func: (progress) => {
-        const scale = from.scale + (to.scale - from.scale) * progress;
-        const x = from.x + (to.x - from.x) * progress;
-        const y = from.y + (to.y - from.y) * progress;
-        const z = from.z + (to.z - from.z) * progress;
+        if (from.scale && to.scale) {
+          const scaleX = from.scale.x + (to.scale.x - from.scale.x) * progress;
+          const scaleY = from.scale.y + (to.scale.y - from.scale.y) * progress;
+          const scaleZ = from.scale.z + (to.scale.z - from.scale.z) * progress;
+          object.scale.set(scaleX, scaleY, scaleZ);
+        }
 
-        object.position.set(x, y, z);
-        object.scale.set(scale, scale, scale);
+        if (from.position && to.position) {
+          const positionX = from.position.x + (to.position.x - from.position.x) * progress;
+          const positionY = from.position.y + (to.position.y - from.position.y) * progress;
+          const positionZ = from.position.z + (to.position.z - from.position.z) * progress;
+          object.position.set(positionX, positionY, positionZ);
+        }
       },
       duration,
       fps,
@@ -69,7 +75,7 @@ class AnimationsFactory {
   }
 }
 
-// если какие-то анимации будут повторяться, имеет создать библиотеку их конфигов и получать по имени, подставляя изменяемые параметры
+// если какие-то анимации будут повторяться, имеет смысл создать библиотеку их конфигов и получать по имени, подставляя изменяемые параметры
 // AnimationsFactory.Configs = {};
 
 export default AnimationsFactory;
