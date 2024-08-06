@@ -18,7 +18,7 @@ class Saturn extends THREE.Group {
 
   addPlanet() {
     const {planet} = this.options;
-    const {radius, widthSegments, heightSegments} = planet;
+    const {radius, widthSegments, heightSegments, name} = planet;
     const planetGeometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
     const planetMaterial = this.materialsFactory.get(this.materials.planet);
     let planetSphere = new THREE.Mesh(
@@ -27,12 +27,13 @@ class Saturn extends THREE.Group {
     );
 
     planetSphere.position.set(0, 0, 0);
+    planetSphere.name = name;
     this.add(planetSphere);
   }
 
   addRings() {
     const {rings} = this.options;
-    const {height, radiusInner, radiusOut, segments, angle} = rings;
+    const {height, radiusInner, radiusOut, segments, angle, name} = rings;
     const width = radiusOut - radiusInner;
     const points = [];
 
@@ -56,6 +57,7 @@ class Saturn extends THREE.Group {
 
     ringsMesh.rotateZ(rotateAngle);
     ringsMesh.position.set(0, 0, 0);
+    ringsMesh.name = name;
     this.add(ringsMesh);
   }
 
@@ -65,7 +67,7 @@ class Saturn extends THREE.Group {
     if (!ball) {
       return;
     }
-    const {radius, widthSegments, heightSegments, y} = ball;
+    const {radius, widthSegments, heightSegments, y, name} = ball;
     const ballGeometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
     const ballMaterial = this.materialsFactory.get(this.materials.ball);
 
@@ -75,6 +77,7 @@ class Saturn extends THREE.Group {
     );
 
     ballSphere.position.set(0, y, 0);
+    ballSphere.name = name;
     this.add(ballSphere);
   }
 
@@ -85,7 +88,7 @@ class Saturn extends THREE.Group {
       return;
     }
 
-    const {radiusTop, radiusBottom, height, radialSegments, y} = cable;
+    const {radiusTop, radiusBottom, height, radialSegments, y, name} = cable;
     const cableGeometry = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments);
     const cableMaterial = this.materialsFactory.get(this.materials.cable);
 
@@ -94,6 +97,7 @@ class Saturn extends THREE.Group {
         cableMaterial
     );
     cableCylinder.position.set(0, y, 0);
+    cableCylinder.name = name;
     this.add(cableCylinder);
   }
 }

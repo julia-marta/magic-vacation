@@ -844,7 +844,43 @@ const Scenes = {
                 },
                 {
                   name: `saturn`,
-                  position: [100, 600, 900],
+                  position: [0, -1000, 0],
+                  rotation: [0, -Math.PI, 0],
+                  options: {
+                    animations: [
+                      {
+                        type: `traverse`,
+                        name: `Rings`,
+                        func: `Jiggle`,
+                        rotationAngles: {
+                          x: -5,
+                          y: 10,
+                          z: -13,
+                        },
+                        periodCoeff: 1000,
+                        fps: 60,
+                        duration: `infinite`,
+                        easing: `easeOutCubic`,
+                      },
+                    ],
+                  },
+                  outer: {
+                    position: [0, 1500, 280],
+                    animations: [
+                      {
+                        type: `jiggle`,
+                        rotationAngles: {
+                          x: 1,
+                          y: 0,
+                          z: 1,
+                        },
+                        periodCoeff: 500,
+                        fps: 60,
+                        duration: `infinite`,
+                        easing: `easeOutCubic`,
+                      },
+                    ],
+                  },
                 },
               ],
             }
@@ -888,6 +924,17 @@ const Scenes = {
               name: `dog`,
               rotation: [0, 0.4, 0],
               position: [50, 0, 630],
+              animations: [
+                {
+                  type: `traverse`,
+                  name: `Tail`,
+                  func: `Tail`,
+                  rotationAngle: 30,
+                  fps: 60,
+                  duration: `infinite`,
+                  easing: `easeLinear`,
+                },
+              ],
             }
           },
         ],
@@ -1050,6 +1097,22 @@ const Scenes = {
               name: `compass`,
               rotation: [0, -0.8, 0],
               position: [20, 0, -25],
+              animations: [
+                {
+                  type: `traverse`,
+                  name: `Arrows`,
+                  func: `Jiggle`,
+                  rotationAngles: {
+                    x: 0,
+                    y: 0,
+                    z: 10,
+                  },
+                  periodCoeff: 400,
+                  fps: 60,
+                  duration: `infinite`,
+                  easing: `easeInQuad`,
+                },
+              ],
             }
           }
         ],
@@ -1123,7 +1186,7 @@ const Scenes = {
                         type: `StandardSoft`,
                         color: `MetalGrey`,
                       }
-                    }
+                    },
                   }
                 },
               ],
