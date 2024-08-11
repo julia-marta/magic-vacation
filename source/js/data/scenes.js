@@ -857,7 +857,7 @@ const Scenes = {
                           y: 10,
                           z: -13,
                         },
-                        periodCoeff: 1000,
+                        periodCoeff: 500,
                         fps: 60,
                         duration: `infinite`,
                         easing: `easeOutCubic`,
@@ -870,7 +870,7 @@ const Scenes = {
                       {
                         type: `jiggle`,
                         rotationAngles: {
-                          x: 1,
+                          x: 0.5,
                           y: 0,
                           z: 1,
                         },
@@ -999,8 +999,26 @@ const Scenes = {
                   },
                   options: {
                     scale: [2.5, 2.5, 2.5],
-                    rotation: [3.15, -Math.PI / 4, 0.2],
-                    position: [-229, 320, 337],
+                    rotation: [2.9, -Math.PI / 2, 0],
+                    position: [0, 320, 80],
+                    outer: {
+                      intermediate: {
+                        position: [80, 20, 330],
+                        animations: [
+                          {
+                            type: `custom`,
+                            func: `Leaf`,
+                            amplitude: 0.4,
+                            coeff: 200,
+                            fps: 60,
+                            duration: `infinite`,
+                            easing: `easeInOutSine`,
+                          },
+                        ],
+                      },
+                      position: [0, 0, 0],
+                      rotation: [0, -Math.PI / 4, 0],
+                    },
                   },
                 },
                 {
@@ -1013,8 +1031,27 @@ const Scenes = {
                   },
                   options: {
                     scale: [1.5, 1.5, 1.5],
-                    rotation: [3.15, -Math.PI / 4, -0.5],
-                    position: [-300, 110, 405],
+                    rotation: [-2.6, -Math.PI / 2, 0],
+                    position: [0, 85, 170],
+                    outer: {
+                      intermediate: {
+                        position: [80, 20, 330],
+                        animations: [
+                          {
+                            type: `custom`,
+                            func: `Leaf`,
+                            amplitude: 0.2,
+                            coeff: 200,
+                            fps: 60,
+                            delayCoeff: 1.3,
+                            duration: `infinite`,
+                            easing: `easeInOutSine`,
+                          },
+                        ],
+                      },
+                      position: [0, 0, 0],
+                      rotation: [0, -Math.PI / 4, 0],
+                    },
                   },
                 },
               ]

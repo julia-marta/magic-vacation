@@ -43,9 +43,31 @@ class SceneGroup extends THREE.Group {
     });
 
     if (outer) {
-      const {scale, position, rotation, animations} = outer;
+      const {scale, position, rotation, animations, intermediate} = outer;
       const outerGroup = new THREE.Group();
-      outerGroup.add(object);
+
+      if (intermediate) {
+        const intermediateGroup = new THREE.Group();
+        intermediateGroup.add(object);
+        if (intermediate.scale) {
+          intermediateGroup.scale.set(...intermediate.scale);
+        }
+
+        if (intermediate.position) {
+          intermediateGroup.position.set(...intermediate.position);
+        }
+
+        if (intermediate.rotation) {
+          intermediateGroup.rotation.set(...intermediate.rotation);
+        }
+
+        if (intermediate.animations) {
+          this.animationsFactory.run(intermediateGroup, intermediate.animations);
+        }
+        outerGroup.add(intermediateGroup);
+      } else {
+        outerGroup.add(object);
+      }
 
       if (scale) {
         outerGroup.scale.set(...scale);

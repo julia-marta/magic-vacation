@@ -4,8 +4,9 @@ import _ from "../../../common/easings";
 class AnimationsFactory {
   constructor() {
     this.run = this.run.bind(this);
-    this.createTailAnimation = this.createTailAnimation.bind(this);
     this.createJiggleAnimation = this.createJiggleAnimation.bind(this);
+    this.createTailAnimation = this.createTailAnimation.bind(this);
+    this.createLeafAnimation = this.createLeafAnimation.bind(this);
   }
 
   // создаёт и запускает анимации объекта
@@ -13,15 +14,14 @@ class AnimationsFactory {
     animations.forEach((animation) => {
       const {type, name, func} = animation;
       switch (type) {
-        // case `custom`:
-        //   const createCustomAnimationFunction = this[`create${animation.name}Animation`];
-        //   createCustomAnimationFunction(object, animation);
-        //   break;
+        case `custom`:
+          const createCustomAnimationFunction = this[`create${func}Animation`];
+          createCustomAnimationFunction(object, animation);
+          break;
         case `traverse`:
           object.traverse((obj) => {
             if (obj.name === name) {
               const createTraverseAnimationFunction = this[`create${func}Animation`];
-              console.log(createTraverseAnimationFunction);
               createTraverseAnimationFunction(obj, animation);
             }
           });
@@ -68,7 +68,7 @@ class AnimationsFactory {
     animation.start();
   }
 
-  // создаёт анимацю колебания
+  // создаёт анимацию колебания
   createBounceAnimation(object, options) {
     const {fps, duration, delay, easing} = options;
     // чем больше амплитуда, тем больше колебания
@@ -88,7 +88,7 @@ class AnimationsFactory {
     animation.start();
   }
 
-  // создаёт анимацию покачивания
+  // создаёт анимацию равномерного покачивания
   createJiggleAnimation(object, options) {
     const {fps, duration, delay, easing, rotationAngles, periodCoeff} = options;
     const {x, y, z} = rotationAngles;
@@ -149,6 +149,23 @@ class AnimationsFactory {
           // вращаем горизонтально хвост, отрицательный угол умножаем на косинус периода
           object.rotation.x = -angle * Math.cos(period);
         }
+      },
+      duration,
+      fps,
+      delay,
+      easing: this.getEasing(easing),
+    });
+    animation.start();
+  }
+
+  // создаёт анимацию покачивания листьев
+  createLeafAnimation(object, options) {
+    const {fps, duration, delay, easing, amplitude, coeff, delayCoeff = 1} = options;
+    const animation = new Animation({
+      func: (_progress, {startTime, currentTime}) => {
+        const time = ((currentTime - startTime) / coeff) % 16;
+
+        object.rotation.x = amplitude * Math.exp(-0.2 * time) * Math.cos(delayCoeff * time + Math.PI / 2);
       },
       duration,
       fps,

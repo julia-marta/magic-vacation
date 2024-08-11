@@ -41,7 +41,7 @@ class ObjectsFactory {
             });
           });
 
-          this.onCreate(group, options);
+          this.onCreate(group, options, options.outer);
         }
     );
   }
