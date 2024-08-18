@@ -844,7 +844,43 @@ const Scenes = {
                 },
                 {
                   name: `saturn`,
-                  position: [100, 600, 900],
+                  position: [0, -1000, 0],
+                  rotation: [0, -Math.PI, 0],
+                  options: {
+                    animations: [
+                      {
+                        type: `traverse`,
+                        name: `Rings`,
+                        func: `Jiggle`,
+                        rotationAngles: {
+                          x: -5,
+                          y: 10,
+                          z: -13,
+                        },
+                        periodCoeff: 500,
+                        fps: 60,
+                        duration: `infinite`,
+                        easing: `easeOutCubic`,
+                      },
+                    ],
+                  },
+                  outer: {
+                    position: [0, 1500, 280],
+                    animations: [
+                      {
+                        type: `jiggle`,
+                        rotationAngles: {
+                          x: 0.5,
+                          y: 0,
+                          z: 1,
+                        },
+                        periodCoeff: 500,
+                        fps: 60,
+                        duration: `infinite`,
+                        easing: `easeOutCubic`,
+                      },
+                    ],
+                  },
                 },
               ],
             }
@@ -888,6 +924,17 @@ const Scenes = {
               name: `dog`,
               rotation: [0, 0.4, 0],
               position: [50, 0, 630],
+              animations: [
+                {
+                  type: `traverse`,
+                  name: `Tail`,
+                  func: `Tail`,
+                  rotationAngle: 30,
+                  fps: 60,
+                  duration: `infinite`,
+                  easing: `easeLinear`,
+                },
+              ],
             }
           },
         ],
@@ -952,8 +999,26 @@ const Scenes = {
                   },
                   options: {
                     scale: [2.5, 2.5, 2.5],
-                    rotation: [3.15, -Math.PI / 4, 0.2],
-                    position: [-229, 320, 337],
+                    rotation: [2.9, -Math.PI / 2, 0],
+                    position: [0, 320, 80],
+                    outer: {
+                      intermediate: {
+                        position: [80, 20, 330],
+                        animations: [
+                          {
+                            type: `custom`,
+                            func: `Leaf`,
+                            amplitude: 0.4,
+                            coeff: 200,
+                            fps: 60,
+                            duration: `infinite`,
+                            easing: `easeInOutSine`,
+                          },
+                        ],
+                      },
+                      position: [0, 0, 0],
+                      rotation: [0, -Math.PI / 4, 0],
+                    },
                   },
                 },
                 {
@@ -966,8 +1031,27 @@ const Scenes = {
                   },
                   options: {
                     scale: [1.5, 1.5, 1.5],
-                    rotation: [3.15, -Math.PI / 4, -0.5],
-                    position: [-300, 110, 405],
+                    rotation: [-2.6, -Math.PI / 2, 0],
+                    position: [0, 85, 170],
+                    outer: {
+                      intermediate: {
+                        position: [80, 20, 330],
+                        animations: [
+                          {
+                            type: `custom`,
+                            func: `Leaf`,
+                            amplitude: 0.2,
+                            coeff: 200,
+                            fps: 60,
+                            delayCoeff: 1.3,
+                            duration: `infinite`,
+                            easing: `easeInOutSine`,
+                          },
+                        ],
+                      },
+                      position: [0, 0, 0],
+                      rotation: [0, -Math.PI / 4, 0],
+                    },
                   },
                 },
               ]
@@ -1050,6 +1134,22 @@ const Scenes = {
               name: `compass`,
               rotation: [0, -0.8, 0],
               position: [20, 0, -25],
+              animations: [
+                {
+                  type: `traverse`,
+                  name: `Arrows`,
+                  func: `Jiggle`,
+                  rotationAngles: {
+                    x: 0,
+                    y: 0,
+                    z: 10,
+                  },
+                  periodCoeff: 400,
+                  fps: 60,
+                  duration: `infinite`,
+                  easing: `easeInQuad`,
+                },
+              ],
             }
           }
         ],
@@ -1123,7 +1223,7 @@ const Scenes = {
                         type: `StandardSoft`,
                         color: `MetalGrey`,
                       }
-                    }
+                    },
                   }
                 },
               ],
@@ -1167,7 +1267,41 @@ const Scenes = {
             options: {
               name: `sonya`,
               rotation: [0, -0.6, 0],
-              position: [120, 80, 330],
+              position: [120, 120, 330],
+              animations: [
+                {
+                  type: `bounce`,
+                  fps: 60,
+                  amplitude: 1,
+                  period: 400,
+                  duration: `infinite`,
+                  easing: `easeInOutSine`,
+                },
+                {
+                  type: `traverse`,
+                  name: `RightHand`,
+                  func: `Swing`,
+                  startRotationAngle: -55,
+                  rotationAngle: 5,
+                  period: 400,
+                  coeff: 1.5,
+                  fps: 60,
+                  duration: `infinite`,
+                  easing: `easeInQuad`,
+                },
+                {
+                  type: `traverse`,
+                  name: `LeftHand`,
+                  func: `Swing`,
+                  startRotationAngle: 55,
+                  rotationAngle: 5,
+                  period: 400,
+                  coeff: -1.5,
+                  fps: 60,
+                  duration: `infinite`,
+                  easing: `easeInQuad`,
+                },
+              ],
             }
           }
         ],

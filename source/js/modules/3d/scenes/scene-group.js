@@ -15,7 +15,7 @@ class SceneGroup extends THREE.Group {
   }
 
   // получает готовый объект после создания, добавляет его на сцену и запускает анимации
-  onCreateComplete(object, options) {
+  onCreateComplete(object, options, outer) {
     if (options) {
       const {scale, position, rotation, animations} = options;
 
@@ -41,7 +41,54 @@ class SceneGroup extends THREE.Group {
         obj.receiveShadow = true;
       }
     });
-    this.add(object);
+
+    if (outer) {
+      const {scale, position, rotation, animations, intermediate} = outer;
+      const outerGroup = new THREE.Group();
+
+      if (intermediate) {
+        const intermediateGroup = new THREE.Group();
+        intermediateGroup.add(object);
+        if (intermediate.scale) {
+          intermediateGroup.scale.set(...intermediate.scale);
+        }
+
+        if (intermediate.position) {
+          intermediateGroup.position.set(...intermediate.position);
+        }
+
+        if (intermediate.rotation) {
+          intermediateGroup.rotation.set(...intermediate.rotation);
+        }
+
+        if (intermediate.animations) {
+          this.animationsFactory.run(intermediateGroup, intermediate.animations);
+        }
+        outerGroup.add(intermediateGroup);
+      } else {
+        outerGroup.add(object);
+      }
+
+      if (scale) {
+        outerGroup.scale.set(...scale);
+      }
+
+      if (position) {
+        outerGroup.position.set(...position);
+      }
+
+      if (rotation) {
+        outerGroup.rotation.set(...rotation);
+      }
+
+      if (animations) {
+        this.animationsFactory.run(outerGroup, animations);
+      }
+
+      this.add(outerGroup);
+    } else {
+      this.add(object);
+    }
   }
 
   // создаёт с помощью фабрики объекты разного типа

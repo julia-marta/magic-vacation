@@ -41,7 +41,7 @@ class ObjectsFactory {
             });
           });
 
-          this.onCreate(group, options);
+          this.onCreate(group, options, options.outer);
         }
     );
   }
@@ -115,11 +115,10 @@ class ObjectsFactory {
 
   // создаёт группу объектов
   createObjectsGroup(options) {
-    const group = new THREE.Group();
     const {children} = options;
 
     children.forEach((child) => {
-      const {name, position, scale, rotation} = child;
+      const {name, position, scale, rotation, outer} = child;
       // получаем конструктор дочернего объекта группы
       const GroupChild = this.getGroupChild(name);
       // получаем конфиг для дочернего объекта группы
@@ -140,10 +139,10 @@ class ObjectsFactory {
         if (rotation) {
           object.rotation.set(...rotation);
         }
-        group.add(object);
+
+        this.onCreate(object, childConfig.options, outer);
       }
     });
-    this.onCreate(group, options);
   }
 
   // создаёт группу объёмных объектов на основе SVG форм
@@ -507,12 +506,14 @@ ObjectsFactory.GroupChildsConfigs = {
     name: `saturn`,
     options: {
       planet: {
+        name: `Planet`,
         radius: 60,
         height: 60,
         widthSegments: 32,
         heightSegments: 32,
       },
       rings: {
+        name: `Rings`,
         height: 2,
         radiusInner: 80,
         radiusOut: 120,
@@ -520,6 +521,7 @@ ObjectsFactory.GroupChildsConfigs = {
         segments: 30,
       },
       ball: {
+        name: `Ball`,
         radius: 10,
         height: 10,
         widthSegments: 16,
@@ -527,6 +529,7 @@ ObjectsFactory.GroupChildsConfigs = {
         y: 120,
       },
       cable: {
+        name: `Cable`,
         radiusTop: 1,
         radiusBottom: 1,
         height: 1000,
