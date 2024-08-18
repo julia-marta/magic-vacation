@@ -5,6 +5,7 @@ class AnimationsFactory {
   constructor() {
     this.run = this.run.bind(this);
     this.createJiggleAnimation = this.createJiggleAnimation.bind(this);
+    this.createSwingAnimation = this.createSwingAnimation.bind(this);
     this.createTailAnimation = this.createTailAnimation.bind(this);
     this.createLeafAnimation = this.createLeafAnimation.bind(this);
   }
@@ -70,15 +71,42 @@ class AnimationsFactory {
 
   // создаёт анимацию колебания
   createBounceAnimation(object, options) {
-    const {fps, duration, delay, easing} = options;
+    const {fps, duration, delay, easing, amplitude, period} = options;
+
+    if (!amplitude) {
     // чем больше амплитуда, тем больше колебания
-    const amplitude = 0.3 + Math.random() / 1.5;
+      amplitude = 0.3 + Math.random() / 1.5;
+    }
+
+    if (!period) {
     // чем больше период, тем реже (плавнее) колебания
-    const period = 700 + 300 * Math.random();
+      period = 700 + 300 * Math.random();
+    }
+
     const animation = new Animation({
       func: (_progress, {startTime, currentTime}) => {
         object.position.y = object.position.y + amplitude * Math.sin((currentTime - startTime) / period);
 
+      },
+      duration,
+      fps,
+      delay,
+      easing: this.getEasing(easing),
+    });
+    animation.start();
+  }
+
+  // создаёт анимацию колебания c покачиванием
+  createSwingAnimation(object, options) {
+    const {fps, duration, delay, easing, startRotationAngle, rotationAngle, coeff, period} = options;
+
+    // углы вращения в радианах
+    const angleYstart = startRotationAngle * Math.PI / 180;
+    const angleY = rotationAngle * Math.PI / 180;
+
+    const animation = new Animation({
+      func: (_progress, {startTime, currentTime}) => {
+        object.rotation.y = angleYstart + angleY * Math.cos(coeff + (currentTime - startTime) / period);
       },
       duration,
       fps,

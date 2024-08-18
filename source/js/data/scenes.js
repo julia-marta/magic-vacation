@@ -1267,7 +1267,41 @@ const Scenes = {
             options: {
               name: `sonya`,
               rotation: [0, -0.6, 0],
-              position: [120, 80, 330],
+              position: [120, 120, 330],
+              animations: [
+                {
+                  type: `bounce`,
+                  fps: 60,
+                  amplitude: 1,
+                  period: 400,
+                  duration: `infinite`,
+                  easing: `easeInOutSine`,
+                },
+                {
+                  type: `traverse`,
+                  name: `RightHand`,
+                  func: `Swing`,
+                  startRotationAngle: -55,
+                  rotationAngle: 5,
+                  period: 400,
+                  coeff: 1.5,
+                  fps: 60,
+                  duration: `infinite`,
+                  easing: `easeInQuad`,
+                },
+                {
+                  type: `traverse`,
+                  name: `LeftHand`,
+                  func: `Swing`,
+                  startRotationAngle: 55,
+                  rotationAngle: 5,
+                  period: 400,
+                  coeff: -1.5,
+                  fps: 60,
+                  duration: `infinite`,
+                  easing: `easeInQuad`,
+                },
+              ],
             }
           }
         ],
