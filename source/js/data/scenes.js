@@ -377,6 +377,46 @@ const Scenes = {
               options: {
                 ball: null,
                 cable: null,
+                animations: [
+                  {
+                    type: `transform`,
+                    from: {
+                      scale: {
+                        x: 0,
+                        y: 0,
+                        z: 0,
+                      },
+                      position: {
+                        x: 0,
+                        y: 0,
+                        z: 0,
+                      },
+                    },
+                    to: {
+                      scale: {
+                        x: 0.5,
+                        y: 0.5,
+                        z: 0.5,
+                      },
+                      position: {
+                        x: 300,
+                        y: -100,
+                        z: 185,
+                      },
+                    },
+                    fps: 60,
+                    delay: 500,
+                    duration: 1500,
+                    easing: `easeOutCubic`,
+                  },
+                  {
+                    type: `bounce`,
+                    fps: 60,
+                    delay: 1500,
+                    duration: `infinite`,
+                    easing: `easeOutCubic`,
+                  }
+                ],
               }
             },
           ],
@@ -543,7 +583,7 @@ const Scenes = {
                         y: 0,
                         z: 0,
                       },
-                      positon: {
+                      position: {
                         x: 0,
                         y: 0,
                         z: 0,
@@ -555,7 +595,7 @@ const Scenes = {
                         y: 1,
                         z: 1,
                       },
-                      positon: {
+                      position: {
                         x: 70,
                         y: -230,
                         z: 125,
@@ -706,47 +746,87 @@ const Scenes = {
           name: `suitcase`,
           scale: [0, 0, 0],
           position: [0, 0, 0],
-          rotation: [0.5, 3.8, 0.3],
           animations: [
             {
               type: `transform`,
-              from: {
-                scale: {
-                  x: 0,
-                  y: 0,
-                  z: 0,
-                },
-                position: {
-                  x: 0,
-                  y: 0,
-                  z: 0,
-                },
-              },
-              to: {
-                scale: {
-                  x: 0.4,
-                  y: 0.4,
-                  z: 0.4,
-                },
-                position: {
-                  x: -50,
-                  y: -130,
-                  z: 150,
-                },
+              scale: {
+                x: 0.4,
+                y: 0.4,
+                z: 0.4,
               },
               fps: 60,
               delay: 500,
-              duration: 1500,
-              easing: `easeOutCubic`,
+              duration: 1000,
+              easing: `easeInOutSine`,
             },
-            {
-              type: `bounce`,
-              fps: 60,
-              delay: 1500,
-              duration: `infinite`,
-              easing: `easeOutCubic`,
-            }
           ],
+          outer: {
+            intermediate: {
+              rotation: [0.2, -1.5, 1.3, `YZX`],
+              animations: [
+                {
+                  type: `rotate`,
+                  rotation: {
+                    x: (progress) => 0.2 - 0.6 * progress,
+                    y: -1.5,
+                    z: 1.3,
+                    order: `YZX`
+                  },
+                  fps: 60,
+                  duration: 500,
+                  delay: 500,
+                  easing: `easeInOutSine`,
+                },
+                {
+                  type: `rotate`,
+                  rotation: {
+                    x: -0.4,
+                    y: (progress) => -1.5 - progress,
+                    z: (progress) => 1.3 * (1 - progress),
+                    order: `YZX`
+                  },
+                  fps: 60,
+                  duration: 500,
+                  delay: 1000,
+                  easing: `easeInOutSine`,
+                },
+              ],
+            },
+            animations: [
+              {
+                type: `transform`,
+                position: {
+                  y: 70,
+                  z: 60,
+                },
+                fps: 60,
+                delay: 500,
+                duration: 500,
+                easing: `easeInOutSine`,
+              },
+              {
+                type: `transform`,
+                position: {
+                  x: -60,
+                  y: 220,
+                  z: 60,
+                  diminutiveY: 70,
+                  summandZ: 60,
+                },
+                fps: 60,
+                delay: 1000,
+                duration: 600,
+                easing: `easeInOutSine`,
+              },
+              {
+                type: `bounce`,
+                fps: 60,
+                delay: 1500,
+                duration: `infinite`,
+                easing: `easeOutCubic`,
+              }
+            ],
+          },
         }
       },
       {
@@ -1452,5 +1532,5 @@ const Scenes = {
 
 export const ScreensScenes = {
   all: Scenes.planes,
-  top: Scenes.rooms,
+  top: Scenes.keyhole,
 };
