@@ -377,6 +377,46 @@ const Scenes = {
               options: {
                 ball: null,
                 cable: null,
+                animations: [
+                  {
+                    type: `transform`,
+                    from: {
+                      scale: {
+                        x: 0,
+                        y: 0,
+                        z: 0,
+                      },
+                      position: {
+                        x: 0,
+                        y: 0,
+                        z: 0,
+                      },
+                    },
+                    to: {
+                      scale: {
+                        x: 0.5,
+                        y: 0.5,
+                        z: 0.5,
+                      },
+                      position: {
+                        x: 300,
+                        y: -100,
+                        z: 185,
+                      },
+                    },
+                    fps: 60,
+                    delay: 500,
+                    duration: 1500,
+                    easing: `easeOutCubic`,
+                  },
+                  {
+                    type: `bounce`,
+                    fps: 60,
+                    delay: 1500,
+                    duration: `infinite`,
+                    easing: `easeOutCubic`,
+                  }
+                ],
               }
             },
           ],
@@ -543,7 +583,7 @@ const Scenes = {
                         y: 0,
                         z: 0,
                       },
-                      positon: {
+                      position: {
                         x: 0,
                         y: 0,
                         z: 0,
@@ -555,7 +595,7 @@ const Scenes = {
                         y: 1,
                         z: 1,
                       },
-                      positon: {
+                      position: {
                         x: 70,
                         y: -230,
                         z: 125,
@@ -1452,5 +1492,5 @@ const Scenes = {
 
 export const ScreensScenes = {
   all: Scenes.planes,
-  top: Scenes.rooms,
+  top: Scenes.keyhole,
 };

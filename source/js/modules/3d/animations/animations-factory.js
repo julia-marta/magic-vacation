@@ -72,20 +72,14 @@ class AnimationsFactory {
   // создаёт анимацию колебания
   createBounceAnimation(object, options) {
     const {fps, duration, delay, easing, amplitude, period} = options;
-
-    if (!amplitude) {
     // чем больше амплитуда, тем больше колебания
-      amplitude = 0.3 + Math.random() / 1.5;
-    }
-
-    if (!period) {
+    let amp = amplitude ? amplitude : 0.3 + Math.random() / 1.5;
     // чем больше период, тем реже (плавнее) колебания
-      period = 700 + 300 * Math.random();
-    }
+    let per = period ? period : 700 + 300 * Math.random();
 
     const animation = new Animation({
       func: (_progress, {startTime, currentTime}) => {
-        object.position.y = object.position.y + amplitude * Math.sin((currentTime - startTime) / period);
+        object.position.y = object.position.y + amp * Math.sin((currentTime - startTime) / per);
 
       },
       duration,

@@ -7,8 +7,8 @@ export const Scene3DSettings = {
   far: 5500,
   fov: 35,
   near: 1,
-  cameraPozitionZ: 2000,
-  cameraPozitionY: 800,
+  cameraPozitionZ: 1405,
+  cameraPozitionY: 0,
 };
 
 export const TIMER_DURATION_MIN = 5;
