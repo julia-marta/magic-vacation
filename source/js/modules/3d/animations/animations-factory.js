@@ -30,6 +30,9 @@ class AnimationsFactory {
         case `transform`:
           this.createTransformAnimation(object, animation);
           break;
+        case `rotate`:
+          this.createRotateAnimation(object, animation);
+          break;
         case `bounce`:
           this.createBounceAnimation(object, animation);
           break;
@@ -44,22 +47,80 @@ class AnimationsFactory {
 
   // создаёт анимации трансформаций (масштаб, положение)
   createTransformAnimation(object, options) {
-    const {fps, duration, delay, easing, from, to} = options;
+    const {fps, duration, delay, easing, from, to, scale, position} = options;
     const animation = new Animation({
       func: (progress) => {
-        if (from.scale && to.scale) {
+        if (from && to && from.scale && to.scale) {
           const scaleX = from.scale.x + (to.scale.x - from.scale.x) * progress;
           const scaleY = from.scale.y + (to.scale.y - from.scale.y) * progress;
           const scaleZ = from.scale.z + (to.scale.z - from.scale.z) * progress;
           object.scale.set(scaleX, scaleY, scaleZ);
         }
 
-        if (from.position && to.position) {
+        if (from && to && from.position && to.position) {
           const positionX = from.position.x + (to.position.x - from.position.x) * progress;
           const positionY = from.position.y + (to.position.y - from.position.y) * progress;
           const positionZ = from.position.z + (to.position.z - from.position.z) * progress;
           object.position.set(positionX, positionY, positionZ);
         }
+
+        if (scale) {
+          const scaleX = scale.x * progress;
+          const scaleY = scale.y * progress;
+          const scaleZ = scale.z * progress;
+          object.scale.set(scaleX, scaleY, scaleZ);
+        }
+
+        if (position) {
+          if (position.x) {
+            if (position.diminutiveX) {
+              object.position.x = position.diminutiveX - progress * position.x;
+            } else if (position.summandX) {
+              object.position.x = position.summandX + progress * position.x;
+            } else {
+              object.position.x = progress * position.x;
+            }
+          }
+          if (position.y) {
+            if (position.diminutiveY) {
+              object.position.y = position.diminutiveY - progress * position.y;
+            } else if (position.summandY) {
+              object.position.y = position.summandY + progress * position.y;
+            } else {
+              object.position.y = progress * position.y;
+            }
+          }
+          if (position.z) {
+            if (position.z) {
+              if (position.diminutiveZ) {
+                object.position.z = position.diminutiveZ - progress * position.z;
+              } else if (position.summandZ) {
+                object.position.z = position.summandZ + progress * position.z;
+              } else {
+                object.position.z = progress * position.z;
+              }
+            }
+          }
+        }
+      },
+      duration,
+      fps,
+      delay,
+      easing: this.getEasing(easing),
+    });
+    animation.start();
+  }
+
+  // создаёт анимацию поворота
+  createRotateAnimation(object, options) {
+    const {fps, duration, delay, easing, rotation} = options;
+    const animation = new Animation({
+      func: (progress) => {
+        const {x, y, z, order} = rotation;
+        const rotationX = typeof (x) === `function` ? x(progress) : x;
+        const rotationY = typeof (y) === `function` ? y(progress) : y;
+        const rotationZ = typeof (z) === `function` ? z(progress) : z;
+        object.rotation.set(rotationX, rotationY, rotationZ, order);
       },
       duration,
       fps,
