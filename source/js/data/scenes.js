@@ -374,6 +374,7 @@ const Scenes = {
             {
               name: `saturn`,
               rotation: [0.3, -0.3, 0.2],
+              scale: [0, 0, 0],
               options: {
                 ball: null,
                 cable: null,
@@ -749,10 +750,19 @@ const Scenes = {
           animations: [
             {
               type: `transform`,
-              scale: {
-                x: 0.4,
-                y: 0.4,
-                z: 0.4,
+              from: {
+                scale: {
+                  x: 0,
+                  y: 0,
+                  z: 0,
+                },
+              },
+              to: {
+                scale: {
+                  x: 0.4,
+                  y: 0.4,
+                  z: 0.4,
+                },
               },
               fps: 60,
               delay: 500,
@@ -765,24 +775,25 @@ const Scenes = {
               rotation: [0.2, -1.5, 1.3, `YZX`],
               animations: [
                 {
-                  type: `rotate`,
+                  type: `horizontalrotate`,
                   rotation: {
-                    x: (progress) => 0.2 - 0.6 * progress,
+                    x: 0.2,
                     y: -1.5,
                     z: 1.3,
-                    order: `YZX`
                   },
+                  order: `YZX`,
+                  coeff: 0.6,
                   fps: 60,
                   duration: 500,
                   delay: 500,
                   easing: `easeInOutSine`,
                 },
                 {
-                  type: `rotate`,
+                  type: `verticalrotate`,
                   rotation: {
                     x: -0.4,
-                    y: (progress) => -1.5 - progress,
-                    z: (progress) => 1.3 * (1 - progress),
+                    y: -1.5,
+                    z: 1.3,
                     order: `YZX`
                   },
                   fps: 60,
@@ -795,9 +806,19 @@ const Scenes = {
             animations: [
               {
                 type: `transform`,
-                position: {
-                  y: 70,
-                  z: 60,
+                from: {
+                  position: {
+                    x: 0,
+                    y: 0,
+                    z: 0,
+                  },
+                },
+                to: {
+                  position: {
+                    x: 0,
+                    y: 70,
+                    z: 60,
+                  },
                 },
                 fps: 60,
                 delay: 500,
@@ -806,12 +827,19 @@ const Scenes = {
               },
               {
                 type: `transform`,
-                position: {
-                  x: -60,
-                  y: 220,
-                  z: 60,
-                  diminutiveY: 70,
-                  summandZ: 60,
+                from: {
+                  position: {
+                    x: 0,
+                    y: 70,
+                    z: 60,
+                  },
+                },
+                to: {
+                  position: {
+                    x: -60,
+                    y: -220,
+                    z: 120,
+                  },
                 },
                 fps: 60,
                 delay: 1000,
