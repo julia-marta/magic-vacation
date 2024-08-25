@@ -8,6 +8,7 @@ class AnimationsFactory {
     this.createSwingAnimation = this.createSwingAnimation.bind(this);
     this.createTailAnimation = this.createTailAnimation.bind(this);
     this.createLeafAnimation = this.createLeafAnimation.bind(this);
+    this.createAirplaneAnimation = this.createAirplaneAnimation.bind(this);
   }
 
   // создаёт и запускает анимации объекта
@@ -229,6 +230,39 @@ class AnimationsFactory {
         const time = ((currentTime - startTime) / coeff) % 16;
 
         object.rotation.x = amplitude * Math.exp(-0.2 * time) * Math.cos(delayCoeff * time + Math.PI / 2);
+      },
+      duration,
+      fps,
+      delay,
+      easing: this.getEasing(easing),
+    });
+    animation.start();
+  }
+
+  // создаёт анимацию вылета самолёта из замочной скважины по спирали (с использованием техники Rigging)
+  createAirplaneAnimation(object, options) {
+    const {fps, duration, delay, easing} = options;
+    // получим изначальные значения всех параметров из Rig
+    const initialFightRadius = object.flightRadius;
+    const initialFightHeight = object.flightHeight;
+    const initialFlightYaw = object.flightYaw;
+    const initialFlightPitch = object.flightPitch;
+    const initialFlightRoll = object.flightRoll;
+
+    const animation = new Animation({
+      func: (progress) => {
+        // изменяем радиус полёта
+        object.flightRadius = initialFightRadius + (object.maxFlightRadius - initialFightRadius) * progress;
+        // изменяем высоту полёта
+        object.flightHeight = initialFightHeight + (object.maxFlightHeight - initialFightHeight) * progress;
+        // изменяем угол рыскания
+        object.flightYaw = initialFlightYaw + (progress * 5 * Math.PI) / 4;
+        // изменяем угол тангажа
+        object.flightPitch = initialFlightPitch + (progress * Math.PI) / 5;
+        // изменяем угол крена
+        object.flightRoll = progress < 0.5 ? initialFlightRoll - progress * Math.PI : initialFlightRoll - 0.5 * Math.PI + (progress - 0.5) * Math.PI;
+        // запускаем в риге проверку изменений параметров
+        object.invalidate();
       },
       duration,
       fps,

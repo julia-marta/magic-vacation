@@ -684,7 +684,7 @@ const Scenes = {
       {
         type: `plane`,
         options: {
-          position: [0, 0, 0],
+          position: [0, 0, -200],
           material: {
             type: `StandardBasic`,
             color: `Purple`,
@@ -693,52 +693,37 @@ const Scenes = {
         },
       },
       {
-        type: `OBJ`,
+        type: `rig`,
         options: {
           name: `airplane`,
-          scale: [0, 0, 0],
-          position: [0, 0, 0],
-          rotation: [0.8, 2.5, 0],
-          animations: [
-            {
-              type: `transform`,
-              from: {
-                scale: {
-                  x: 0,
-                  y: 0,
-                  z: 0,
-                },
-                position: {
-                  x: 0,
-                  y: 0,
-                  z: 0,
-                },
-              },
-              to: {
-                scale: {
-                  x: 1,
-                  y: 1,
-                  z: 1,
-                },
-                position: {
-                  x: 190,
-                  y: 75,
-                  z: 100,
-                },
-              },
-              fps: 60,
-              delay: 500,
-              duration: 1500,
-              easing: `easeOutCubic`,
-            },
-            {
-              type: `bounce`,
-              fps: 60,
-              delay: 1500,
-              duration: `infinite`,
-              easing: `easeOutCubic`,
+          object: {
+            type: `OBJ`,
+            options: {
+              name: `airplane`,
+              scale: [1, 1, 1],
+              rotation: [0, Math.PI / 2, 0],
             }
-          ],
+          },
+          options: {
+            position: [135, 0, 0],
+            animations: [
+              {
+                type: `custom`,
+                func: `Airplane`,
+                fps: 60,
+                duration: 2000,
+                delay: 2000,
+                easing: `easeOutExpo`,
+              },
+              {
+                type: `bounce`,
+                fps: 60,
+                delay: 4000,
+                duration: `infinite`,
+                easing: `easeOutCubic`,
+              }
+            ],
+          },
         }
       },
       {
@@ -848,7 +833,7 @@ const Scenes = {
               {
                 type: `bounce`,
                 fps: 60,
-                delay: 1500,
+                delay: 1600,
                 duration: `infinite`,
                 easing: `easeOutCubic`,
               }
