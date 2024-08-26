@@ -374,6 +374,7 @@ const Scenes = {
             {
               name: `saturn`,
               rotation: [0.3, -0.3, 0.2],
+              scale: [0, 0, 0],
               options: {
                 ball: null,
                 cable: null,
@@ -683,7 +684,7 @@ const Scenes = {
       {
         type: `plane`,
         options: {
-          position: [0, 0, 0],
+          position: [0, 0, -200],
           material: {
             type: `StandardBasic`,
             color: `Purple`,
@@ -692,52 +693,37 @@ const Scenes = {
         },
       },
       {
-        type: `OBJ`,
+        type: `rig`,
         options: {
           name: `airplane`,
-          scale: [0, 0, 0],
-          position: [0, 0, 0],
-          rotation: [0.8, 2.5, 0],
-          animations: [
-            {
-              type: `transform`,
-              from: {
-                scale: {
-                  x: 0,
-                  y: 0,
-                  z: 0,
-                },
-                position: {
-                  x: 0,
-                  y: 0,
-                  z: 0,
-                },
-              },
-              to: {
-                scale: {
-                  x: 1,
-                  y: 1,
-                  z: 1,
-                },
-                position: {
-                  x: 190,
-                  y: 75,
-                  z: 100,
-                },
-              },
-              fps: 60,
-              delay: 500,
-              duration: 1500,
-              easing: `easeOutCubic`,
-            },
-            {
-              type: `bounce`,
-              fps: 60,
-              delay: 1500,
-              duration: `infinite`,
-              easing: `easeOutCubic`,
+          object: {
+            type: `OBJ`,
+            options: {
+              name: `airplane`,
+              scale: [1, 1, 1],
+              rotation: [0, Math.PI / 2, 0],
             }
-          ],
+          },
+          options: {
+            position: [135, 0, 0],
+            animations: [
+              {
+                type: `custom`,
+                func: `Airplane`,
+                fps: 60,
+                duration: 2000,
+                delay: 2000,
+                easing: `easeOutExpo`,
+              },
+              {
+                type: `bounce`,
+                fps: 60,
+                delay: 4000,
+                duration: `infinite`,
+                easing: `easeOutCubic`,
+              }
+            ],
+          },
         }
       },
       {
@@ -749,10 +735,19 @@ const Scenes = {
           animations: [
             {
               type: `transform`,
-              scale: {
-                x: 0.4,
-                y: 0.4,
-                z: 0.4,
+              from: {
+                scale: {
+                  x: 0,
+                  y: 0,
+                  z: 0,
+                },
+              },
+              to: {
+                scale: {
+                  x: 0.4,
+                  y: 0.4,
+                  z: 0.4,
+                },
               },
               fps: 60,
               delay: 500,
@@ -765,26 +760,26 @@ const Scenes = {
               rotation: [0.2, -1.5, 1.3, `YZX`],
               animations: [
                 {
-                  type: `rotate`,
+                  type: `horizontalrotate`,
                   rotation: {
-                    x: (progress) => 0.2 - 0.6 * progress,
+                    x: 0.2,
                     y: -1.5,
                     z: 1.3,
-                    order: `YZX`
                   },
-                  fps: 60,
+                  order: `YZX`,
+                  coeff: 0.6,
                   duration: 500,
                   delay: 500,
                   easing: `easeInOutSine`,
                 },
                 {
-                  type: `rotate`,
+                  type: `verticalrotate`,
                   rotation: {
                     x: -0.4,
-                    y: (progress) => -1.5 - progress,
-                    z: (progress) => 1.3 * (1 - progress),
-                    order: `YZX`
+                    y: -1.5,
+                    z: 1.3,
                   },
+                  order: `YZX`,
                   fps: 60,
                   duration: 500,
                   delay: 1000,
@@ -795,9 +790,19 @@ const Scenes = {
             animations: [
               {
                 type: `transform`,
-                position: {
-                  y: 70,
-                  z: 60,
+                from: {
+                  position: {
+                    x: 0,
+                    y: 0,
+                    z: 0,
+                  },
+                },
+                to: {
+                  position: {
+                    x: 0,
+                    y: 70,
+                    z: 60,
+                  },
                 },
                 fps: 60,
                 delay: 500,
@@ -806,12 +811,19 @@ const Scenes = {
               },
               {
                 type: `transform`,
-                position: {
-                  x: -60,
-                  y: 220,
-                  z: 60,
-                  diminutiveY: 70,
-                  summandZ: 60,
+                from: {
+                  position: {
+                    x: 0,
+                    y: 70,
+                    z: 60,
+                  },
+                },
+                to: {
+                  position: {
+                    x: -60,
+                    y: -220,
+                    z: 120,
+                  },
                 },
                 fps: 60,
                 delay: 1000,
@@ -821,7 +833,7 @@ const Scenes = {
               {
                 type: `bounce`,
                 fps: 60,
-                delay: 1500,
+                delay: 1600,
                 duration: `infinite`,
                 easing: `easeOutCubic`,
               }

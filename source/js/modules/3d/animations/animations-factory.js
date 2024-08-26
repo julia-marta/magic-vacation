@@ -8,6 +8,7 @@ class AnimationsFactory {
     this.createSwingAnimation = this.createSwingAnimation.bind(this);
     this.createTailAnimation = this.createTailAnimation.bind(this);
     this.createLeafAnimation = this.createLeafAnimation.bind(this);
+    this.createAirplaneAnimation = this.createAirplaneAnimation.bind(this);
   }
 
   // создаёт и запускает анимации объекта
@@ -30,8 +31,11 @@ class AnimationsFactory {
         case `transform`:
           this.createTransformAnimation(object, animation);
           break;
-        case `rotate`:
-          this.createRotateAnimation(object, animation);
+        case `horizontalrotate`:
+          this.createHorizontalRotateAnimation(object, animation);
+          break;
+        case `verticalrotate`:
+          this.createVerticalRotateAnimation(object, animation);
           break;
         case `bounce`:
           this.createBounceAnimation(object, animation);
@@ -47,7 +51,7 @@ class AnimationsFactory {
 
   // создаёт анимации трансформаций (масштаб, положение)
   createTransformAnimation(object, options) {
-    const {fps, duration, delay, easing, from, to, scale, position} = options;
+    const {fps, duration, delay, easing, from, to} = options;
     const animation = new Animation({
       func: (progress) => {
         if (from && to && from.scale && to.scale) {
@@ -63,45 +67,6 @@ class AnimationsFactory {
           const positionZ = from.position.z + (to.position.z - from.position.z) * progress;
           object.position.set(positionX, positionY, positionZ);
         }
-
-        if (scale) {
-          const scaleX = scale.x * progress;
-          const scaleY = scale.y * progress;
-          const scaleZ = scale.z * progress;
-          object.scale.set(scaleX, scaleY, scaleZ);
-        }
-
-        if (position) {
-          if (position.x) {
-            if (position.diminutiveX) {
-              object.position.x = position.diminutiveX - progress * position.x;
-            } else if (position.summandX) {
-              object.position.x = position.summandX + progress * position.x;
-            } else {
-              object.position.x = progress * position.x;
-            }
-          }
-          if (position.y) {
-            if (position.diminutiveY) {
-              object.position.y = position.diminutiveY - progress * position.y;
-            } else if (position.summandY) {
-              object.position.y = position.summandY + progress * position.y;
-            } else {
-              object.position.y = progress * position.y;
-            }
-          }
-          if (position.z) {
-            if (position.z) {
-              if (position.diminutiveZ) {
-                object.position.z = position.diminutiveZ - progress * position.z;
-              } else if (position.summandZ) {
-                object.position.z = position.summandZ + progress * position.z;
-              } else {
-                object.position.z = progress * position.z;
-              }
-            }
-          }
-        }
       },
       duration,
       fps,
@@ -111,16 +76,32 @@ class AnimationsFactory {
     animation.start();
   }
 
-  // создаёт анимацию поворота
-  createRotateAnimation(object, options) {
-    const {fps, duration, delay, easing, rotation} = options;
+  // создаёт анимацию поворота по горизонтали
+  createHorizontalRotateAnimation(object, options) {
+    const {fps, duration, delay, easing, rotation, coeff, order} = options;
     const animation = new Animation({
       func: (progress) => {
-        const {x, y, z, order} = rotation;
-        const rotationX = typeof (x) === `function` ? x(progress) : x;
-        const rotationY = typeof (y) === `function` ? y(progress) : y;
-        const rotationZ = typeof (z) === `function` ? z(progress) : z;
-        object.rotation.set(rotationX, rotationY, rotationZ, order);
+        const {x, y, z} = rotation;
+        const rotationX = x - coeff * progress;
+        object.rotation.set(rotationX, y, z, order);
+      },
+      duration,
+      fps,
+      delay,
+      easing: this.getEasing(easing),
+    });
+    animation.start();
+  }
+
+  // создаёт анимацию поворота по вертикали
+  createVerticalRotateAnimation(object, options) {
+    const {fps, duration, delay, easing, rotation, order} = options;
+    const animation = new Animation({
+      func: (progress) => {
+        const {x, y, z} = rotation;
+        const rotationY = y - progress;
+        const rotationZ = z * (1 - progress);
+        object.rotation.set(x, rotationY, rotationZ, order);
       },
       duration,
       fps,
@@ -249,6 +230,39 @@ class AnimationsFactory {
         const time = ((currentTime - startTime) / coeff) % 16;
 
         object.rotation.x = amplitude * Math.exp(-0.2 * time) * Math.cos(delayCoeff * time + Math.PI / 2);
+      },
+      duration,
+      fps,
+      delay,
+      easing: this.getEasing(easing),
+    });
+    animation.start();
+  }
+
+  // создаёт анимацию вылета самолёта из замочной скважины по спирали (с использованием техники Rigging)
+  createAirplaneAnimation(object, options) {
+    const {fps, duration, delay, easing} = options;
+    // получим изначальные значения всех параметров из Rig
+    const initialFightRadius = object.flightRadius;
+    const initialFightHeight = object.flightHeight;
+    const initialFlightYaw = object.flightYaw;
+    const initialFlightPitch = object.flightPitch;
+    const initialFlightRoll = object.flightRoll;
+
+    const animation = new Animation({
+      func: (progress) => {
+        // изменяем радиус полёта
+        object.flightRadius = initialFightRadius + (object.maxFlightRadius - initialFightRadius) * progress;
+        // изменяем высоту полёта
+        object.flightHeight = initialFightHeight + (object.maxFlightHeight - initialFightHeight) * progress;
+        // изменяем угол рыскания
+        object.flightYaw = initialFlightYaw + (progress * 5 * Math.PI) / 4;
+        // изменяем угол тангажа
+        object.flightPitch = initialFlightPitch + (progress * Math.PI) / 5;
+        // изменяем угол крена
+        object.flightRoll = progress < 0.5 ? initialFlightRoll - progress * Math.PI : initialFlightRoll - 0.5 * Math.PI + (progress - 0.5) * Math.PI;
+        // запускаем в риге проверку изменений параметров
+        object.invalidate();
       },
       duration,
       fps,

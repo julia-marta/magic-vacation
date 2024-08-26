@@ -3,6 +3,7 @@ import {SVGLoader} from 'three/examples/jsm/loaders/SVGLoader';
 import {OBJLoader} from "three/examples/jsm/loaders/OBJLoader";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import MaterialsFactory from '../materials/materials-factory.js';
+import AirplaneRig from "../rigs/airplane.js";
 import Pyramid from "./pyramid.js";
 import Lantern from "./lantern.js";
 import Snowman from "./snowman.js";
@@ -191,6 +192,17 @@ class ObjectsFactory {
     this.loadGLTF(finalConfig);
   }
 
+  // создаёт объект Rig
+  createRig(config) {
+    const {name, object, options} = config;
+    // получаем Rig-класс для объекта
+    const Rig = this.getRig(name);
+    if (Rig) {
+      const rig = new Rig(object);
+      this.onCreate(rig, options);
+    }
+  }
+
   // берёт готовый конфиг для данного типа объекта и на его основе создаёт модель
   get(object) {
     const {type, options} = object;
@@ -230,6 +242,9 @@ class ObjectsFactory {
       case `glTF`:
         this.create3DglTF(options);
         break;
+      case `rig`:
+        this.createRig(options);
+        break;
       default:
         break;
     }
@@ -263,6 +278,11 @@ class ObjectsFactory {
   // возвращает конфиг 3D объекта типа glTF из библиотеки конфигов
   getGLTFConfig(name) {
     return {...ObjectsFactory.glTFConfigs[name]};
+  }
+
+  // возвращает класс Rig объекта из библиотеки Rig-классов
+  getRig(name) {
+    return ObjectsFactory.Rigs[name];
   }
 
 // библиотека расширяемых конфигов для всех типов объектов, включая дочерние
@@ -336,6 +356,15 @@ ObjectsFactory.Configs = {
     type: `glTF`,
     options: {},
   },
+  rig: {
+    type: `rig`,
+    options: {},
+  },
+};
+
+// библиотека Rig-классов для объектов
+ObjectsFactory.Rigs = {
+  airplane: AirplaneRig,
 };
 
 // библиотека конструкторов для дочерних объектов / групповых объектов
