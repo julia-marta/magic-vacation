@@ -9,6 +9,7 @@ class AnimationsFactory {
     this.createTailAnimation = this.createTailAnimation.bind(this);
     this.createLeafAnimation = this.createLeafAnimation.bind(this);
     this.createAirplaneAnimation = this.createAirplaneAnimation.bind(this);
+    this.createCameraAnimation = this.createCameraAnimation.bind(this);
   }
 
   // создаёт и запускает анимации объекта
@@ -268,6 +269,35 @@ class AnimationsFactory {
       fps,
       delay,
       easing: this.getEasing(easing),
+    });
+    animation.start();
+  }
+
+  // создаёт анимацию смены состояния камеры (с использованием техники Rigging)
+  createCameraAnimation(object, options) {
+    const {depth, yawAngle, horizonAngle, fps, duration, delay, easing, callback} = options;
+    // получим изначальные значения всех параметров из Rig
+    const initialDepth = object.depth;
+    const initialYawAngle = object.yawAngle;
+    const initialHorizonAngle = object.horizonAngle;
+
+    const animation = new Animation({
+      func: (progress) => {
+        // изменяем глубину
+        object.depth = initialDepth + (depth - initialDepth) * progress;
+        // изменяем горизонтальный угол вращения
+        object.horizonAngle = initialHorizonAngle + (horizonAngle - initialHorizonAngle) * progress;
+        // изменяем вертикальный угол вращения
+        object.yawAngle = initialYawAngle + (yawAngle - initialYawAngle) * progress;
+
+        // запускаем в риге проверку изменений параметров
+        object.invalidate();
+      },
+      duration,
+      fps,
+      delay,
+      easing: this.getEasing(easing),
+      callback,
     });
     animation.start();
   }

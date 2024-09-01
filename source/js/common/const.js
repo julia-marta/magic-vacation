@@ -7,7 +7,7 @@ export const Scene3DSettings = {
   far: 5500,
   fov: 35,
   near: 1,
-  cameraPozitionZ: 1405,
+  cameraPozitionZ: 5,
   cameraPozitionY: 0,
 };
 
