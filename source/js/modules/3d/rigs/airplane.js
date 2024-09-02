@@ -66,7 +66,7 @@ class AirplaneRig extends THREE.Group {
     this._flightHeight = height;
     this._flightHeightChanged = true;
   }
-  // получения значения угла рыскания
+  // получение значения угла рыскания
   get flightYaw() {
     return this._flightYaw;
   }

@@ -6,6 +6,11 @@ export const Screens = {
   GAME: 4,
 };
 
+export const Scenes = {
+  0: `keyhole`,
+  1: `room1`,
+};
+
 export const ColorThemes = {
   0: `purple`,
   2: `blue`,
@@ -22,4 +27,15 @@ export const Slider3DPlanes = {
   5: `story3`,
   6: `story4`,
   7: `story4`,
+};
+
+export const SliderScenes = {
+  0: `room1`,
+  1: `room1`,
+  2: `room2`,
+  3: `room2`,
+  4: `room3`,
+  5: `room3`,
+  6: `room4`,
+  7: `room4`,
 };

@@ -2,10 +2,10 @@ import throttle from "lodash/throttle";
 import PageSwitchHandler from "./page-switch-handler.js";
 import Timer from "./timer.js";
 import PrizesAnimation from "./prizes-animation.js";
-import {Screens, ColorThemes, Slider3DPlanes} from "../common/enums.js";
+import {Screens, ColorThemes, Scenes, SliderScenes} from "../common/enums.js";
 import {setColorTheme} from "../common/utils.js";
 import {PRIZES_ANIMATIONS} from "../data/animations.js";
-import {ScreensScenes} from "../data/scenes.js";
+
 
 export default class FullPageScroll {
   constructor(scene3D) {
@@ -86,17 +86,19 @@ export default class FullPageScroll {
     this.emitChangeDisplayEvent();
     // добавляем сцену в зависимости от id экрана
     const activeScreenId = this.screenElements[this.activeScreen].id;
-    const activeScreenScene = ScreensScenes[activeScreenId];
 
     if (this.activeScreen === Screens.TOP) {
-      this.scene3D.setScenePlane(activeScreenId);
-      this.scene3D.initScenes(activeScreenScene);
+      // берём id конкретной сцены, соответствующей данному экрану
+      const activeSceneId = Scenes[this.activeScreen];
+      this.scene3D.initScenes(activeScreenId, activeSceneId);
     }
 
     if (this.activeScreen === Screens.STORY) {
+      // берём id конкретной сцены, соответствующей текущему слайду в свайпере
       const slider = this.screenElements[this.activeScreen].children[0].dom7ElementDataStorage.swiper;
       const activeSlide = slider.realIndex;
-      this.scene3D.setScenePlane(Slider3DPlanes[activeSlide]);
+      const activeSceneId = SliderScenes[activeSlide];
+      this.scene3D.initScenes(activeScreenId, activeSceneId);
       setColorTheme(ColorThemes, 0);
     } else {
       setColorTheme(ColorThemes, 6);

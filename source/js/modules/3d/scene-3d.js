@@ -2,8 +2,9 @@ import * as THREE from "three";
 import {GUI} from "dat.gui";
 import SceneGroup from "./scenes/scene-group.js";
 import PlanesGroup from "./scenes/planes-group.js";
+import CameraRig from "./rigs/camera.js";
 import Animation from "../animation.js";
-import {ScreensScenes} from "../../data/scenes.js";
+import {Scenes, ScreensScenes} from "../../data/scenes.js";
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 import Stats from 'three/examples/jsm/libs/stats.module';
 
@@ -23,6 +24,7 @@ export default class Scene3D {
     this.planes = {};
     this.lights = null;
     this.isLightAdded = false;
+    this.renderedScenes = [];
     this.initScenes = this.initScenes.bind(this);
     this.setScenePlane = this.setScenePlane.bind(this);
   }
@@ -32,9 +34,8 @@ export default class Scene3D {
     this.setup();
     this.initEventListeners();
     this.updateSize();
-    this.initHelpers();
+    // this.initHelpers();
     this.startAnimations();
-    this.initScenes(ScreensScenes[`all`]);
   }
 
   // устанавливает обработчик события ресайза на окно
@@ -84,8 +85,8 @@ export default class Scene3D {
 
   // рендер глобальной сцены
   render() {
-    this.controls.update();
-    this.stats.update();
+    // this.controls.update();
+    // this.stats.update();
     this.renderer.render(this.scene, this.camera);
   }
 
@@ -108,29 +109,52 @@ export default class Scene3D {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
-  // инициирует локальные сцены и источники света
-  initScenes(data) {
-    const {type, lights, scenes, objects, position, rotation} = data;
+  // добавляет конструкции Rig для камеры
+  addCameraRig(state) {
+    this.cameraRig = new CameraRig(state);
+    this.cameraRig.addObjectToCameraNull(this.camera);
+    this.cameraRig.addObjectToCameraNull(this.lights);
+    this.scene.add(this.cameraRig);
+  }
 
-    switch (type) {
-      case `planes`:
-        this.addPlanesGroup(objects);
-        break;
-      case `scenesGroup`:
-        scenes.forEach((scene) => {
-          this.addSceneGroup(scene.objects, scene.position, scene.rotation);
-        });
-        break;
-      default:
-        this.addSceneGroup(objects, position, rotation);
-        break;
-    }
+  // инициирует локальные сцены, источники света, устанавливает состояние камеры
+  initScenes(screen, currentScene) {
+    const screenSceneData = ScreensScenes[screen];
+    const currentSceneData = Scenes[currentScene];
+    const {name, type, lights, scenes, objects, position, rotation} = screenSceneData;
+    const {cameraState} = currentSceneData;
+    const isSceneRendered = this.renderedScenes.includes(name);
 
-    if (lights) {
-      if (this.isLightAdded) {
-        return;
+    // если сцена ещё не отрисована
+    if (!isSceneRendered) {
+      // отрисовываем сцену, в зависимости от типа
+      switch (type) {
+        case `planes`:
+          this.addPlanesGroup(objects);
+          break;
+        case `scenesGroup`:
+          scenes.forEach((scene) => {
+            this.addSceneGroup(scene.objects, scene.position, scene.rotation);
+          });
+          break;
+        default:
+          this.addSceneGroup(objects, position, rotation);
+          break;
       }
-      this.setLights();
+      // добавляем свет
+      if (lights && !this.isLightAdded) {
+        this.setLights();
+      }
+      // добавляем Rig с камерой
+      if (cameraState && !this.cameraRig) {
+        this.addCameraRig(cameraState);
+      }
+      // сохраняем отрисованную сцену
+      this.renderedScenes.push(name);
+      // если сцена уже отрисована
+    } else {
+      // устанавливаем состояние камеры для конкретной сцены
+      this.cameraRig.changeState(cameraState);
     }
   }
 
@@ -337,25 +361,25 @@ export default class Scene3D {
       if (light.angle || light.angle === 0) {
         const radian = (light.angle * Math.PI) / 180;
         const targetObject = new THREE.Object3D();
-        targetObject.position.y = -this.camera.position.z * Math.tan(radian);
-        this.scene.add(targetObject);
+        targetObject.position.set(0, -1000 * Math.tan(radian), -1000);
+        this.lights.add(targetObject);
         light = {...light, target: targetObject};
       }
       switch (light.type) {
         case `point`: {
           const lightUnit = this.createPointLight(light);
           this.lights.add(lightUnit);
-          if (light.controls) {
-            this.createLightsControls(lightUnit, light.controls);
-          }
+          // if (light.controls) {
+          //   this.createLightsControls(lightUnit, light.controls);
+          // }
           break;
         }
         case `directional`: {
           const lightUnit = this.createDirectionalLight(light);
           this.lights.add(lightUnit);
-          if (light.controls) {
-            this.createLightsControls(lightUnit, light.controls);
-          }
+          // if (light.controls) {
+          //   this.createLightsControls(lightUnit, light.controls);
+          // }
           break;
         }
         case `ambient`: {
