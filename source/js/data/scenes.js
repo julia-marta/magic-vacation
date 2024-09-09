@@ -366,6 +366,7 @@ export const Scenes = {
   },
   keyhole: {
     type: `scene`,
+    name: `keyhole`,
     objects: [
       {
         type: `group`,
@@ -376,6 +377,7 @@ export const Scenes = {
               rotation: [0.3, -0.3, 0.2],
               scale: [0, 0, 0],
               options: {
+                name: `saturn`,
                 ball: null,
                 cable: null,
                 animations: [
@@ -421,49 +423,6 @@ export const Scenes = {
               }
             },
           ],
-          scale: [0, 0, 0],
-          position: [0, 0, 0],
-          animations: [
-            {
-              type: `transform`,
-              from: {
-                scale: {
-                  x: 0,
-                  y: 0,
-                  z: 0,
-                },
-                position: {
-                  x: 0,
-                  y: 0,
-                  z: 0,
-                },
-              },
-              to: {
-                scale: {
-                  x: 0.5,
-                  y: 0.5,
-                  z: 0.5,
-                },
-                position: {
-                  x: 300,
-                  y: -100,
-                  z: 185,
-                },
-
-              },
-              fps: 60,
-              delay: 500,
-              duration: 1500,
-              easing: `easeOutCubic`,
-            },
-            {
-              type: `bounce`,
-              fps: 60,
-              delay: 1500,
-              duration: `infinite`,
-              easing: `easeOutCubic`,
-            }
-          ],
         }
       },
       {
@@ -474,6 +433,7 @@ export const Scenes = {
               type: `shape`,
               name: `flamingo`,
               options: {
+                name: `flamingo`,
                 scale: [0, 0, 0],
                 position: [0, 0, 0],
                 rotation: [6.1, 0.2, 3.5],
@@ -523,6 +483,7 @@ export const Scenes = {
               type: `shape`,
               name: `snowflake`,
               options: {
+                name: `snowflake`,
                 scale: [0, 0, 0],
                 position: [0, 0, 0],
                 rotation: [6.1, 0.8, 0.25],
@@ -572,6 +533,7 @@ export const Scenes = {
               type: `shape`,
               name: `question`,
               options: {
+                name: `question`,
                 scale: [0, 0, 0],
                 position: [0, 0, 0],
                 rotation: [5.4, 3.1, 2.8],
@@ -621,6 +583,7 @@ export const Scenes = {
               type: `shape`,
               name: `leaf`,
               options: {
+                name: `leaf`,
                 scale: [0, 0, 0],
                 position: [0, 0, 0],
                 rotation: [6.1, 2.5, 4.4],
@@ -673,6 +636,7 @@ export const Scenes = {
                 depth: 20,
               },
               options: {
+                name: `keyhole`,
                 scale: [1, 1, 1],
                 rotation: [Math.PI, Math.PI, 0],
                 position: [1000, 1000, 0],
@@ -684,6 +648,7 @@ export const Scenes = {
       {
         type: `plane`,
         options: {
+          name: `plane`,
           position: [0, 0, -200],
           material: {
             type: `StandardBasic`,
@@ -705,6 +670,7 @@ export const Scenes = {
             }
           },
           options: {
+            name: `airplane`,
             position: [135, 0, 0],
             animations: [
               {
@@ -756,6 +722,7 @@ export const Scenes = {
             },
           ],
           outer: {
+            name: `suitcaseOuter`,
             intermediate: {
               rotation: [0.2, -1.5, 1.3, `YZX`],
               animations: [
@@ -900,6 +867,7 @@ export const Scenes = {
   },
   room1: {
     type: `scene`,
+    name: `room1`,
     position: [0, -700, -3270],
     objects: [
       {
@@ -919,6 +887,7 @@ export const Scenes = {
       {
         type: `circle`,
         options: {
+          name: `circle`,
           position: [0, 0, 0],
           rotation: [-Math.PI / 2, 0, Math.PI + Math.PI / 4],
           material: {
@@ -936,12 +905,16 @@ export const Scenes = {
               name: `carpet`,
               position: [0, 0, 0],
               rotation: [0, -Math.PI / 4, 0],
+              options: {
+                name: `carpet`,
+              },
             },
             {
               name: `saturn`,
               position: [0, -1000, 0],
               rotation: [0, -Math.PI, 0],
               options: {
+                name: `saturn`,
                 animations: [
                   {
                     type: `traverse`,
@@ -960,6 +933,7 @@ export const Scenes = {
                 ],
               },
               outer: {
+                name: `saturnOuter`,
                 position: [0, 1500, 280],
                 animations: [
                   {
@@ -991,6 +965,7 @@ export const Scenes = {
                 depth: 4,
               },
               options: {
+                name: `flower`,
                 scale: [1, 1, 1],
                 rotation: [Math.PI, -0.8, 0],
                 position: [-260, 400, 360],
@@ -1039,9 +1014,141 @@ export const Scenes = {
       yawAngle: 0,
       horizonAngle: -(15 * Math.PI / 180),
     },
+    // currentAnimation: {
+    //   scene: `suitcase`,
+    //   object: `suitcase`,
+    //   animations: [
+    //     {
+    //       type: `transform`,
+    //       from: {
+    //         scale: {
+    //           x: 1,
+    //           y: 1,
+    //           z: 1,
+    //         },
+    //         position: {
+    //           x: -350,
+    //           y: 200,
+    //           z: 750,
+    //         },
+    //       },
+    //       to: {
+    //         scale: {
+    //           x: 0.95,
+    //           y: 1.1,
+    //           z: 0.95
+    //         },
+    //         position: {
+    //           x: -350,
+    //           y: 0,
+    //           z: 750,
+    //         },
+    //       },
+    //       fps: 60,
+    //       delay: 2000,
+    //       duration: 300,
+    //       easing: `easeInCubic`,
+    //     },
+    //     {
+    //       type: `transform`,
+    //       from: {
+    //         scale: {
+    //           x: 0.95,
+    //           y: 1.1,
+    //           z: 0.95
+    //         },
+    //         position: {
+    //           x: -350,
+    //           y: 0,
+    //           z: 750,
+    //         },
+    //       },
+    //       to: {
+    //         scale: {
+    //           x: 1.05,
+    //           y: 0.95,
+    //           z: 1.05
+    //         },
+    //         position: {
+    //           x: -350,
+    //           y: 2,
+    //           z: 750,
+    //         },
+    //       },
+    //       fps: 60,
+    //       delay: 2300,
+    //       duration: 200,
+    //       easing: `easeOutCubic`,
+    //     },
+    //     {
+    //       type: `transform`,
+    //       from: {
+    //         scale: {
+    //           x: 1.05,
+    //           y: 0.95,
+    //           z: 1.05
+    //         },
+    //         position: {
+    //           x: -350,
+    //           y: 2,
+    //           z: 750,
+    //         },
+    //       },
+    //       to: {
+    //         scale: {
+    //           x: 0.98,
+    //           y: 1.04,
+    //           z: 0.98
+    //         },
+    //         position: {
+    //           x: -350,
+    //           y: 1,
+    //           z: 750,
+    //         },
+    //       },
+    //       fps: 60,
+    //       delay: 2500,
+    //       duration: 200,
+    //       easing: `easeInOutSine`,
+    //     },
+    //     {
+    //       type: `transform`,
+    //       from: {
+    //         scale: {
+    //           x: 0.98,
+    //           y: 1.04,
+    //           z: 0.98
+    //         },
+    //         position: {
+    //           x: -350,
+    //           y: 1,
+    //           z: 750,
+    //         },
+    //       },
+    //       to: {
+    //         scale: {
+    //           x: 1,
+    //           y: 1,
+    //           z: 1,
+    //         },
+    //         position: {
+    //           x: -350,
+    //           y: 0,
+    //           z: 750,
+    //         },
+    //       },
+    //       fps: 60,
+    //       delay: 2700,
+    //       duration: 200,
+    //       easing: `easeInCubic`,
+    //     },
+    //   ],
+    //   isPlayOnce: true,
+    // },
   },
   room2: {
     type: `scene`,
+    name: `room2`,
     position: [0, -700, -3270],
     rotation: [0, Math.PI / 2, 0],
     objects: [
@@ -1062,6 +1169,7 @@ export const Scenes = {
       {
         type: `circle`,
         options: {
+          name: `circle`,
           position: [0, 0, 0],
           rotation: [-Math.PI / 2, 0, Math.PI + Math.PI / 4],
           material: {
@@ -1078,11 +1186,17 @@ export const Scenes = {
             {
               name: `pyramid`,
               position: [-25, 140, 325],
+              options: {
+                name: `pyramid`,
+              },
             },
             {
               name: `lantern`,
               rotation: [0, Math.PI / 8, 0],
               position: [390, 435, 540],
+              options: {
+                name: `lantern`,
+              },
             },
           ],
         }
@@ -1100,10 +1214,12 @@ export const Scenes = {
                 bevelSize: 1,
               },
               options: {
+                name: `leaf1`,
                 scale: [2.5, 2.5, 2.5],
                 rotation: [2.9, -Math.PI / 2, 0],
                 position: [0, 320, 80],
                 outer: {
+                  name: `leaf1Outer`,
                   intermediate: {
                     position: [80, 20, 330],
                     animations: [
@@ -1132,10 +1248,12 @@ export const Scenes = {
                 bevelSize: 1,
               },
               options: {
+                name: `leaf2`,
                 scale: [1.5, 1.5, 1.5],
                 rotation: [-2.6, -Math.PI / 2, 0],
                 position: [0, 85, 170],
                 outer: {
+                  name: `leaf2Outer`,
                   intermediate: {
                     position: [80, 20, 330],
                     animations: [
@@ -1179,6 +1297,7 @@ export const Scenes = {
   room3:
   {
     type: `scene`,
+    name: `room3`,
     position: [0, -700, -3270],
     rotation: [0, Math.PI, 0],
     objects: [
@@ -1199,6 +1318,7 @@ export const Scenes = {
       {
         type: `circle`,
         options: {
+          name: `circle`,
           position: [0, 0, 0],
           rotation: [-Math.PI / 2, 0, Math.PI + Math.PI / 4],
           material: {
@@ -1216,15 +1336,24 @@ export const Scenes = {
               name: `road`,
               rotation: [0, -Math.PI / 4, 0],
               position: [0, 0, 0],
+              options: {
+                name: `road`,
+              },
             },
             {
               name: `fence`,
               position: [0, 0, 0],
+              options: {
+                name: `fence`,
+              },
             },
             {
               name: `snowman`,
               rotation: [0, Math.PI / 4, 0],
               position: [-150, 60, 400],
+              options: {
+                name: `snowman`,
+              },
             }
           ],
         }
@@ -1272,6 +1401,7 @@ export const Scenes = {
   },
   room4: {
     type: `scene`,
+    name: `room4`,
     position: [0, -700, -3270],
     rotation: [0, Math.PI + Math.PI / 2, 0],
     objects: [
@@ -1292,6 +1422,7 @@ export const Scenes = {
       {
         type: `circle`,
         options: {
+          name: `circle`,
           position: [0, 0, 0],
           rotation: [-Math.PI / 2, 0, Math.PI + Math.PI / 4],
           material: {
@@ -1310,6 +1441,7 @@ export const Scenes = {
               rotation: [0, -Math.PI / 4, 0],
               position: [0, 0, 0],
               options: {
+                name: `carpet`,
                 material: {
                   type: `CustomSoftCarpet`,
                   color: {
@@ -1323,6 +1455,7 @@ export const Scenes = {
               name: `saturn`,
               position: [100, 600, 900],
               options: {
+                name: `saturn`,
                 materials: {
                   planet: {
                     type: `StandardSoft`,
@@ -1357,6 +1490,7 @@ export const Scenes = {
                 depth: 4,
               },
               options: {
+                name: `flower`,
                 scale: [1, 1, 1],
                 rotation: [Math.PI, -0.8, 0],
                 position: [-260, 400, 360],
@@ -1431,6 +1565,7 @@ export const Scenes = {
   },
   suitcase: {
     type: `scene`,
+    name: `suitcase`,
     position: [0, -700, -3270],
     objects: [
       {
@@ -1438,133 +1573,6 @@ export const Scenes = {
         options: {
           name: `suitcase`,
           rotation: [0, -0.4, 0],
-          animations: [
-            {
-              type: `transform`,
-              from: {
-                scale: {
-                  x: 1,
-                  y: 1,
-                  z: 1,
-                },
-                position: {
-                  x: -350,
-                  y: 200,
-                  z: 750,
-                },
-              },
-              to: {
-                scale: {
-                  x: 0.95,
-                  y: 1.1,
-                  z: 0.95
-                },
-                position: {
-                  x: -350,
-                  y: 0,
-                  z: 750,
-                },
-              },
-              fps: 60,
-              delay: 500,
-              duration: 300,
-              easing: `easeInCubic`,
-            },
-            {
-              type: `transform`,
-              from: {
-                scale: {
-                  x: 0.95,
-                  y: 1.1,
-                  z: 0.95
-                },
-                position: {
-                  x: -350,
-                  y: 0,
-                  z: 750,
-                },
-              },
-              to: {
-                scale: {
-                  x: 1.05,
-                  y: 0.95,
-                  z: 1.05
-                },
-                position: {
-                  x: -350,
-                  y: 2,
-                  z: 750,
-                },
-              },
-              fps: 60,
-              delay: 800,
-              duration: 200,
-              easing: `easeOutCubic`,
-            },
-            {
-              type: `transform`,
-              from: {
-                scale: {
-                  x: 1.05,
-                  y: 0.95,
-                  z: 1.05
-                },
-                position: {
-                  x: -350,
-                  y: 2,
-                  z: 750,
-                },
-              },
-              to: {
-                scale: {
-                  x: 0.98,
-                  y: 1.04,
-                  z: 0.98
-                },
-                position: {
-                  x: -350,
-                  y: 1,
-                  z: 750,
-                },
-              },
-              fps: 60,
-              delay: 1000,
-              duration: 200,
-              easing: `easeInOutSine`,
-            },
-
-            {
-              type: `transform`,
-              from: {
-                scale: {
-                  x: 0.98,
-                  y: 1.04,
-                  z: 0.98
-                },
-                position: {
-                  x: -350,
-                  y: 1,
-                  z: 750,
-                },
-              },
-              to: {
-                scale: {
-                  x: 1,
-                  y: 1,
-                  z: 1,
-                },
-                position: {
-                  x: -350,
-                  y: 0,
-                  z: 750,
-                },
-              },
-              fps: 60,
-              delay: 1200,
-              duration: 200,
-              easing: `easeInCubic`,
-            },
-          ],
         }
       },
     ],

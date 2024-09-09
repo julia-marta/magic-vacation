@@ -76,21 +76,25 @@ export default class FullPageScroll {
     }
     changeScreen();
   }
-
+  // меняет отображаемую страницу, рисует нужные 3D сцены и запускает необходимые анимации
   changePageDisplay() {
+    // делаем текущий экран видимым
     this.changeVisibilityDisplay();
+    // меняем активный пункт меню
     this.changeActiveMenuItem();
-    this.pageAnimationSwitcher.runAnimationScheme(
-        this.screenElements[this.activeScreen].id
-    );
+    // передаём на body событие смены экрана
     this.emitChangeDisplayEvent();
-    // добавляем сцену в зависимости от id экрана
+    // определяем id активного экрана
     const activeScreenId = this.screenElements[this.activeScreen].id;
-
+    // запускаем css анимации в зависимости от id экрана
+    this.pageAnimationSwitcher.runAnimationScheme(activeScreenId);
+    // добавляем сцену в зависимости от id экрана
     if (this.activeScreen === Screens.TOP) {
       // берём id конкретной сцены, соответствующей данному экрану
       const activeSceneId = Scenes[this.activeScreen];
+      // отрисовываем конкретную сцену, соответсвующую данном экрану
       this.scene3D.initScenes(activeScreenId, activeSceneId);
+
     }
 
     if (this.activeScreen === Screens.STORY) {
@@ -115,8 +119,15 @@ export default class FullPageScroll {
     } else {
       this.gameTimer.destroyTimer();
     }
+
+    // тут надо навести порядок
+
+    // потом летят предметы из скважины и чемодан чуть позже
+    // с середины где-то появляются даты проведения
+    // последним вылетает самолёт
   }
 
+  // меняет видимость экранов (добавляет и убирает соответствующие классы active и screen--hidden)
   changeVisibilityDisplay() {
     this.screenElements.forEach((screen) => {
       screen.classList.add(`screen--hidden`);
@@ -128,6 +139,7 @@ export default class FullPageScroll {
     }, 100);
   }
 
+  // меняет активный пункт меню
   changeActiveMenuItem() {
     const activeItem = Array.from(this.menuElements).find(
         (item) => item.dataset.href === this.screenElements[this.activeScreen].id
@@ -137,7 +149,7 @@ export default class FullPageScroll {
       activeItem.classList.add(`active`);
     }
   }
-
+  // передаёт кастомное событие на body (пока не используется)
   emitChangeDisplayEvent() {
     const event = new CustomEvent(`screenChanged`, {
       detail: {

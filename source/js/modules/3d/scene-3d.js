@@ -25,6 +25,7 @@ export default class Scene3D {
     this.lights = null;
     this.isLightAdded = false;
     this.renderedScenes = [];
+    this.childScenes = {};
     this.initScenes = this.initScenes.bind(this);
     this.setScenePlane = this.setScenePlane.bind(this);
   }
@@ -122,7 +123,7 @@ export default class Scene3D {
     const screenSceneData = ScreensScenes[screen];
     const currentSceneData = Scenes[currentScene];
     const {name, type, lights, scenes, objects, position, rotation} = screenSceneData;
-    const {cameraState} = currentSceneData;
+    const {cameraState, currentAnimation} = currentSceneData;
     const isSceneRendered = this.renderedScenes.includes(name);
 
     // если сцена ещё не отрисована
@@ -134,7 +135,7 @@ export default class Scene3D {
           break;
         case `scenesGroup`:
           scenes.forEach((scene) => {
-            this.addSceneGroup(scene.objects, scene.position, scene.rotation);
+            this.addSceneGroup(scene.name, scene.objects, scene.position, scene.rotation);
           });
           break;
         default:
@@ -155,22 +156,32 @@ export default class Scene3D {
     } else {
       // устанавливаем состояние камеры для конкретной сцены
       this.cameraRig.changeState(cameraState);
+      // если есть анимация, которая должна запускаться на конкретной сцене
+      if (currentAnimation) {
+        // находим сцену, которой принадлежит анимированный объект
+        const scene = this.childScenes[currentAnimation.scene];
+        // запускаем анимации нужного объекта на искомой сцене
+        scene.runObjectAnimations(currentAnimation.object, currentAnimation.animations, currentAnimation.isPlayOnce);
+      }
     }
   }
 
   // добавляет локальную сцену из группы объектов
-  addSceneGroup(objects, position, rotation) {
+  addSceneGroup(name, objects, position, rotation) {
     const sceneGroup = new SceneGroup(objects);
-    if (sceneGroup) {
 
+    if (sceneGroup) {
+      if (name) {
+        sceneGroup.name = name;
+      }
       if (position) {
         sceneGroup.position.set(...position);
       }
-
       if (rotation) {
         sceneGroup.rotation.set(...rotation);
       }
-
+      // сохраняем отрисованную локальную сцену
+      this.childScenes[name] = sceneGroup;
       this.scene.add(sceneGroup);
       this.render();
     }
