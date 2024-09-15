@@ -22,7 +22,9 @@ export default class Scene3D {
     this.cameraPozitionY = options.cameraPozitionY;
     this.aspectRatio = this.width / this.height;
     this.planes = {};
-    this.lights = null;
+    this.directionalLight = null;
+    this.pointLight = null;
+    this.ambientLight = null;
     this.isLightAdded = false;
     this.renderedScenes = [];
     this.childScenes = {};
@@ -114,8 +116,12 @@ export default class Scene3D {
   // добавляет конструкции Rig для камеры
   addCameraRig(state) {
     this.cameraRig = new CameraRig(state);
+    // камеру и направленный источник света добавляем на внешнюю оболочку Rig конструкции
     this.cameraRig.addObjectToCameraNull(this.camera);
-    this.cameraRig.addObjectToCameraNull(this.lights);
+    this.cameraRig.addObjectToCameraNull(this.directionalLight);
+    // точечные источники добавляем в группу вертикального вращения Rig конструкции
+    this.cameraRig.addObjectToYawTrack(this.pointLight);
+    // добавляем Rig на глобальную сцену
     this.scene.add(this.cameraRig);
   }
 
@@ -348,7 +354,7 @@ export default class Scene3D {
     }
 
     if (shadow) {
-      light.castShadow = false;
+      light.castShadow = true;
       light.shadow.mapSize.width = shadow.mapSize;
       light.shadow.mapSize.height = shadow.mapSize;
       light.shadow.camera.near = shadow.near;
@@ -389,20 +395,28 @@ export default class Scene3D {
   // создаёт нужные типы света на основе конфига, добавляет их на глобальную сцену
   setLights() {
     this.isLightAdded = true;
-    this.lights = new THREE.Group();
-    const lightsOptions = this.getLightsConfig(true);
+    // внешние группы для света, которым задаём позиционирование
+    this.directionalLight = new THREE.Group();
+    this.pointLight = new THREE.Group();
+    this.ambientLight = new THREE.Group();
+    // внутренние группы ддля света, в которые добавляем источники света
+    const directionalGroup = new THREE.Group();
+    const pointGroup = new THREE.Group();
+    // получаем настройки света из конфига
+    const lightsOptions = this.getLightsConfig();
     lightsOptions.forEach((light) => {
+      // если есть угол, значит это направленный свет, создаём таргет объект и добавляем в группу
       if (light.angle || light.angle === 0) {
         const radian = (light.angle * Math.PI) / 180;
         const targetObject = new THREE.Object3D();
         targetObject.position.set(0, -1000 * Math.tan(radian), -1000);
-        this.lights.add(targetObject);
+        directionalGroup.add(targetObject);
         light = {...light, target: targetObject};
       }
       switch (light.type) {
         case `point`: {
           const lightUnit = this.createPointLight(light);
-          this.lights.add(lightUnit);
+          pointGroup.add(lightUnit);
           // if (light.controls) {
           //   this.createLightsControls(lightUnit, light.controls);
           // }
@@ -410,20 +424,25 @@ export default class Scene3D {
         }
         case `directional`: {
           const lightUnit = this.createDirectionalLight(light);
-          this.lights.add(lightUnit);
+          directionalGroup.add(lightUnit);
           // if (light.controls) {
           //   this.createLightsControls(lightUnit, light.controls);
           // }
           break;
         }
+        // рассеянный свет, только для режима разработки
         case `ambient`: {
           const lightUnit = this.createAmbientLight(light);
-          this.lights.add(lightUnit);
+          this.ambientLight.add(lightUnit);
+          this.scene.add(this.ambientLight);
           break;
         }
       }
     });
-    this.lights.position.z = this.camera.position.z;
-    this.scene.add(this.lights);
+    // задаем позиционирование внешним группы и добавляем в них группы с источниками света
+    this.directionalLight.position.z = this.camera.position.z;
+    this.directionalLight.add(directionalGroup);
+    this.pointLight.position.z = 2150;
+    this.pointLight.add(pointGroup);
   }
 }

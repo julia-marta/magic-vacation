@@ -110,11 +110,11 @@ class CameraRig extends THREE.Group {
       this._yawAngleChanged = false;
     }
   }
-  // добавляет объект в нулевую группу (камера, свет)
+  // добавляет объект в нулевую группу (камера, направленный свет)
   addObjectToCameraNull(object) {
     this.cameraNull.add(object);
   }
-  // добавляет объект в группу вертикального вращения (чемодан)
+  // добавляет объект в группу вертикального вращения (чемодан, точечный свет)
   addObjectToYawTrack(object) {
     this.yawTrack.add(object);
   }
