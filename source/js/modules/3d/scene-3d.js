@@ -28,6 +28,7 @@ export default class Scene3D {
     this.childScenes = {};
     this.initScenes = this.initScenes.bind(this);
     this.setScenePlane = this.setScenePlane.bind(this);
+    this.runCurrentAnimation = this.runCurrentAnimation.bind(this);
   }
 
   // инициирует глобальную сцену
@@ -122,9 +123,19 @@ export default class Scene3D {
   initScenes(screen, currentScene) {
     const screenSceneData = ScreensScenes[screen];
     const currentSceneData = Scenes[currentScene];
-    const {name, type, lights, scenes, objects, position, rotation} = screenSceneData;
+    const {name, type, lights, scenes, objects, position, rotation, isMountedOnCameraRig} = screenSceneData;
     const {cameraState, currentAnimation} = currentSceneData;
     const isSceneRendered = this.renderedScenes.includes(name);
+    // сохраняем анимацию для конкретной текущей сцены
+    this.currentAnimation = currentAnimation;
+    // добавляем свет
+    if (lights && !this.isLightAdded) {
+      this.setLights();
+    }
+    // добавляем Rig с камерой
+    if (cameraState && !this.cameraRig) {
+      this.addCameraRig(cameraState);
+    }
 
     // если сцена ещё не отрисована
     if (!isSceneRendered) {
@@ -135,40 +146,46 @@ export default class Scene3D {
           break;
         case `scenesGroup`:
           scenes.forEach((scene) => {
-            this.addSceneGroup(scene.name, scene.objects, scene.position, scene.rotation);
+            this.addSceneGroup(scene.name, scene.objects, scene.position, scene.rotation, scene.isMountedOnCameraRig);
           });
           break;
         default:
-          this.addSceneGroup(objects, position, rotation);
+          this.addSceneGroup(name, objects, position, rotation, isMountedOnCameraRig);
           break;
       }
-      // добавляем свет
-      if (lights && !this.isLightAdded) {
-        this.setLights();
-      }
-      // добавляем Rig с камерой
-      if (cameraState && !this.cameraRig) {
-        this.addCameraRig(cameraState);
-      }
+
       // сохраняем отрисованную сцену
       this.renderedScenes.push(name);
       // если сцена уже отрисована
     } else {
+      // если есть текущая анимация
+      if (this.currentAnimation) {
+        // добавляем в состояние камеры коллбэк для запуска анимации следующей сцены
+        cameraState.animationCallback = this.runCurrentAnimation;
+      }
+
       // устанавливаем состояние камеры для конкретной сцены
       this.cameraRig.changeState(cameraState);
-      // если есть анимация, которая должна запускаться на конкретной сцене
-      if (currentAnimation) {
-        // находим сцену, которой принадлежит анимированный объект
-        const scene = this.childScenes[currentAnimation.scene];
-        // запускаем анимации нужного объекта на искомой сцене
-        scene.runObjectAnimations(currentAnimation.object, currentAnimation.animations, currentAnimation.isPlayOnce);
-      }
     }
   }
 
+  // запускает анимацию только на текущей сцене
+  runCurrentAnimation() {
+    if (!this.currentAnimation) {
+      return;
+    }
+    // находим сцену, которой принадлежит анимированный объект
+    const scene = this.childScenes[this.currentAnimation.scene];
+    if (!scene) {
+      return;
+    }
+    // запускаем анимации нужного объекта на искомой сцене
+    scene.runObjectAnimations(this.currentAnimation.object, this.currentAnimation.animations, this.currentAnimation.isPlayOnce);
+  }
+
   // добавляет локальную сцену из группы объектов
-  addSceneGroup(name, objects, position, rotation) {
-    const sceneGroup = new SceneGroup(objects);
+  addSceneGroup(name, objects, position, rotation, isMountedOnCameraRig) {
+    const sceneGroup = new SceneGroup(objects, this.runCurrentAnimation);
 
     if (sceneGroup) {
       if (name) {
@@ -180,9 +197,15 @@ export default class Scene3D {
       if (rotation) {
         sceneGroup.rotation.set(...rotation);
       }
+      if (isMountedOnCameraRig && this.cameraRig) {
+        // если у сцены есть флаг монтирования на Rig камеры, добавляем её на него, а не на основную сцену
+        this.cameraRig.addObjectToYawTrack(sceneGroup);
+      } else {
+        this.scene.add(sceneGroup);
+      }
+
       // сохраняем отрисованную локальную сцену
       this.childScenes[name] = sceneGroup;
-      this.scene.add(sceneGroup);
       this.render();
     }
   }

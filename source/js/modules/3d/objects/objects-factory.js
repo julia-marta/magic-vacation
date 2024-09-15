@@ -73,7 +73,7 @@ class ObjectsFactory {
     loader.load(
         url, (gltf) => {
           const {scene} = gltf;
-          this.onCreate(scene, config, config.outer);
+          this.onCreate(scene, config, config.outer, config.isCurrentAnimation);
         }
     );
   }

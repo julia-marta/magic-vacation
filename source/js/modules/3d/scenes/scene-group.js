@@ -4,9 +4,10 @@ import ObjectsFactory from '../objects/objects-factory.js';
 import AnimationsFactory from "../animations/animations-factory.js";
 
 class SceneGroup extends THREE.Group {
-  constructor(sceneObjects) {
+  constructor(sceneObjects, runSceneAnimation) {
     super();
     this.sceneObjects = sceneObjects;
+    this.runSceneAnimation = runSceneAnimation;
     this.playedAnimations = [];
     this.onCreateComplete = this.onCreateComplete.bind(this);
     this.runObjectAnimations = this.runObjectAnimations.bind(this);
@@ -18,8 +19,9 @@ class SceneGroup extends THREE.Group {
 
   // получает готовый объект после создания, добавляет его на сцену и запускает анимации
   onCreateComplete(object, options, outer) {
+    let isSceneAnimation;
     if (options) {
-      const {scale, position, rotation, animations, name} = options;
+      const {scale, position, rotation, animations, name, isCurrentAnimation} = options;
 
       if (name) {
         object.name = name;
@@ -40,6 +42,7 @@ class SceneGroup extends THREE.Group {
       if (animations) {
         this.animationsFactory.run(object, animations);
       }
+      isSceneAnimation = isCurrentAnimation;
     }
     object.traverse((obj) => {
       if (obj.isMesh) {
@@ -99,10 +102,15 @@ class SceneGroup extends THREE.Group {
     } else {
       this.add(object);
     }
+    // если объект имеет анимацию для конкретной сцены, запускаем анимацию сцены после его отрисовки
+    if (isSceneAnimation) {
+      this.runSceneAnimation();
+    }
   }
 
   // запускает анимации у одного из дочерних объектов
   runObjectAnimations(name, animations, isPlayOnce) {
+
     // если анимация должна проигрываться только один раз и уже проигрывалась, ничего не делаем
     const isAnimationsHavePlayed = this.playedAnimations.includes(name);
     if (isAnimationsHavePlayed && isPlayOnce) {
@@ -110,6 +118,10 @@ class SceneGroup extends THREE.Group {
     }
     // ищем дочерний объект сцены, который надо анимировать, и запускаем для него анимации
     const object = this.getObjectByName(name);
+    if (!object) {
+      return;
+    }
+
     this.animationsFactory.run(object, animations);
     // добавляем анимацию в список уже проигранных анимаций
     this.playedAnimations.push(name);

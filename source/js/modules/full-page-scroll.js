@@ -78,16 +78,16 @@ export default class FullPageScroll {
   }
   // меняет отображаемую страницу, рисует нужные 3D сцены и запускает необходимые анимации
   changePageDisplay() {
+    // определяем id активного экрана
+    const activeScreenId = this.screenElements[this.activeScreen].id;
     // делаем текущий экран видимым
     this.changeVisibilityDisplay();
     // меняем активный пункт меню
     this.changeActiveMenuItem();
-    // передаём на body событие смены экрана
-    this.emitChangeDisplayEvent();
-    // определяем id активного экрана
-    const activeScreenId = this.screenElements[this.activeScreen].id;
     // запускаем css анимации в зависимости от id экрана
     this.pageAnimationSwitcher.runAnimationScheme(activeScreenId);
+    // передаём на body событие смены экрана
+    this.emitChangeDisplayEvent();
     // добавляем сцену в зависимости от id экрана
     if (this.activeScreen === Screens.TOP) {
       // берём id конкретной сцены, соответствующей данному экрану

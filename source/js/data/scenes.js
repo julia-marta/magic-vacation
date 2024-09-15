@@ -717,7 +717,7 @@ export const Scenes = {
               },
               fps: 60,
               delay: 500,
-              duration: 1000,
+              duration: 600,
               easing: `easeInOutSine`,
             },
           ],
@@ -1014,137 +1014,138 @@ export const Scenes = {
       yawAngle: 0,
       horizonAngle: -(15 * Math.PI / 180),
     },
-    // currentAnimation: {
-    //   scene: `suitcase`,
-    //   object: `suitcase`,
-    //   animations: [
-    //     {
-    //       type: `transform`,
-    //       from: {
-    //         scale: {
-    //           x: 1,
-    //           y: 1,
-    //           z: 1,
-    //         },
-    //         position: {
-    //           x: -350,
-    //           y: 200,
-    //           z: 750,
-    //         },
-    //       },
-    //       to: {
-    //         scale: {
-    //           x: 0.95,
-    //           y: 1.1,
-    //           z: 0.95
-    //         },
-    //         position: {
-    //           x: -350,
-    //           y: 0,
-    //           z: 750,
-    //         },
-    //       },
-    //       fps: 60,
-    //       delay: 2000,
-    //       duration: 300,
-    //       easing: `easeInCubic`,
-    //     },
-    //     {
-    //       type: `transform`,
-    //       from: {
-    //         scale: {
-    //           x: 0.95,
-    //           y: 1.1,
-    //           z: 0.95
-    //         },
-    //         position: {
-    //           x: -350,
-    //           y: 0,
-    //           z: 750,
-    //         },
-    //       },
-    //       to: {
-    //         scale: {
-    //           x: 1.05,
-    //           y: 0.95,
-    //           z: 1.05
-    //         },
-    //         position: {
-    //           x: -350,
-    //           y: 2,
-    //           z: 750,
-    //         },
-    //       },
-    //       fps: 60,
-    //       delay: 2300,
-    //       duration: 200,
-    //       easing: `easeOutCubic`,
-    //     },
-    //     {
-    //       type: `transform`,
-    //       from: {
-    //         scale: {
-    //           x: 1.05,
-    //           y: 0.95,
-    //           z: 1.05
-    //         },
-    //         position: {
-    //           x: -350,
-    //           y: 2,
-    //           z: 750,
-    //         },
-    //       },
-    //       to: {
-    //         scale: {
-    //           x: 0.98,
-    //           y: 1.04,
-    //           z: 0.98
-    //         },
-    //         position: {
-    //           x: -350,
-    //           y: 1,
-    //           z: 750,
-    //         },
-    //       },
-    //       fps: 60,
-    //       delay: 2500,
-    //       duration: 200,
-    //       easing: `easeInOutSine`,
-    //     },
-    //     {
-    //       type: `transform`,
-    //       from: {
-    //         scale: {
-    //           x: 0.98,
-    //           y: 1.04,
-    //           z: 0.98
-    //         },
-    //         position: {
-    //           x: -350,
-    //           y: 1,
-    //           z: 750,
-    //         },
-    //       },
-    //       to: {
-    //         scale: {
-    //           x: 1,
-    //           y: 1,
-    //           z: 1,
-    //         },
-    //         position: {
-    //           x: -350,
-    //           y: 0,
-    //           z: 750,
-    //         },
-    //       },
-    //       fps: 60,
-    //       delay: 2700,
-    //       duration: 200,
-    //       easing: `easeInCubic`,
-    //     },
-    //   ],
-    //   isPlayOnce: true,
-    // },
+    currentAnimation: {
+      scene: `suitcaseScene`,
+      object: `suitcase`,
+      animations: [
+        {
+          type: `transform`,
+          from: {
+            scale: {
+              x: 1,
+              y: 1,
+              z: 1,
+            },
+            position: {
+              x: -350,
+              y: 500,
+              z: 750,
+            },
+          },
+          to: {
+            scale: {
+              x: 0.95,
+              y: 1.1,
+              z: 0.95
+            },
+            position: {
+              x: -350,
+              y: 0,
+              z: 750,
+            },
+          },
+          fps: 60,
+          delay: 500,
+          duration: 300,
+          easing: `easeInCubic`,
+        },
+        {
+          type: `transform`,
+          from: {
+            scale: {
+              x: 0.95,
+              y: 1.1,
+              z: 0.95
+            },
+            position: {
+              x: -350,
+              y: 0,
+              z: 750,
+            },
+          },
+          to: {
+            scale: {
+              x: 1.05,
+              y: 0.95,
+              z: 1.05
+            },
+            position: {
+              x: -350,
+              y: 2,
+              z: 750,
+            },
+          },
+          fps: 60,
+          delay: 800,
+          duration: 200,
+          easing: `easeOutCubic`,
+        },
+        {
+          type: `transform`,
+          from: {
+            scale: {
+              x: 1.05,
+              y: 0.95,
+              z: 1.05
+            },
+            position: {
+              x: -350,
+              y: 2,
+              z: 750,
+            },
+          },
+          to: {
+            scale: {
+              x: 0.98,
+              y: 1.04,
+              z: 0.98
+            },
+            position: {
+              x: -350,
+              y: 1,
+              z: 750,
+            },
+          },
+          fps: 60,
+          delay: 1000,
+          duration: 200,
+          easing: `easeInOutSine`,
+        },
+
+        {
+          type: `transform`,
+          from: {
+            scale: {
+              x: 0.98,
+              y: 1.04,
+              z: 0.98
+            },
+            position: {
+              x: -350,
+              y: 1,
+              z: 750,
+            },
+          },
+          to: {
+            scale: {
+              x: 1,
+              y: 1,
+              z: 1,
+            },
+            position: {
+              x: -350,
+              y: 0,
+              z: 750,
+            },
+          },
+          fps: 60,
+          delay: 1200,
+          duration: 200,
+          easing: `easeInCubic`,
+        },
+      ],
+      isPlayOnce: true,
+    },
   },
   room2: {
     type: `scene`,
@@ -1565,17 +1566,20 @@ export const Scenes = {
   },
   suitcase: {
     type: `scene`,
-    name: `suitcase`,
-    position: [0, -700, -3270],
+    name: `suitcaseScene`,
+    position: [0, -700, 0],
     objects: [
       {
         type: `glTF`,
         options: {
           name: `suitcase`,
+          position: [-350, 500, 750],
           rotation: [0, -0.4, 0],
-        }
+          isCurrentAnimation: true,
+        },
       },
     ],
+    isMountedOnCameraRig: true,
   },
 };
 
