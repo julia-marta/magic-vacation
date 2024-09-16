@@ -169,6 +169,16 @@ export default class Scene3D {
         // добавляем в состояние камеры коллбэк для запуска анимации следующей сцены
         cameraState.animationCallback = this.runCurrentAnimation;
       }
+      // если есть сопутствующая смене камеры анимация
+      const {relatedAnimation} = cameraState;
+      if (relatedAnimation) {
+        // находим сцену, которой принадлежит анимированный объект
+        const scene = this.childScenes[relatedAnimation.scene];
+        // ищем дочерний объект сцены, который надо анимировать
+        const object = scene.getObjectByName(relatedAnimation.object);
+        // добавляем объект в сопуствующую анимацию
+        cameraState.relatedAnimation.mesh = object;
+      }
 
       // устанавливаем состояние камеры для конкретной сцены
       this.cameraRig.changeState(cameraState);

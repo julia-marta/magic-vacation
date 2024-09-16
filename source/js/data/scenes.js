@@ -366,7 +366,7 @@ export const Scenes = {
   },
   keyhole: {
     type: `scene`,
-    name: `keyhole`,
+    name: `keyholeScene`,
     objects: [
       {
         type: `group`,
@@ -648,12 +648,13 @@ export const Scenes = {
       {
         type: `plane`,
         options: {
-          name: `plane`,
+          name: `backPlane`,
           position: [0, 0, -200],
           material: {
             type: `StandardBasic`,
             color: `Purple`,
             doubleSide: true,
+            transparent: true,
           }
         },
       },
@@ -863,6 +864,14 @@ export const Scenes = {
       depth: -4750,
       yawAngle: 0,
       horizonAngle: 0,
+      relatedAnimation: {
+        scene: `keyholeScene`,
+        object: `backPlane`,
+        breakpoints: {
+          from: -3000,
+          to: -3700,
+        }
+      }
     },
   },
   room1: {
@@ -1013,6 +1022,14 @@ export const Scenes = {
       depth: -2150,
       yawAngle: 0,
       horizonAngle: -(15 * Math.PI / 180),
+      relatedAnimation: {
+        scene: `keyholeScene`,
+        object: `backPlane`,
+        breakpoints: {
+          from: -3000,
+          to: -3700,
+        }
+      }
     },
     currentAnimation: {
       scene: `suitcaseScene`,

@@ -9,7 +9,7 @@ class MaterialsFactory {
 
   // берёт готовый конфиг для данного типа материала и на его основе создаёт материал
   get(material) {
-    const {type, color, doubleSide, options} = material;
+    const {type, color, doubleSide, transparent, options} = material;
     const materialConfig = this.getMaterialConfig(type);
     if (color) {
       if (typeof color === `object`) {
@@ -29,6 +29,10 @@ class MaterialsFactory {
 
     if (doubleSide) {
       materialConfig.options.side = THREE.DoubleSide;
+    }
+
+    if (transparent) {
+      materialConfig.options.transparent = true;
     }
 
     if (options) {
