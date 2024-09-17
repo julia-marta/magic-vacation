@@ -49,6 +49,11 @@ class CameraRig extends THREE.Group {
   }
   // обновляет текущие параметры состояния камеры
   setState(newState) {
+    if (newState.animationCallback) {
+      // вызываем анимацию для следующей сцены
+      newState.animationCallback();
+      delete newState.animationCallback;
+    }
     this.state = newState;
   }
   // получение значения глубины
@@ -105,9 +110,13 @@ class CameraRig extends THREE.Group {
       this._yawAngleChanged = false;
     }
   }
-  // добавляет объект в нулевую группу (камера, свет)
+  // добавляет объект в нулевую группу (камера, направленный свет)
   addObjectToCameraNull(object) {
     this.cameraNull.add(object);
+  }
+  // добавляет объект в группу вертикального вращения (чемодан, точечный свет)
+  addObjectToYawTrack(object) {
+    this.yawTrack.add(object);
   }
   // меняет положение конструкции Rig камеры
   changeState(newState) {

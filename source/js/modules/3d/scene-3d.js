@@ -22,11 +22,15 @@ export default class Scene3D {
     this.cameraPozitionY = options.cameraPozitionY;
     this.aspectRatio = this.width / this.height;
     this.planes = {};
-    this.lights = null;
+    this.directionalLight = null;
+    this.pointLight = null;
+    this.ambientLight = null;
     this.isLightAdded = false;
     this.renderedScenes = [];
+    this.childScenes = {};
     this.initScenes = this.initScenes.bind(this);
     this.setScenePlane = this.setScenePlane.bind(this);
+    this.runCurrentAnimation = this.runCurrentAnimation.bind(this);
   }
 
   // инициирует глобальную сцену
@@ -112,8 +116,12 @@ export default class Scene3D {
   // добавляет конструкции Rig для камеры
   addCameraRig(state) {
     this.cameraRig = new CameraRig(state);
+    // камеру и направленный источник света добавляем на внешнюю оболочку Rig конструкции
     this.cameraRig.addObjectToCameraNull(this.camera);
-    this.cameraRig.addObjectToCameraNull(this.lights);
+    this.cameraRig.addObjectToCameraNull(this.directionalLight);
+    // точечные источники добавляем в группу вертикального вращения Rig конструкции
+    this.cameraRig.addObjectToYawTrack(this.pointLight);
+    // добавляем Rig на глобальную сцену
     this.scene.add(this.cameraRig);
   }
 
@@ -121,9 +129,19 @@ export default class Scene3D {
   initScenes(screen, currentScene) {
     const screenSceneData = ScreensScenes[screen];
     const currentSceneData = Scenes[currentScene];
-    const {name, type, lights, scenes, objects, position, rotation} = screenSceneData;
-    const {cameraState} = currentSceneData;
+    const {name, type, lights, scenes, objects, position, rotation, isMountedOnCameraRig} = screenSceneData;
+    const {cameraState, currentAnimation} = currentSceneData;
     const isSceneRendered = this.renderedScenes.includes(name);
+    // сохраняем анимацию для конкретной текущей сцены
+    this.currentAnimation = currentAnimation;
+    // добавляем свет
+    if (lights && !this.isLightAdded) {
+      this.setLights();
+    }
+    // добавляем Rig с камерой
+    if (cameraState && !this.cameraRig) {
+      this.addCameraRig(cameraState);
+    }
 
     // если сцена ещё не отрисована
     if (!isSceneRendered) {
@@ -134,44 +152,76 @@ export default class Scene3D {
           break;
         case `scenesGroup`:
           scenes.forEach((scene) => {
-            this.addSceneGroup(scene.objects, scene.position, scene.rotation);
+            this.addSceneGroup(scene.name, scene.objects, scene.position, scene.rotation, scene.isMountedOnCameraRig);
           });
           break;
         default:
-          this.addSceneGroup(objects, position, rotation);
+          this.addSceneGroup(name, objects, position, rotation, isMountedOnCameraRig);
           break;
       }
-      // добавляем свет
-      if (lights && !this.isLightAdded) {
-        this.setLights();
-      }
-      // добавляем Rig с камерой
-      if (cameraState && !this.cameraRig) {
-        this.addCameraRig(cameraState);
-      }
+
       // сохраняем отрисованную сцену
       this.renderedScenes.push(name);
       // если сцена уже отрисована
     } else {
+      // если есть текущая анимация
+      if (this.currentAnimation) {
+        // добавляем в состояние камеры коллбэк для запуска анимации следующей сцены
+        cameraState.animationCallback = this.runCurrentAnimation;
+      }
+      // если есть сопутствующая смене камеры анимация
+      const {relatedAnimation} = cameraState;
+      if (relatedAnimation) {
+        // находим сцену, которой принадлежит анимированный объект
+        const scene = this.childScenes[relatedAnimation.scene];
+        // ищем дочерний объект сцены, который надо анимировать
+        const object = scene.getObjectByName(relatedAnimation.object);
+        // добавляем объект в сопуствующую анимацию
+        cameraState.relatedAnimation.mesh = object;
+      }
+
       // устанавливаем состояние камеры для конкретной сцены
       this.cameraRig.changeState(cameraState);
     }
   }
 
-  // добавляет локальную сцену из группы объектов
-  addSceneGroup(objects, position, rotation) {
-    const sceneGroup = new SceneGroup(objects);
-    if (sceneGroup) {
+  // запускает анимацию только на текущей сцене
+  runCurrentAnimation() {
+    if (!this.currentAnimation) {
+      return;
+    }
+    // находим сцену, которой принадлежит анимированный объект
+    const scene = this.childScenes[this.currentAnimation.scene];
+    if (!scene) {
+      return;
+    }
+    // запускаем анимации нужного объекта на искомой сцене
+    scene.runObjectAnimations(this.currentAnimation.object, this.currentAnimation.animations, this.currentAnimation.isPlayOnce);
+  }
 
+  // добавляет локальную сцену из группы объектов
+  addSceneGroup(name, objects, position, rotation, isMountedOnCameraRig) {
+    const sceneGroup = new SceneGroup(objects, this.runCurrentAnimation);
+
+    if (sceneGroup) {
+      if (name) {
+        sceneGroup.name = name;
+      }
       if (position) {
         sceneGroup.position.set(...position);
       }
-
       if (rotation) {
         sceneGroup.rotation.set(...rotation);
       }
+      if (isMountedOnCameraRig && this.cameraRig) {
+        // если у сцены есть флаг монтирования на Rig камеры, добавляем её на него, а не на основную сцену
+        this.cameraRig.addObjectToYawTrack(sceneGroup);
+      } else {
+        this.scene.add(sceneGroup);
+      }
 
-      this.scene.add(sceneGroup);
+      // сохраняем отрисованную локальную сцену
+      this.childScenes[name] = sceneGroup;
       this.render();
     }
   }
@@ -314,7 +364,7 @@ export default class Scene3D {
     }
 
     if (shadow) {
-      light.castShadow = false;
+      light.castShadow = true;
       light.shadow.mapSize.width = shadow.mapSize;
       light.shadow.mapSize.height = shadow.mapSize;
       light.shadow.camera.near = shadow.near;
@@ -355,20 +405,28 @@ export default class Scene3D {
   // создаёт нужные типы света на основе конфига, добавляет их на глобальную сцену
   setLights() {
     this.isLightAdded = true;
-    this.lights = new THREE.Group();
-    const lightsOptions = this.getLightsConfig(true);
+    // внешние группы для света, которым задаём позиционирование
+    this.directionalLight = new THREE.Group();
+    this.pointLight = new THREE.Group();
+    this.ambientLight = new THREE.Group();
+    // внутренние группы ддля света, в которые добавляем источники света
+    const directionalGroup = new THREE.Group();
+    const pointGroup = new THREE.Group();
+    // получаем настройки света из конфига
+    const lightsOptions = this.getLightsConfig();
     lightsOptions.forEach((light) => {
+      // если есть угол, значит это направленный свет, создаём таргет объект и добавляем в группу
       if (light.angle || light.angle === 0) {
         const radian = (light.angle * Math.PI) / 180;
         const targetObject = new THREE.Object3D();
         targetObject.position.set(0, -1000 * Math.tan(radian), -1000);
-        this.lights.add(targetObject);
+        directionalGroup.add(targetObject);
         light = {...light, target: targetObject};
       }
       switch (light.type) {
         case `point`: {
           const lightUnit = this.createPointLight(light);
-          this.lights.add(lightUnit);
+          pointGroup.add(lightUnit);
           // if (light.controls) {
           //   this.createLightsControls(lightUnit, light.controls);
           // }
@@ -376,20 +434,25 @@ export default class Scene3D {
         }
         case `directional`: {
           const lightUnit = this.createDirectionalLight(light);
-          this.lights.add(lightUnit);
+          directionalGroup.add(lightUnit);
           // if (light.controls) {
           //   this.createLightsControls(lightUnit, light.controls);
           // }
           break;
         }
+        // рассеянный свет, только для режима разработки
         case `ambient`: {
           const lightUnit = this.createAmbientLight(light);
-          this.lights.add(lightUnit);
+          this.ambientLight.add(lightUnit);
+          this.scene.add(this.ambientLight);
           break;
         }
       }
     });
-    this.lights.position.z = this.camera.position.z;
-    this.scene.add(this.lights);
+    // задаем позиционирование внешним группы и добавляем в них группы с источниками света
+    this.directionalLight.position.z = this.camera.position.z;
+    this.directionalLight.add(directionalGroup);
+    this.pointLight.position.z = 2150;
+    this.pointLight.add(pointGroup);
   }
 }

@@ -275,7 +275,7 @@ class AnimationsFactory {
 
   // создаёт анимацию смены состояния камеры (с использованием техники Rigging)
   createCameraAnimation(object, options) {
-    const {depth, yawAngle, horizonAngle, fps, duration, delay, easing, callback} = options;
+    const {depth, yawAngle, horizonAngle, fps, duration, delay, easing, callback, relatedAnimation} = options;
     // получим изначальные значения всех параметров из Rig
     const initialDepth = object.depth;
     const initialYawAngle = object.yawAngle;
@@ -284,7 +284,20 @@ class AnimationsFactory {
     const animation = new Animation({
       func: (progress) => {
         // изменяем глубину
-        object.depth = initialDepth + (depth - initialDepth) * progress;
+        const currentDepth = initialDepth + (depth - initialDepth) * progress;
+        object.depth = currentDepth;
+        // если есть сопутствующая смене состоянию камеры анимация
+        if (relatedAnimation) {
+          const {mesh, breakpoints} = relatedAnimation;
+          // устанавливаем прозрачность плоскости в зависимости от значения позиции камеры в глубину
+          if (currentDepth < breakpoints.to) {
+            mesh.material.opacity = 1;
+          } else if (currentDepth > breakpoints.from) {
+            mesh.material.opacity = 0;
+          } else {
+            mesh.material.opacity = (currentDepth - breakpoints.from) / (breakpoints.to - breakpoints.from);
+          }
+        }
         // изменяем горизонтальный угол вращения
         object.horizonAngle = initialHorizonAngle + (horizonAngle - initialHorizonAngle) * progress;
         // изменяем вертикальный угол вращения
