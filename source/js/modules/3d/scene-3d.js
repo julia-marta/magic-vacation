@@ -452,7 +452,7 @@ export default class Scene3D {
     // задаем позиционирование внешним группы и добавляем в них группы с источниками света
     this.directionalLight.position.z = this.camera.position.z;
     this.directionalLight.add(directionalGroup);
-    this.pointLight.position.z = 2150;
+    this.pointLight.position.z = 2250;
     this.pointLight.add(pointGroup);
   }
 }

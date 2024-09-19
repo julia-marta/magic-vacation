@@ -367,6 +367,8 @@ export const Scenes = {
   keyhole: {
     type: `scene`,
     name: `keyholeScene`,
+    // position: [0, 0, -3270],
+    // rotation: [0, -Math.PI / 2, 0],
     objects: [
       {
         type: `group`,
@@ -861,15 +863,17 @@ export const Scenes = {
     ],
     cameraState: {
       index: 0,
-      depth: -4750,
+      depth: -3270,
       yawAngle: 0,
       horizonAngle: 0,
+      pitchDepth: 1405,
+      pitchAngle: 0,
       relatedAnimation: {
         scene: `keyholeScene`,
         object: `backPlane`,
         breakpoints: {
-          from: -3000,
-          to: -3700,
+          from: -1800,
+          to: -2200,
         }
       }
     },
@@ -877,7 +881,7 @@ export const Scenes = {
   room1: {
     type: `scene`,
     name: `room1`,
-    position: [0, -700, -3270],
+    position: [0, -800, -3270],
     objects: [
       {
         type: `OBJ`,
@@ -1019,9 +1023,11 @@ export const Scenes = {
     ],
     cameraState: {
       index: 1,
-      depth: -2150,
+      depth: 0,
       yawAngle: 0,
       horizonAngle: -(15 * Math.PI / 180),
+      pitchDepth: 2200,
+      pitchAngle: 0,
       relatedAnimation: {
         scene: `keyholeScene`,
         object: `backPlane`,
@@ -1167,7 +1173,7 @@ export const Scenes = {
   room2: {
     type: `scene`,
     name: `room2`,
-    position: [0, -700, -3270],
+    position: [0, -800, -3270],
     rotation: [0, Math.PI / 2, 0],
     objects: [
       {
@@ -1307,16 +1313,18 @@ export const Scenes = {
     ],
     cameraState: {
       index: 2,
-      depth: -2150,
+      depth: 0,
       yawAngle: Math.PI / 2,
       horizonAngle: -(15 * Math.PI / 180),
+      pitchDepth: 2200,
+      pitchAngle: 0,
     },
   },
   room3:
   {
     type: `scene`,
     name: `room3`,
-    position: [0, -700, -3270],
+    position: [0, -800, -3270],
     rotation: [0, Math.PI, 0],
     objects: [
       {
@@ -1412,15 +1420,17 @@ export const Scenes = {
     ],
     cameraState: {
       index: 3,
-      depth: -2150,
+      depth: 0,
       yawAngle: Math.PI,
       horizonAngle: -(15 * Math.PI / 180),
+      pitchDepth: 2200,
+      pitchAngle: 0,
     },
   },
   room4: {
     type: `scene`,
     name: `room4`,
-    position: [0, -700, -3270],
+    position: [0, -800, -3270],
     rotation: [0, Math.PI + Math.PI / 2, 0],
     objects: [
       {
@@ -1576,15 +1586,17 @@ export const Scenes = {
     ],
     cameraState: {
       index: 4,
-      depth: -2150,
+      depth: 0,
       yawAngle: Math.PI + Math.PI / 2,
       horizonAngle: -(15 * Math.PI / 180),
+      pitchDepth: 2200,
+      pitchAngle: 0,
     },
   },
   suitcase: {
     type: `scene`,
     name: `suitcaseScene`,
-    position: [0, -700, 0],
+    position: [0, -800, 0],
     objects: [
       {
         type: `glTF`,

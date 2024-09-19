@@ -275,11 +275,13 @@ class AnimationsFactory {
 
   // создаёт анимацию смены состояния камеры (с использованием техники Rigging)
   createCameraAnimation(object, options) {
-    const {depth, yawAngle, horizonAngle, fps, duration, delay, easing, callback, relatedAnimation} = options;
+    const {depth, yawAngle, horizonAngle, pitchAngle, pitchDepth, fps, duration, delay, easing, callback, relatedAnimation} = options;
     // получим изначальные значения всех параметров из Rig
     const initialDepth = object.depth;
     const initialYawAngle = object.yawAngle;
     const initialHorizonAngle = object.horizonAngle;
+    const initialPitchAngle = object.pitchAngle;
+    const initialPitchDepth = object.pitchDepth;
 
     const animation = new Animation({
       func: (progress) => {
@@ -302,7 +304,10 @@ class AnimationsFactory {
         object.horizonAngle = initialHorizonAngle + (horizonAngle - initialHorizonAngle) * progress;
         // изменяем вертикальный угол вращения
         object.yawAngle = initialYawAngle + (yawAngle - initialYawAngle) * progress;
-
+        // изменяем горизонтальный угол вращения нулевой группы
+        object.pitchAngle = initialPitchAngle + (pitchAngle - initialPitchAngle) * progress;
+        // изменяем глубину группы поперечного вращения
+        object.pitchDepth = initialPitchDepth + (pitchDepth - initialPitchDepth) * progress;
         // запускаем в риге проверку изменений параметров
         object.invalidate();
       },
