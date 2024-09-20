@@ -2,7 +2,8 @@ import * as THREE from "three";
 import {GUI} from "dat.gui";
 import SceneGroup from "./scenes/scene-group.js";
 import PlanesGroup from "./scenes/planes-group.js";
-import CameraRig from "./rigs/camera.js";
+import CameraRigDesktop from "./rigs/camera-desktop.js";
+import CameraRigMobile from "./rigs/camera-mobile.js";
 import Animation from "../animation.js";
 import {Scenes, ScreensScenes} from "../../data/scenes.js";
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
@@ -28,6 +29,7 @@ export default class Scene3D {
     this.isLightAdded = false;
     this.renderedScenes = [];
     this.childScenes = {};
+    this.resizeInProgress = false;
     this.initScenes = this.initScenes.bind(this);
     this.setScenePlane = this.setScenePlane.bind(this);
     this.runCurrentAnimation = this.runCurrentAnimation.bind(this);
@@ -36,15 +38,15 @@ export default class Scene3D {
   // инициирует глобальную сцену
   init() {
     this.setup();
+    this.resize();
     this.initEventListeners();
-    this.updateSize();
     // this.initHelpers();
     this.startAnimations();
   }
 
   // устанавливает обработчик события ресайза на окно
   initEventListeners() {
-    window.addEventListener(`resize`, this.updateSize.bind(this));
+    window.addEventListener(`resize`, this.onResize.bind(this));
   }
 
   // производит настройки отрисовщика, сцены и камеры
@@ -57,7 +59,7 @@ export default class Scene3D {
       logarithmicDepthBuffer: false,
       powerPreference: `high-performance`
     });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.setSize(this.width, this.height);
     this.renderer.setClearColor(this.color, this.alpha);
     this.renderer.shadowMap.enabled = true;
@@ -89,9 +91,13 @@ export default class Scene3D {
 
   // рендер глобальной сцены
   render() {
+    if (this.resizeInProgress) {
+      this.resize();
+    }
     // this.controls.update();
     // this.stats.update();
     this.renderer.render(this.scene, this.camera);
+    this.resizeInProgress = false;
   }
 
   // запускает анимацию перерендера
@@ -107,15 +113,55 @@ export default class Scene3D {
   }
 
   // обновляет размеры глобальной сцены
-  updateSize() {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
+  resize() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    if (height < 1 || width < 1) {
+      return;
+    }
+    // camera resize
+    if (width > height) {
+      this.camera.fov = 35;
+    } else {
+      this.camera.fov = (32 * height) / Math.min(width * 1.3, height);
+    }
+    this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    // renderer resize
+    this.renderer.setSize(width, height);
+  }
+
+  // обработчик ресайза окна
+  // вызывает в перерендере обновление размеров глобальной сцены и переустанавливает Rig камеры
+  onResize() {
+    this.resizeInProgress = true;
+    this.addCameraRig(this.cameraState);
   }
 
   // добавляет конструкции Rig для камеры
   addCameraRig(state) {
-    this.cameraRig = new CameraRig(state);
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const isLandscape = width > height;
+
+    if (height < 1 || width < 1) {
+      return;
+    }
+
+    if (isLandscape) {
+      if (this.cameraRig && this.cameraRig instanceof CameraRigDesktop) {
+        return;
+      }
+      this.scene.remove(this.cameraRig);
+      this.cameraRig = new CameraRigDesktop(state.desktop);
+    } else {
+      if (this.cameraRig && this.cameraRig instanceof CameraRigMobile) {
+        return;
+      }
+      this.scene.remove(this.cameraRig);
+      this.cameraRig = new CameraRigMobile(state.mobile);
+    }
     // камеру и направленный источник света добавляем на внешнюю оболочку Rig конструкции
     this.cameraRig.addObjectToCameraNull(this.camera);
     this.cameraRig.addObjectToCameraNull(this.directionalLight);
@@ -132,6 +178,8 @@ export default class Scene3D {
     const {name, type, lights, scenes, objects, position, rotation, isMountedOnCameraRig} = screenSceneData;
     const {cameraState, currentAnimation} = currentSceneData;
     const isSceneRendered = this.renderedScenes.includes(name);
+    // сохраняем состояние камеры для конкретной текущей сцены
+    this.cameraState = cameraState;
     // сохраняем анимацию для конкретной текущей сцены
     this.currentAnimation = currentAnimation;
     // добавляем свет
@@ -164,24 +212,28 @@ export default class Scene3D {
       this.renderedScenes.push(name);
       // если сцена уже отрисована
     } else {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const isLandscape = width > height;
+      const currentCameraState = isLandscape ? cameraState.desktop : cameraState.mobile;
       // если есть текущая анимация
       if (this.currentAnimation) {
         // добавляем в состояние камеры коллбэк для запуска анимации следующей сцены
-        cameraState.animationCallback = this.runCurrentAnimation;
+        currentCameraState.animationCallback = this.runCurrentAnimation;
       }
       // если есть сопутствующая смене камеры анимация
-      const {relatedAnimation} = cameraState;
+      const {relatedAnimation} = currentCameraState;
       if (relatedAnimation) {
         // находим сцену, которой принадлежит анимированный объект
         const scene = this.childScenes[relatedAnimation.scene];
         // ищем дочерний объект сцены, который надо анимировать
         const object = scene.getObjectByName(relatedAnimation.object);
         // добавляем объект в сопуствующую анимацию
-        cameraState.relatedAnimation.mesh = object;
+        currentCameraState.relatedAnimation.mesh = object;
       }
 
       // устанавливаем состояние камеры для конкретной сцены
-      this.cameraRig.changeState(cameraState);
+      this.cameraRig.changeState(currentCameraState);
     }
   }
 

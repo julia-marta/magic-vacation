@@ -1,12 +1,14 @@
 import * as THREE from "three";
 import AnimationsFactory from "../animations/animations-factory.js";
 
-class CameraRig extends THREE.Group {
+class CameraRigMobile extends THREE.Group {
   constructor(state) {
     super();
     this.state = state;
     this.setState = this.setState.bind(this);
     this.animationsFactory = new AnimationsFactory();
+    // максимальный угол наклона целевой группы
+    this.maxPitchAngle = 10;
     // глубина группы depthTrack и флаг её изменения
     // меняет позицию по оси Z (глубину)
     this._depth = this.state.depth || 0;
@@ -27,8 +29,12 @@ class CameraRig extends THREE.Group {
     // меняет позицию по оси Z (глубину)
     this._pitchDepth = this.state.pitchDepth || 0;
     this._pitchDepthChanged = true;
-    // запущенная анимация по движению курсора
-    this.mouseMoveTick = null;
+    // вертикальный угол вращения нулевой группы с камерой и флаг его изменения
+    // меняет угол вращения по оси Y
+    this._verticalAngle = this.state.verticalAngle || 0;
+    this._verticalAngleChanged = true;
+    // запущенная анимация по касанию экрана
+    this.touchMoveTick = null;
 
     // собираем конструкцию Rig для камеры
     this.constructRigElements();
@@ -36,25 +42,26 @@ class CameraRig extends THREE.Group {
     this.position.z = -3270;
     // задаём изначальное положение камеры
     this.invalidate();
-    this.addMouseMoveListener();
+    // добавляем обработчик касания экрана
+    this.addTouchMoveListener();
   }
-  // добавляет обработчик движения курсора
-  addMouseMoveListener() {
-    const mouseMoveHandler = (event) => {
-      if (this.mouseMoveTick) {
-        window.cancelAnimationFrame(this.mouseMoveTick);
+  // добавляет обработчик касания экрана
+  addTouchMoveListener() {
+    const touchMoveHandler = (event) => {
+      if (this.touchMoveTick) {
+        window.cancelAnimationFrame(this.touchMoveTick);
       }
 
       // высота окна
       const windowHeight = window.innerHeight;
-      // позиция мыши на экране по вертикали (от нуля до высоты экрана)
-      const mouseWindowYPosition = event.y;
-      // позиция мыши по оси Y относительно оси X (в пикселях, отрицательные и положительные значения)
-      const mouseAxeYPosition = windowHeight / 2 - mouseWindowYPosition;
-      // позиция мыши по оси Y от 1 до -1 (для расчёта угла)
-      const targetMouseAxeYPosition = 2 * mouseAxeYPosition / windowHeight;
+      // позиция тача на экране по вертикали (от нуля до высоты экрана)
+      const touchWindowYPosition = event.targetTouches[0].clientY;
+      // позиция тача по оси Y относительно оси X (в пикселях, отрицательные и положительные значения)
+      const touchAxeYPosition = windowHeight / 2 - touchWindowYPosition;
+      // позиция тача по оси Y от 1 до -1 (для расчёта угла)
+      const targetTouchAxeYPosition = 2 * touchAxeYPosition / windowHeight;
       // целевой угол вращения нулевой группы в радианах
-      const targetPitchAngle = (6 * targetMouseAxeYPosition) * Math.PI / 180;
+      const targetPitchAngle = (this.maxPitchAngle * targetTouchAxeYPosition) * Math.PI / 180;
       // текущий угол вращения нулевой группы
       let currentPitchAngle = this.pitchAngle;
 
@@ -66,8 +73,8 @@ class CameraRig extends THREE.Group {
           // либо угол убывает и при этом текщий меньше целевого
           (!isIncrease && currentPitchAngle < targetPitchAngle)
         ) {
-          // прерываем анимацию движения курсора
-          window.cancelAnimationFrame(this.mouseMoveTick);
+          // прерываем анимацию касания экрана
+          window.cancelAnimationFrame(this.touchMoveTick);
           return;
         }
         // увеличиваем или уменьшаем текщий угол в зависимости от флага возрастания
@@ -82,8 +89,8 @@ class CameraRig extends THREE.Group {
         // запускаем проверку изменений параметров
         this.invalidate();
 
-        // запускаем и сохраняем анимацию по движению курсора
-        this.mouseMoveTick = requestAnimationFrame(() => {
+        // запускаем и сохраняем анимацию по касанию экрана
+        this.touchMoveTick = requestAnimationFrame(() => {
           setPitchAngleCloserToTarget(isIncrease);
         });
       };
@@ -91,16 +98,16 @@ class CameraRig extends THREE.Group {
       setPitchAngleCloserToTarget(targetPitchAngle > this.pitchAngle);
     };
 
-    window.addEventListener(`mousemove`, mouseMoveHandler);
+    window.addEventListener(`touchmove`, touchMoveHandler);
     // cохраняем ссылку на слушателя, чтобы иметь возможность удалить его
-    this.mouseMoveHandler = mouseMoveHandler;
+    this.touchMoveHandler = touchMoveHandler;
   }
-  // удаляет обработчик движения курсора
-  removeMouseMoveListener() {
-    if (this.mouseMoveTick) {
-      window.cancelAnimationFrame(this.mouseMoveTick);
+  // удаляет обработчик касания экрана
+  removeTouchMoveListener() {
+    if (this.touchMoveTick) {
+      window.cancelAnimationFrame(this.touchMoveTick);
     }
-    window.removeEventListener(`mousemove`, this.mouseMoveHandler);
+    window.removeEventListener(`touchmove`, this.touchMoveHandler);
   }
   // собирает конструкцию Rig для камеры
   constructRigElements() {
@@ -128,8 +135,10 @@ class CameraRig extends THREE.Group {
     this.cameraNull = cameraNull;
     // устанавливаем позицию для группы поперечного вращения по оси Z
     this.pitchTrack.position.z = this.pitchDepth;
+    // устанавливаем вертикальный угол вращения для нулевой группы с камерой
+    this.cameraNull.rotation.y = 3 * Math.PI / 180;
   }
-  // обновляет текущие параметры состояния камеры и устанавливаем обработчик движения курсора
+  // обновляет текущие параметры состояния камеры и устанавливаем обработчик касания экрана
   setState(newState) {
     if (newState.animationCallback) {
       // вызываем анимацию для следующей сцены
@@ -137,8 +146,8 @@ class CameraRig extends THREE.Group {
       delete newState.animationCallback;
     }
     this.state = newState;
-    // добавляем новый обработчик движения курсора
-    this.addMouseMoveListener();
+    // добавляем новый обработчик касания экрана
+    this.addTouchMoveListener();
   }
   // получение значения глубины группы depthTrack
   get depth() {
@@ -200,6 +209,18 @@ class CameraRig extends THREE.Group {
     this._pitchDepth = value;
     this._pitchDepthChanged = true;
   }
+  // получение значения вертикального угла вращения нулевой группы
+  get verticalAngle() {
+    return this._verticalAngle;
+  }
+  // установка значения вертикального угла вращения нулевой группы
+  set verticalAngle(value) {
+    if (value === this._verticalAngle) {
+      return;
+    }
+    this._verticalAngle = value;
+    this._verticalAngleChanged = true;
+  }
   // проверка флагов изменений, смена параметров и сброс флагов
   invalidate() {
     // меняет позицию по оси z у группы глубины
@@ -231,6 +252,11 @@ class CameraRig extends THREE.Group {
       this.pitchTrack.position.z = this._pitchDepth;
       this._pitchDepthChanged = false;
     }
+    // меняет угол вращения по оси Y у нулевой группы с камерой
+    if (this._verticalAngleChanged) {
+      this.cameraNull.rotation.y = this._verticalAngle;
+      this._verticalAngleChanged = false;
+    }
   }
   // добавляет объект в нулевую группу (камера, направленный свет)
   addObjectToCameraNull(object) {
@@ -242,8 +268,8 @@ class CameraRig extends THREE.Group {
   }
   // меняет положение конструкции Rig камеры
   changeState(newState) {
-    // удаляем предыдущий обработчик движения курсора
-    this.removeMouseMoveListener();
+    // удаляем предыдущий обработчик касания экрана
+    this.removeTouchMoveListener();
     // продолжительность анимации (в 2 раза дольше, если идёт переход от замочной скважины или обратно к ней)
     const changeDuration = newState.index === 0 || this.state.index === 0 ? 1500 : 700;
 
@@ -261,4 +287,4 @@ class CameraRig extends THREE.Group {
   }
 }
 
-export default CameraRig;
+export default CameraRigMobile;

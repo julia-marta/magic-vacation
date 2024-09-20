@@ -367,8 +367,6 @@ export const Scenes = {
   keyhole: {
     type: `scene`,
     name: `keyholeScene`,
-    // position: [0, 0, -3270],
-    // rotation: [0, -Math.PI / 2, 0],
     objects: [
       {
         type: `group`,
@@ -404,9 +402,16 @@ export const Scenes = {
                         z: 0.5,
                       },
                       position: {
-                        x: 400,
-                        y: -150,
-                        z: 185,
+                        landscape: {
+                          x: 400,
+                          y: -150,
+                          z: 185,
+                        },
+                        portrait: {
+                          x: 160,
+                          y: -150,
+                          z: 185,
+                        },
                       },
                     },
                     fps: 60,
@@ -461,9 +466,16 @@ export const Scenes = {
                         z: 1.5,
                       },
                       position: {
-                        x: -445,
-                        y: 270,
-                        z: 100,
+                        landscape: {
+                          x: -445,
+                          y: 270,
+                          z: 100,
+                        },
+                        portrait: {
+                          x: -180,
+                          y: 290,
+                          z: 100,
+                        },
                       },
                     },
                     fps: 60,
@@ -511,9 +523,16 @@ export const Scenes = {
                         z: 1,
                       },
                       position: {
-                        x: -370,
-                        y: -20,
-                        z: 170,
+                        landscape: {
+                          x: -370,
+                          y: -20,
+                          z: 170,
+                        },
+                        portrait: {
+                          x: -160,
+                          y: 20,
+                          z: 170,
+                        },
                       },
                     },
                     fps: 60,
@@ -561,9 +580,16 @@ export const Scenes = {
                         z: 1,
                       },
                       position: {
-                        x: 80,
-                        y: -300,
-                        z: 125,
+                        landscape: {
+                          x: 80,
+                          y: -300,
+                          z: 125,
+                        },
+                        portrait: {
+                          x: 30,
+                          y: -300,
+                          z: 125,
+                        },
                       },
                     },
                     fps: 60,
@@ -611,9 +637,16 @@ export const Scenes = {
                         z: 1,
                       },
                       position: {
-                        x: 550,
-                        y: 250,
-                        z: 170,
+                        landscape: {
+                          x: 550,
+                          y: 250,
+                          z: 170,
+                        },
+                        portrait: {
+                          x: 230,
+                          y: 300,
+                          z: 170,
+                        },
                       },
                     },
                     fps: 60,
@@ -769,9 +802,11 @@ export const Scenes = {
                 },
                 to: {
                   position: {
-                    x: 0,
-                    y: 70,
-                    z: 60,
+                    landscape: {
+                      x: 0,
+                      y: 70,
+                      z: 60,
+                    },
                   },
                 },
                 fps: 60,
@@ -790,9 +825,11 @@ export const Scenes = {
                 },
                 to: {
                   position: {
-                    x: -60,
-                    y: -220,
-                    z: 120,
+                    landscape: {
+                      x: -60,
+                      y: -220,
+                      z: 120,
+                    },
                   },
                 },
                 fps: 60,
@@ -840,9 +877,16 @@ export const Scenes = {
                   z: 1.5,
                 },
                 position: {
-                  x: -650,
-                  y: -240,
-                  z: 200,
+                  landscape: {
+                    x: -650,
+                    y: -240,
+                    z: 200,
+                  },
+                  portrait: {
+                    x: -200,
+                    y: -240,
+                    z: 200,
+                  },
                 },
               },
               fps: 60,
@@ -862,18 +906,37 @@ export const Scenes = {
       },
     ],
     cameraState: {
-      index: 0,
-      depth: -3270,
-      yawAngle: 0,
-      horizonAngle: 0,
-      pitchDepth: 1405,
-      pitchAngle: 0,
-      relatedAnimation: {
-        scene: `keyholeScene`,
-        object: `backPlane`,
-        breakpoints: {
-          from: -1800,
-          to: -2200,
+      desktop: {
+        index: 0,
+        depth: -3270,
+        yawAngle: 0,
+        horizonAngle: 0,
+        pitchDepth: 1405,
+        pitchAngle: 0,
+        relatedAnimation: {
+          scene: `keyholeScene`,
+          object: `backPlane`,
+          breakpoints: {
+            from: -500,
+            to: -2000,
+          }
+        }
+      },
+      mobile: {
+        index: 0,
+        depth: -3270,
+        yawAngle: 0,
+        horizonAngle: 0,
+        pitchDepth: 1405,
+        pitchAngle: 0,
+        verticalAngle: 0,
+        relatedAnimation: {
+          scene: `keyholeScene`,
+          object: `backPlane`,
+          breakpoints: {
+            from: -500,
+            to: -2000,
+          }
         }
       }
     },
@@ -1022,18 +1085,37 @@ export const Scenes = {
       },
     ],
     cameraState: {
-      index: 1,
-      depth: 0,
-      yawAngle: 0,
-      horizonAngle: -(15 * Math.PI / 180),
-      pitchDepth: 2200,
-      pitchAngle: 0,
-      relatedAnimation: {
-        scene: `keyholeScene`,
-        object: `backPlane`,
-        breakpoints: {
-          from: -3000,
-          to: -3700,
+      desktop: {
+        index: 1,
+        depth: 0,
+        yawAngle: 0,
+        horizonAngle: -(15 * Math.PI / 180),
+        pitchDepth: 2200,
+        pitchAngle: 0,
+        relatedAnimation: {
+          scene: `keyholeScene`,
+          object: `backPlane`,
+          breakpoints: {
+            from: -500,
+            to: -2000,
+          }
+        }
+      },
+      mobile: {
+        index: 1,
+        depth: 0,
+        yawAngle: 0,
+        horizonAngle: -(21 * Math.PI / 180),
+        pitchDepth: 2200,
+        pitchAngle: 0,
+        verticalAngle: 3 * Math.PI / 180,
+        relatedAnimation: {
+          scene: `keyholeScene`,
+          object: `backPlane`,
+          breakpoints: {
+            from: -500,
+            to: -2000,
+          }
         }
       }
     },
@@ -1062,9 +1144,11 @@ export const Scenes = {
               z: 0.95
             },
             position: {
-              x: -350,
-              y: 0,
-              z: 750,
+              landscape: {
+                x: -350,
+                y: 0,
+                z: 750,
+              },
             },
           },
           fps: 60,
@@ -1093,9 +1177,11 @@ export const Scenes = {
               z: 1.05
             },
             position: {
-              x: -350,
-              y: 2,
-              z: 750,
+              landscape: {
+                x: -350,
+                y: 2,
+                z: 750,
+              },
             },
           },
           fps: 60,
@@ -1124,9 +1210,11 @@ export const Scenes = {
               z: 0.98
             },
             position: {
-              x: -350,
-              y: 1,
-              z: 750,
+              landscape: {
+                x: -350,
+                y: 1,
+                z: 750,
+              },
             },
           },
           fps: 60,
@@ -1156,9 +1244,11 @@ export const Scenes = {
               z: 1,
             },
             position: {
-              x: -350,
-              y: 0,
-              z: 750,
+              landscape: {
+                x: -350,
+                y: 0,
+                z: 750,
+              },
             },
           },
           fps: 60,
@@ -1312,12 +1402,23 @@ export const Scenes = {
       },
     ],
     cameraState: {
-      index: 2,
-      depth: 0,
-      yawAngle: Math.PI / 2,
-      horizonAngle: -(15 * Math.PI / 180),
-      pitchDepth: 2200,
-      pitchAngle: 0,
+      desktop: {
+        index: 2,
+        depth: 0,
+        yawAngle: Math.PI / 2,
+        horizonAngle: -(15 * Math.PI / 180),
+        pitchDepth: 2200,
+        pitchAngle: 0,
+      },
+      mobile: {
+        index: 2,
+        depth: 0,
+        yawAngle: Math.PI / 2,
+        horizonAngle: -(21 * Math.PI / 180),
+        pitchDepth: 2200,
+        pitchAngle: 0,
+        verticalAngle: 3 * Math.PI / 180,
+      }
     },
   },
   room3:
@@ -1419,12 +1520,23 @@ export const Scenes = {
       }
     ],
     cameraState: {
-      index: 3,
-      depth: 0,
-      yawAngle: Math.PI,
-      horizonAngle: -(15 * Math.PI / 180),
-      pitchDepth: 2200,
-      pitchAngle: 0,
+      desktop: {
+        index: 3,
+        depth: 0,
+        yawAngle: Math.PI,
+        horizonAngle: -(15 * Math.PI / 180),
+        pitchDepth: 2200,
+        pitchAngle: 0,
+      },
+      mobile: {
+        index: 3,
+        depth: 0,
+        yawAngle: Math.PI,
+        horizonAngle: -(21 * Math.PI / 180),
+        pitchDepth: 2200,
+        pitchAngle: 0,
+        verticalAngle: 3 * Math.PI / 180,
+      }
     },
   },
   room4: {
@@ -1585,12 +1697,23 @@ export const Scenes = {
       }
     ],
     cameraState: {
-      index: 4,
-      depth: 0,
-      yawAngle: Math.PI + Math.PI / 2,
-      horizonAngle: -(15 * Math.PI / 180),
-      pitchDepth: 2200,
-      pitchAngle: 0,
+      desktop: {
+        index: 4,
+        depth: 0,
+        yawAngle: Math.PI + Math.PI / 2,
+        horizonAngle: -(15 * Math.PI / 180),
+        pitchDepth: 2200,
+        pitchAngle: 0,
+      },
+      mobile: {
+        index: 4,
+        depth: 0,
+        yawAngle: Math.PI + Math.PI / 2,
+        horizonAngle: -(21 * Math.PI / 180),
+        pitchDepth: 2200,
+        pitchAngle: 0,
+        verticalAngle: 3 * Math.PI / 180,
+      }
     },
   },
   suitcase: {
