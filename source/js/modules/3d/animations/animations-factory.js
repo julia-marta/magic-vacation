@@ -53,6 +53,10 @@ class AnimationsFactory {
   // создаёт анимации трансформаций (масштаб, положение)
   createTransformAnimation(object, options) {
     const {fps, duration, delay, easing, from, to} = options;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const isPortrait = width < height;
+
     const animation = new Animation({
       func: (progress) => {
         if (from && to && from.scale && to.scale) {
@@ -63,9 +67,10 @@ class AnimationsFactory {
         }
 
         if (from && to && from.position && to.position) {
-          const positionX = from.position.x + (to.position.x - from.position.x) * progress;
-          const positionY = from.position.y + (to.position.y - from.position.y) * progress;
-          const positionZ = from.position.z + (to.position.z - from.position.z) * progress;
+          const targetPosition = isPortrait && to.position.portrait ? to.position.portrait : to.position.landscape;
+          const positionX = from.position.x + (targetPosition.x - from.position.x) * progress;
+          const positionY = from.position.y + (targetPosition.y - from.position.y) * progress;
+          const positionZ = from.position.z + (targetPosition.z - from.position.z) * progress;
           object.position.set(positionX, positionY, positionZ);
         }
       },
@@ -275,13 +280,14 @@ class AnimationsFactory {
 
   // создаёт анимацию смены состояния камеры (с использованием техники Rigging)
   createCameraAnimation(object, options) {
-    const {depth, yawAngle, horizonAngle, pitchAngle, pitchDepth, fps, duration, delay, easing, callback, relatedAnimation} = options;
+    const {depth, yawAngle, horizonAngle, pitchAngle, pitchDepth, verticalAngle, fps, duration, delay, easing, callback, relatedAnimation} = options;
     // получим изначальные значения всех параметров из Rig
     const initialDepth = object.depth;
     const initialYawAngle = object.yawAngle;
     const initialHorizonAngle = object.horizonAngle;
     const initialPitchAngle = object.pitchAngle;
     const initialPitchDepth = object.pitchDepth;
+    const initialVerticalAngle = object.verticalAngle;
 
     const animation = new Animation({
       func: (progress) => {
@@ -308,6 +314,8 @@ class AnimationsFactory {
         object.pitchAngle = initialPitchAngle + (pitchAngle - initialPitchAngle) * progress;
         // изменяем глубину группы поперечного вращения
         object.pitchDepth = initialPitchDepth + (pitchDepth - initialPitchDepth) * progress;
+        // изменяем вертикальный угол вращения нулевой группы
+        object.verticalAngle = initialVerticalAngle + (verticalAngle - initialVerticalAngle) * progress;
         // запускаем в риге проверку изменений параметров
         object.invalidate();
       },

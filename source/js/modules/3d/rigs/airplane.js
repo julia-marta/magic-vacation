@@ -9,7 +9,7 @@ class AirplaneRig extends THREE.Group {
     this.objectsFactory = new ObjectsFactory(this.onCreateAirplaneObject);
     // радиус полёта и флаг его изменения
     // меняет позицию по оси z у объекта самолёта
-    this._flightRadius = 100;
+    this._flightRadius = 50;
     this._flightRadiusChanged = true;
     // высота полёта и флаг его изменения
     // меняет позицию по оси y у рига (обёртки объекта)
@@ -36,7 +36,7 @@ class AirplaneRig extends THREE.Group {
   }
   // получение значения максимального радиуса полёта
   get maxFlightRadius() {
-    return 200;
+    return 150;
   }
   // получение значения максимальной высоты полёта
   get maxFlightHeight() {
