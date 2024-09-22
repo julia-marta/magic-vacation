@@ -136,7 +136,7 @@ class MaterialsFactory {
   }
   // моделирует физически реалистичные модели отражения, использует параметры roughness (шероховатость) и metalness (металличность)
   _getStandardMaterial(options, reflection) {
-    if (!isDesktop) {
+    if (isDesktop) {
       if (reflection) {
         options = {...options, ...this.getMaterialReflectionOptions(reflection)};
       }
@@ -150,7 +150,7 @@ class MaterialsFactory {
 
   // вычисляет освещение в каждом пикселе и генерирует выраженное отражение от поверхности (блик)
   _getPhongMaterial(options, reflection) {
-    if (!isDesktop) {
+    if (isDesktop) {
       if (reflection) {
         options = {...options, ...this.getMaterialReflectionOptions(reflection)};
       }
@@ -164,7 +164,7 @@ class MaterialsFactory {
 
   _getCustomMaterial(options, reflection) {
     const {name, colors, shaders, additional} = options;
-    if (!isDesktop) {
+    if (isDesktop) {
       const uniforms = this.getCustomMaterialUniforms(reflection, colors, additional);
       return new CustomShaderMaterial(name, shaders, uniforms);
     } else {

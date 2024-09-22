@@ -190,7 +190,7 @@ export default class Scene3D {
     // сохраняем анимацию для конкретной текущей сцены
     this.currentAnimation = currentAnimation;
     // добавляем свет
-    if (lights && !this.isLightAdded && !isDesktop) {
+    if (lights && !this.isLightAdded && isDesktop) {
       this.setLights();
     }
     // добавляем Rig с камерой

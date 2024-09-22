@@ -74,7 +74,7 @@ class ObjectsFactory {
         url, (gltf) => {
           const {scene} = gltf;
           // для мобильных устройств заменяем встроенный материал дочерних объектов gLTF на MeshMatcapMaterial
-          if (isDesktop && material) {
+          if (!isDesktop && material) {
             scene.traverse((child) => {
               if (child.isMesh) {
                 const childMap = child.material.map;
@@ -135,7 +135,8 @@ class ObjectsFactory {
     const {children} = options;
 
     children.forEach((child) => {
-      const {name, position, scale, rotation, outer} = child;
+      const {name, position, scale, rotation, outer, isHiddenOnMobile} = child;
+      const isHidden = !isDesktop && isHiddenOnMobile;
       // получаем конструктор дочернего объекта группы
       const GroupChild = this.getGroupChild(name);
       // получаем конфиг для дочернего объекта группы
@@ -144,7 +145,7 @@ class ObjectsFactory {
         childConfig.options = {...childConfig.options, ...child.options};
       }
 
-      if (GroupChild) {
+      if (GroupChild && !isHidden) {
         const object = new GroupChild(this.materialsFactory, childConfig);
         if (position) {
           object.position.set(...position);

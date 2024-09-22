@@ -2,6 +2,7 @@ import * as THREE from "three";
 import MaterialsFactory from '../materials/materials-factory.js';
 import ObjectsFactory from '../objects/objects-factory.js';
 import AnimationsFactory from "../animations/animations-factory.js";
+import {isDesktop} from "../../../common/const.js";
 
 class SceneGroup extends THREE.Group {
   constructor(sceneObjects, runSceneAnimation) {
@@ -20,8 +21,9 @@ class SceneGroup extends THREE.Group {
   // получает готовый объект после создания, добавляет его на сцену и запускает анимации
   onCreateComplete(object, options, outer) {
     let isSceneAnimation;
+    let hiddenMobileObjects;
     if (options) {
-      const {scale, position, rotation, animations, name, isCurrentAnimation} = options;
+      const {scale, position, rotation, animations, name, isCurrentAnimation, hiddenMobile} = options;
 
       if (name) {
         object.name = name;
@@ -43,11 +45,20 @@ class SceneGroup extends THREE.Group {
         this.animationsFactory.run(object, animations);
       }
       isSceneAnimation = isCurrentAnimation;
+      hiddenMobileObjects = hiddenMobile;
     }
+
     object.traverse((obj) => {
       if (obj.isMesh) {
-        obj.castShadow = true;
-        obj.receiveShadow = true;
+        obj.castShadow = isDesktop ? true : false;
+        obj.receiveShadow = isDesktop ? true : false;
+      }
+      if (!isDesktop && hiddenMobileObjects && obj.name === hiddenMobileObjects.parent) {
+        obj.children.slice().forEach((child) => {
+          if (hiddenMobileObjects.children.includes(child.name)) {
+            obj.remove(child);
+          }
+        });
       }
     });
 
