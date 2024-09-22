@@ -63,7 +63,7 @@ export default class Scene3D {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.setSize(this.width, this.height);
     this.renderer.setClearColor(this.color, this.alpha);
-    this.renderer.shadowMap.enabled = !isDesktop ? true : false;
+    this.renderer.shadowMap.enabled = isDesktop ? true : false;
 
     // 1.1.2. Scene
     this.scene = new THREE.Scene();
