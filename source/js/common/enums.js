@@ -39,3 +39,9 @@ export const SliderScenes = {
   6: `room4`,
   7: `room4`,
 };
+
+export const MatcapMaps = {
+  basic: `./img/module-7/matcaps/Basic-Mat.png`,
+  soft: `./img/module-7/matcaps/Soft-Mat.png`,
+  strong: `./img/module-7/matcaps/Strong-Mat-SnowColor.png`,
+};

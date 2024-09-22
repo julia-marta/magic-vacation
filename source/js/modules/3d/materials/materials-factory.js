@@ -1,9 +1,13 @@
 import * as THREE from "three";
 import CustomShaderMaterial from "./custom-shader-material";
 import CustomPlanesMaterial from "./custom-planes-material";
+import {isDesktop} from "../../../common/const";
+import {MatcapMaps} from "../../../common/enums";
+import {isArray} from "lodash";
 
 class MaterialsFactory {
   constructor() {
+    this.textureLoader = new THREE.TextureLoader();
     this.get = this.get.bind(this);
   }
 
@@ -12,7 +16,7 @@ class MaterialsFactory {
     const {type, color, doubleSide, transparent, options} = material;
     const materialConfig = this.getMaterialConfig(type);
     if (color) {
-      if (typeof color === `object`) {
+      if (typeof color === `object` && !isArray(color)) {
         materialConfig.options.colors = [];
         Object.entries(color).forEach(([key, value]) => {
           materialConfig.options.colors.push(
@@ -64,9 +68,9 @@ class MaterialsFactory {
     }
   }
 
-  // возвращает цвет материала из библиотеки цветов
+  // возвращает цвет материала из библиотеки цветов либо исходный цвет в нужном формате
   getMaterialColor(name) {
-    return MaterialsFactory.Colors[name];
+    return isArray(name) ? new THREE.Color(...name) : MaterialsFactory.Colors[name];
   }
 
   // возвращает конфиг материала из библиотеки конфигов
@@ -118,6 +122,13 @@ class MaterialsFactory {
     };
   }
 
+  // использует карту освещённости на сфере
+  _getMeshMatcapMaterial(url, options) {
+    const matcap = this.textureLoader.load(url);
+    options = {...options, color: this.getMaterialColor(options.color), matcap};
+    return new THREE.MeshMatcapMaterial(options);
+  }
+
   // заливает фигуру однородным цветом, не обрабатывая информацию об освещении
   _getBasicMaterial(options) {
     options = {...options, color: this.getMaterialColor(options.color)};
@@ -125,26 +136,42 @@ class MaterialsFactory {
   }
   // моделирует физически реалистичные модели отражения, использует параметры roughness (шероховатость) и metalness (металличность)
   _getStandardMaterial(options, reflection) {
-    if (reflection) {
-      options = {...options, ...this.getMaterialReflectionOptions(reflection)};
+    if (!isDesktop) {
+      if (reflection) {
+        options = {...options, ...this.getMaterialReflectionOptions(reflection)};
+      }
+      options = {...options, color: this.getMaterialColor(options.color)};
+      return new THREE.MeshStandardMaterial(options);
+    } else {
+      const matcapUrl = MatcapMaps[reflection];
+      return this._getMeshMatcapMaterial(matcapUrl, options);
     }
-    options = {...options, color: this.getMaterialColor(options.color)};
-    return new THREE.MeshStandardMaterial(options);
   }
 
   // вычисляет освещение в каждом пикселе и генерирует выраженное отражение от поверхности (блик)
   _getPhongMaterial(options, reflection) {
-    if (reflection) {
-      options = {...options, ...this.getMaterialReflectionOptions(reflection)};
+    if (!isDesktop) {
+      if (reflection) {
+        options = {...options, ...this.getMaterialReflectionOptions(reflection)};
+      }
+      options = {...options, color: this.getMaterialColor(options.color)};
+      return new THREE.MeshPhongMaterial(options);
+    } else {
+      const matcapUrl = MatcapMaps[reflection];
+      return this._getMeshMatcapMaterial(matcapUrl, options);
     }
-    options = {...options, color: this.getMaterialColor(options.color)};
-    return new THREE.MeshPhongMaterial(options);
   }
 
   _getCustomMaterial(options, reflection) {
     const {name, colors, shaders, additional} = options;
-    const uniforms = this.getCustomMaterialUniforms(reflection, colors, additional);
-    return new CustomShaderMaterial(name, shaders, uniforms);
+    if (!isDesktop) {
+      const uniforms = this.getCustomMaterialUniforms(reflection, colors, additional);
+      return new CustomShaderMaterial(name, shaders, uniforms);
+    } else {
+      const mainColor = colors.find((color) => color.name === `mainColor`);
+      const matcapUrl = MatcapMaps[reflection];
+      return this._getMeshMatcapMaterial(matcapUrl, {color: mainColor.value});
+    }
   }
 
   _getCustomPlanesMaterial(options) {
