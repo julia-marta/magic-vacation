@@ -8,6 +8,7 @@ import Animation from "../animation.js";
 import {Scenes, ScreensScenes} from "../../data/scenes.js";
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 import Stats from 'three/examples/jsm/libs/stats.module';
+import {isDesktop} from "../../common/const.js";
 
 export default class Scene3D {
   constructor(options) {
@@ -62,7 +63,7 @@ export default class Scene3D {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.setSize(this.width, this.height);
     this.renderer.setClearColor(this.color, this.alpha);
-    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.enabled = isDesktop ? true : false;
 
     // 1.1.2. Scene
     this.scene = new THREE.Scene();
@@ -162,11 +163,17 @@ export default class Scene3D {
       this.scene.remove(this.cameraRig);
       this.cameraRig = new CameraRigMobile(state.mobile);
     }
-    // камеру и направленный источник света добавляем на внешнюю оболочку Rig конструкции
+    // камеру добавляем на внешнюю оболочку Rig конструкции
     this.cameraRig.addObjectToCameraNull(this.camera);
-    this.cameraRig.addObjectToCameraNull(this.directionalLight);
-    // точечные источники добавляем в группу вертикального вращения Rig конструкции
-    this.cameraRig.addObjectToYawTrack(this.pointLight);
+    if (this.directionalLight) {
+      // направленный источник света добавляем на внешнюю оболочку Rig конструкции
+      this.cameraRig.addObjectToCameraNull(this.directionalLight);
+    }
+    if (this.pointLight) {
+      // точечные источники добавляем в группу вертикального вращения Rig конструкции
+      this.cameraRig.addObjectToYawTrack(this.pointLight);
+    }
+
     // добавляем Rig на глобальную сцену
     this.scene.add(this.cameraRig);
   }
@@ -183,7 +190,7 @@ export default class Scene3D {
     // сохраняем анимацию для конкретной текущей сцены
     this.currentAnimation = currentAnimation;
     // добавляем свет
-    if (lights && !this.isLightAdded) {
+    if (lights && !this.isLightAdded && isDesktop) {
       this.setLights();
     }
     // добавляем Rig с камерой

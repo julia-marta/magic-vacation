@@ -11,6 +11,7 @@ import Carpet from "./carpet.js";
 import Road from "./road.js";
 import Saturn from "./saturn.js";
 import Fence from "./fence.js";
+import {isDesktop} from "../../../common/const.js";
 class ObjectsFactory {
   constructor(onCreate) {
     this.materialsFactory = new MaterialsFactory();
@@ -67,12 +68,27 @@ class ObjectsFactory {
 
   // загрузчик моделей gLTF
   loadGLTF(config) {
-    const {url} = config;
+    const {url, material} = config;
     const loader = new GLTFLoader();
-
     loader.load(
         url, (gltf) => {
           const {scene} = gltf;
+          // для мобильных устройств заменяем встроенный материал дочерних объектов gLTF на MeshMatcapMaterial
+          if (!isDesktop && material) {
+            scene.traverse((child) => {
+              if (child.isMesh) {
+                const childMap = child.material.map;
+                const childColor = Object.values(child.material.color);
+                const materialConfig = {...material, color: childColor};
+                const childMaterial = this.materialsFactory.get(materialConfig);
+                child.material = childMaterial;
+                if (childMap) {
+                  child.material.map = childMap;
+                }
+              }
+            });
+          }
+
           this.onCreate(scene, config, config.outer, config.isCurrentAnimation);
         }
     );
@@ -119,7 +135,8 @@ class ObjectsFactory {
     const {children} = options;
 
     children.forEach((child) => {
-      const {name, position, scale, rotation, outer} = child;
+      const {name, position, scale, rotation, outer, isHiddenOnMobile} = child;
+      const isHidden = !isDesktop && isHiddenOnMobile;
       // получаем конструктор дочернего объекта группы
       const GroupChild = this.getGroupChild(name);
       // получаем конфиг для дочернего объекта группы
@@ -128,7 +145,7 @@ class ObjectsFactory {
         childConfig.options = {...childConfig.options, ...child.options};
       }
 
-      if (GroupChild) {
+      if (GroupChild && !isHidden) {
         const object = new GroupChild(this.materialsFactory, childConfig);
         if (position) {
           object.position.set(...position);
@@ -699,38 +716,74 @@ ObjectsFactory.glTFConfigs = {
   suitcase: {
     name: `suitcase`,
     url: `./3d/module-6/scene-0-objects/suitcase.gltf`,
+    material: {
+      type: `StandardSoft`,
+      doubleSide: true,
+    }
   },
   watermelon: {
     name: `watermelon`,
     url: `./3d/module-6/scene-0-objects/watermelon.gltf`,
+    material: {
+      type: `StandardSoft`,
+      doubleSide: true,
+    }
   },
   staticGroupRoom1: {
     name: `staticGroupRoom1`,
     url: `./3d/module-6/rooms-scenes/scenesStatic/scene1-static-output-1.gltf`,
+    material: {
+      type: `StandardSoft`,
+      doubleSide: true,
+    }
   },
   staticGroupRoom2: {
     name: `staticGroupRoom2`,
     url: `./3d/module-6/rooms-scenes/scenesStatic/scene2-static-output-1.gltf`,
+    material: {
+      type: `StandardSoft`,
+      doubleSide: true,
+    }
   },
   staticGroupRoom3: {
     name: `staticGroupRoom3`,
     url: `./3d/module-6/rooms-scenes/scenesStatic/scene3-static-output-1.gltf`,
+    material: {
+      type: `StandardSoft`,
+      doubleSide: true,
+    }
   },
   staticGroupRoom4: {
     name: `staticGroupRoom4`,
     url: `./3d/module-6/rooms-scenes/scenesStatic/scene4-static-output-1.gltf`,
+    material: {
+      type: `StandardSoft`,
+      doubleSide: true,
+    }
   },
   dog: {
     name: `dog`,
     url: `./3d/module-6/rooms-scenes/objects/dog.gltf`,
+    material: {
+      type: `StandardSoft`,
+      doubleSide: true,
+    }
   },
   compass: {
     name: `compass`,
     url: `./3d/module-6/rooms-scenes/objects/compass.gltf`,
+    material: {
+      type: `StandardSoft`,
+      doubleSide: true,
+    }
   },
   sonya: {
     name: `sonya`,
     url: `./3d/module-6/rooms-scenes/objects/sonya.gltf`,
+    material: {
+      type: `StandardSoft`,
+      doubleSide: true,
+    }
   },
 };
 

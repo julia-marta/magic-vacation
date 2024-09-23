@@ -12,3 +12,5 @@ export const Scene3DSettings = {
 };
 
 export const TIMER_DURATION_MIN = 5;
+
+export const isDesktop = window.innerWidth > 768;

@@ -1062,6 +1062,10 @@ export const Scenes = {
           scale: [1, 1, 1],
           rotation: [0, -Math.PI / 4, 0],
           position: [0, 0, 0],
+          hiddenMobile: {
+            parent: `Stage_1`,
+            children: [`surfobj`, `Skis`],
+          },
         }
       },
       {
@@ -1311,6 +1315,7 @@ export const Scenes = {
               options: {
                 name: `lantern`,
               },
+              isHiddenOnMobile: true,
             },
           ],
         }
@@ -1398,6 +1403,10 @@ export const Scenes = {
           scale: [1, 1, 1],
           rotation: [0, -Math.PI / 4, 0],
           position: [0, 0, 0],
+          hiddenMobile: {
+            parent: `Stage_2`,
+            children: [`Table`, `Starfish_Null`],
+          },
         }
       },
     ],
@@ -1651,6 +1660,10 @@ export const Scenes = {
           scale: [1, 1, 1],
           rotation: [0, -Math.PI / 4, 0],
           position: [0, 0, 0],
+          hiddenMobile: {
+            parent: `Stage_4`,
+            children: [`surfobj`, `Skis`],
+          },
         }
       },
       {
