@@ -5,12 +5,14 @@ import AnimationsFactory from "../animations/animations-factory.js";
 import {isDesktop} from "../../../common/const.js";
 
 class SceneGroup extends THREE.Group {
-  constructor(sceneObjects, runSceneAnimation) {
+  constructor(sceneObjects, runCurrentSceneAnimation) {
     super();
     this.sceneObjects = sceneObjects;
-    this.runSceneAnimation = runSceneAnimation;
+    this.runCurrentSceneAnimation = runCurrentSceneAnimation;
+    this.sceneAnimations = [];
     this.playedAnimations = [];
     this.onCreateComplete = this.onCreateComplete.bind(this);
+    this.runSceneAnimations = this.runSceneAnimations.bind(this);
     this.runObjectAnimations = this.runObjectAnimations.bind(this);
     this.objectsFactory = new ObjectsFactory(this.onCreateComplete);
     this.materialsFactory = new MaterialsFactory();
@@ -20,7 +22,6 @@ class SceneGroup extends THREE.Group {
 
   // получает готовый объект после создания, добавляет его на сцену и запускает анимации
   onCreateComplete(object, options, outer) {
-    let isSceneAnimation;
     let hiddenMobileObjects;
     if (options) {
       const {scale, position, rotation, animations, name, isCurrentAnimation, hiddenMobile} = options;
@@ -42,9 +43,17 @@ class SceneGroup extends THREE.Group {
       }
 
       if (animations) {
-        this.animationsFactory.run(object, animations);
+      // сохраняем анимации для последующего запуска
+        this.sceneAnimations.push({
+          object, animations, isCurrentAnimation
+        });
       }
-      isSceneAnimation = isCurrentAnimation;
+
+      if (!animations && isCurrentAnimation) {
+        this.sceneAnimations.push({
+          object, animations: [], isCurrentAnimation
+        });
+      }
       hiddenMobileObjects = hiddenMobile;
     }
 
@@ -83,7 +92,10 @@ class SceneGroup extends THREE.Group {
         }
 
         if (intermediate.animations) {
-          this.animationsFactory.run(intermediateGroup, intermediate.animations);
+          this.sceneAnimations.push({
+            object: intermediateGroup,
+            animations: intermediate.animations,
+          });
         }
         outerGroup.add(intermediateGroup);
       } else {
@@ -106,22 +118,31 @@ class SceneGroup extends THREE.Group {
       }
 
       if (animations) {
-        this.animationsFactory.run(outerGroup, animations);
+        this.sceneAnimations.push({
+          object: outerGroup,
+          animations,
+        });
       }
 
       this.add(outerGroup);
     } else {
       this.add(object);
     }
-    // если объект имеет анимацию для конкретной сцены, запускаем анимацию сцены после его отрисовки
-    if (isSceneAnimation) {
-      this.runSceneAnimation();
-    }
+  }
+  // запускает все анимации сцены
+  runSceneAnimations() {
+    this.sceneAnimations.forEach((sceneAnimation) => {
+      const {object, animations, isCurrentAnimation} = sceneAnimation;
+      // если объект имеет анимацию для конкретной сцены, запускаем её вместе с остальными анимациями
+      if (isCurrentAnimation) {
+        this.runCurrentSceneAnimation();
+      }
+      this.animationsFactory.run(object, animations);
+    });
   }
 
   // запускает анимации у одного из дочерних объектов
   runObjectAnimations(name, animations, isPlayOnce) {
-
     // если анимация должна проигрываться только один раз и уже проигрывалась, ничего не делаем
     const isAnimationsHavePlayed = this.playedAnimations.includes(name);
     if (isAnimationsHavePlayed && isPlayOnce) {
