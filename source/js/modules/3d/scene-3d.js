@@ -9,12 +9,15 @@ import {Scenes, ScreensScenes} from "../../data/scenes.js";
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import {isDesktop} from "../../common/const.js";
+import {loadingManager} from "../loading-manager.js";
 
 export default class Scene3D {
   constructor(options) {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
     this.canvas = document.getElementById(options.canvas);
+    this.preloader = document.getElementById(`preloader-screen`);
+    this.preloaderProgress = document.getElementById(`preloader-progress`);
     this.color = options.color;
     this.alpha = options.alpha;
     this.far = options.far;
@@ -179,7 +182,7 @@ export default class Scene3D {
   }
 
   // инициирует локальные сцены, источники света, устанавливает состояние камеры
-  initScenes(screen, currentScene) {
+  initScenes(screen, currentScene, changePage) {
     const screenSceneData = ScreensScenes[screen];
     const currentSceneData = Scenes[currentScene];
     const {name, type, lights, scenes, objects, position, rotation, isMountedOnCameraRig} = screenSceneData;
@@ -200,6 +203,29 @@ export default class Scene3D {
 
     // если сцена ещё не отрисована
     if (!isSceneRendered) {
+      // настраиваем менеджер загрузки
+      // в процессе загрузки:
+      loadingManager.onProgress = (_, itemsLoaded, itemsTotal) => {
+        this.preloaderProgress.textContent = Math.round(itemsLoaded / itemsTotal * 100);
+      };
+      // после окончания загрузки:
+      loadingManager.onLoad = () => {
+        // сохраняем отрисованную сцену
+        this.renderedScenes.push(name);
+        setTimeout(() => {
+        // убираем прелоадер
+          this.preloader.classList.add(`preloader-screen--loaded`);
+          // добавляем класс loaded на body и запускаем CSS анимации для него
+          document.body.classList.add(`loaded`);
+          // меняем активный экран
+          changePage();
+          // запускаем анимации объектов всех дочерних сцен
+          Object.values(this.childScenes).forEach((scene) => {
+            scene.runSceneAnimations();
+          });
+        }, 500);
+      };
+
       // отрисовываем сцену, в зависимости от типа
       switch (type) {
         case `planes`:
@@ -214,15 +240,14 @@ export default class Scene3D {
           this.addSceneGroup(name, objects, position, rotation, isMountedOnCameraRig);
           break;
       }
-
-      // сохраняем отрисованную сцену
-      this.renderedScenes.push(name);
       // если сцена уже отрисована
     } else {
       const width = window.innerWidth;
       const height = window.innerHeight;
       const isLandscape = width > height;
       const currentCameraState = isLandscape ? cameraState.desktop : cameraState.mobile;
+      // меняем активный экран
+      changePage();
       // если есть текущая анимация
       if (this.currentAnimation) {
         // добавляем в состояние камеры коллбэк для запуска анимации следующей сцены

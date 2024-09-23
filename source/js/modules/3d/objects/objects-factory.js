@@ -12,9 +12,13 @@ import Road from "./road.js";
 import Saturn from "./saturn.js";
 import Fence from "./fence.js";
 import {isDesktop} from "../../../common/const.js";
+import {loadingManager} from "../../loading-manager.js";
 class ObjectsFactory {
   constructor(onCreate) {
     this.materialsFactory = new MaterialsFactory();
+    this.SVGLoader = new SVGLoader(loadingManager);
+    this.OBJLoader = new OBJLoader(loadingManager);
+    this.GLTFLoader = new GLTFLoader(loadingManager);
     this.get = this.get.bind(this);
     this.onCreate = onCreate.bind(this);
   }
@@ -23,9 +27,7 @@ class ObjectsFactory {
   loadSVG(config) {
     const {url, extrude, options} = config;
 
-    const loader = new SVGLoader();
-
-    loader.load(
+    this.SVGLoader.load(
         url, (data) => {
           const paths = data.paths;
           const {material} = options;
@@ -51,9 +53,8 @@ class ObjectsFactory {
   // загрузчик моделей OBJ
   loadOBJ(config) {
     const {url, material} = config;
-    const loader = new OBJLoader();
 
-    loader.load(
+    this.OBJLoader.load(
         url, (obj) => {
           const objMaterial = this.materialsFactory.get(material);
           obj.traverse((child) => {
@@ -69,8 +70,8 @@ class ObjectsFactory {
   // загрузчик моделей gLTF
   loadGLTF(config) {
     const {url, material} = config;
-    const loader = new GLTFLoader();
-    loader.load(
+
+    this.GLTFLoader.load(
         url, (gltf) => {
           const {scene} = gltf;
           // для мобильных устройств заменяем встроенный материал дочерних объектов gLTF на MeshMatcapMaterial
@@ -88,7 +89,6 @@ class ObjectsFactory {
               }
             });
           }
-
           this.onCreate(scene, config, config.outer, config.isCurrentAnimation);
         }
     );

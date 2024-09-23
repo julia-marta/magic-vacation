@@ -78,53 +78,60 @@ export default class FullPageScroll {
   }
   // меняет отображаемую страницу, рисует нужные 3D сцены и запускает необходимые анимации
   changePageDisplay() {
+    // после полной загрузки объектов сцены
+    const onSceneLoaded = () => {
+      // делаем текущий экран видимым
+      this.changeVisibilityDisplay();
+      // меняем активный пункт меню
+      this.changeActiveMenuItem();
+      // запускаем css анимации в зависимости от id экрана
+      this.pageAnimationSwitcher.runAnimationScheme(activeScreenId);
+      // передаём на body событие смены экрана
+      this.emitChangeDisplayEvent();
+    };
     // определяем id активного экрана
     const activeScreenId = this.screenElements[this.activeScreen].id;
-    // делаем текущий экран видимым
-    this.changeVisibilityDisplay();
-    // меняем активный пункт меню
-    this.changeActiveMenuItem();
-    // запускаем css анимации в зависимости от id экрана
-    this.pageAnimationSwitcher.runAnimationScheme(activeScreenId);
-    // передаём на body событие смены экрана
-    this.emitChangeDisplayEvent();
-    // добавляем сцену в зависимости от id экрана
+
+    // ГЛАВНЫЙ ЭКРАН
     if (this.activeScreen === Screens.TOP) {
       // берём id конкретной сцены, соответствующей данному экрану
       const activeSceneId = Scenes[this.activeScreen];
-      // отрисовываем конкретную сцену, соответсвующую данном экрану
-      this.scene3D.initScenes(activeScreenId, activeSceneId);
+      // отрисовываем конкретную сцену, соответствующую данному экрану
+      this.scene3D.initScenes(activeScreenId, activeSceneId, onSceneLoaded);
 
     }
-
+    // ЭКРАН ИСТОРИЯ
     if (this.activeScreen === Screens.STORY) {
       // берём id конкретной сцены, соответствующей текущему слайду в свайпере
       const slider = this.screenElements[this.activeScreen].children[0].dom7ElementDataStorage.swiper;
+      const scene3D = this.scene3D;
       const activeSlide = slider.realIndex;
       const activeSceneId = SliderScenes[activeSlide];
-      this.scene3D.initScenes(activeScreenId, activeSceneId);
+      this.scene3D.initScenes(activeScreenId, activeSceneId, onSceneLoaded);
       setColorTheme(ColorThemes, 0);
+
+      slider.on(`slideChange`, function () {
+        scene3D.initScenes(activeScreenId, SliderScenes[slider.realIndex], onSceneLoaded);
+        setColorTheme(ColorThemes, slider.realIndex);
+      });
+
     } else {
       setColorTheme(ColorThemes, 6);
     }
-
+    // ЭКРАН ПРИЗЫ
     if (this.activeScreen === Screens.PRIZES) {
+      onSceneLoaded();
       this.prizesAnimation.init();
     } else {
       this.prizesAnimation.destroy();
     }
-
+    // ЭКРАН ИГРА
     if (this.activeScreen === Screens.GAME) {
+      onSceneLoaded();
       this.gameTimer.init();
     } else {
       this.gameTimer.destroyTimer();
     }
-
-    // тут надо навести порядок
-
-    // потом летят предметы из скважины и чемодан чуть позже
-    // с середины где-то появляются даты проведения
-    // последним вылетает самолёт
   }
 
   // меняет видимость экранов (добавляет и убирает соответствующие классы active и screen--hidden)

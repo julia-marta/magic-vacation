@@ -1,10 +1,7 @@
 import Swiper from "swiper";
-import {ColorThemes, SliderScenes} from "../common/enums";
-import {setColorTheme} from "../common/utils";
 
-export default (scene3D) => {
+export default () => {
   let storySlider;
-  const screenName = `story`;
   const setSlider = function () {
     if (window.innerWidth / window.innerHeight < 1 || window.innerWidth < 769) {
       storySlider = new Swiper(`.js-slider`, {
@@ -16,10 +13,6 @@ export default (scene3D) => {
           enabled: true,
         },
         on: {
-          slideChange: () => {
-            const sceneName = SliderScenes[storySlider.activeIndex];
-            scene3D.initScenes(screenName, sceneName);
-          },
           resize: () => {
             storySlider.update();
           },
@@ -43,11 +36,6 @@ export default (scene3D) => {
           enabled: true,
         },
         on: {
-          slideChange: () => {
-            const sceneName = SliderScenes[storySlider.activeIndex];
-            scene3D.initScenes(screenName, sceneName);
-            setColorTheme(ColorThemes, storySlider.activeIndex);
-          },
           resize: () => {
             storySlider.update();
 
