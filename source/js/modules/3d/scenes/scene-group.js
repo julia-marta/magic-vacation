@@ -13,6 +13,7 @@ class SceneGroup extends THREE.Group {
     this.onCreateComplete = this.onCreateComplete.bind(this);
     this.runSceneAnimations = this.runSceneAnimations.bind(this);
     this.runObjectAnimations = this.runObjectAnimations.bind(this);
+    this.runEffectAnimations = this.runEffectAnimations.bind(this);
     this.objectsFactory = new ObjectsFactory(this.onCreateComplete);
     this.animationsFactory = new AnimationsFactory();
     this.createObjects();
@@ -155,6 +156,11 @@ class SceneGroup extends THREE.Group {
     this.animationsFactory.run(object, animations);
     // добавляем анимацию в список уже проигранных анимаций
     this.playedAnimations.push(name);
+  }
+
+  // запускает анимации эффектов на переданном материале
+  runEffectAnimations(material, animations) {
+    this.animationsFactory.run(material, animations);
   }
 
   // создаёт с помощью фабрики объекты разного типа

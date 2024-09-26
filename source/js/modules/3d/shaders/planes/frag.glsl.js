@@ -73,6 +73,5 @@ void main() {
   }
   gl_FragColor = texel;
   gl_FragColor.rgb = shiftHue(texel.rgb);
-  gl_FragColor.a = 0;
 }
 `;
