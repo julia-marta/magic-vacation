@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import MaterialsFactory from '../materials/materials-factory.js';
 import ObjectsFactory from '../objects/objects-factory.js';
 import AnimationsFactory from "../animations/animations-factory.js";
 import {isDesktop} from "../../../common/const.js";
@@ -15,7 +14,6 @@ class SceneGroup extends THREE.Group {
     this.runSceneAnimations = this.runSceneAnimations.bind(this);
     this.runObjectAnimations = this.runObjectAnimations.bind(this);
     this.objectsFactory = new ObjectsFactory(this.onCreateComplete);
-    this.materialsFactory = new MaterialsFactory();
     this.animationsFactory = new AnimationsFactory();
     this.createObjects();
   }
