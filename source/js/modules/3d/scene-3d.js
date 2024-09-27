@@ -67,7 +67,7 @@ export default class Scene3D {
       canvas: this.canvas,
       alpha: true,
       antialias: this.devicePixelRatio <= 1,
-      logarithmicDepthBuffer: false,
+      logarithmicDepthBuffer: true,
       powerPreference: `high-performance`
     });
     this.renderer.setPixelRatio(this.devicePixelRatio);
