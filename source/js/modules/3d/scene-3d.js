@@ -43,6 +43,7 @@ export default class Scene3D {
     this.setScenePlane = this.setScenePlane.bind(this);
     this.runCurrentAnimation = this.runCurrentAnimation.bind(this);
     this.runEffectAnimations = this.runEffectAnimations.bind(this);
+    this.finishPreloader = this.finishPreloader.bind(this);
   }
 
   // инициирует глобальную сцену
@@ -235,10 +236,6 @@ export default class Scene3D {
         // сохраняем отрисованную сцену
         this.renderedScenes.push(name);
         setTimeout(() => {
-        // убираем прелоадер
-          this.preloader.classList.add(`preloader-screen--loaded`);
-          // добавляем класс loaded на body и запускаем CSS анимации для него
-          document.body.classList.add(`loaded`);
           // меняем активный экран
           changePage();
           // запускаем анимации объектов всех дочерних сцен
@@ -368,6 +365,11 @@ export default class Scene3D {
     }
 
     this.planes.setPosition(name);
+  }
+
+  // завершает прелоадер после загрузки сцены
+  finishPreloader() {
+    this.preloader.classList.add(`preloader-screen--loaded`);
   }
 
   // возвращает конфиг с настройками света для проекта

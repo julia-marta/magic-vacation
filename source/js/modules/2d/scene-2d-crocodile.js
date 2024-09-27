@@ -1,6 +1,6 @@
-import Animation from "./animation.js";
 import Scene2D from "./scene-2d.js";
-import _ from "../common/easings.js";
+import Animation from "../animation.js";
+import _ from "../../common/easings.js";
 
 // модуль для анимации 2D-сцены с крокодилом
 export default class Scene2DCrocodile extends Scene2D {

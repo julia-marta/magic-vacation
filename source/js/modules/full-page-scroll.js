@@ -1,7 +1,8 @@
 import throttle from "lodash/throttle";
 import PageSwitchHandler from "./page-switch-handler.js";
-import Timer from "./timer.js";
-import PrizesAnimation from "./prizes-animation.js";
+import TimerAnimation from "./2d/animations/timer-animation.js";
+import PrizesAnimation from "./2d/animations/prizes-animation.js";
+import SonyaAnimation from "./2d/animations/sonya-animation.js";
 import {Screens, ColorThemes, Scenes, SliderScenes} from "../common/enums.js";
 import {setColorTheme} from "../common/utils.js";
 import {PRIZES_ANIMATIONS} from "../data/animations.js";
@@ -14,7 +15,7 @@ export default class FullPageScroll {
     this.timeout = null;
     this.pageAnimationSwitcher = new PageSwitchHandler();
     this.prizesAnimation = new PrizesAnimation(PRIZES_ANIMATIONS);
-    this.gameTimer = new Timer();
+    this.gameTimer = new TimerAnimation();
     this.scene3D = scene3D;
 
     this.screenElements = document.querySelectorAll(
@@ -88,6 +89,10 @@ export default class FullPageScroll {
       this.pageAnimationSwitcher.runAnimationScheme(activeScreenId);
       // передаём на body событие смены экрана
       this.emitChangeDisplayEvent();
+      // завершаем прелоадер
+      this.scene3D.finishPreloader();
+      // добавляем класс loaded на body и запускаем CSS анимации для него
+      document.body.classList.add(`loaded`);
     };
     // определяем id активного экрана
     const activeScreenId = this.screenElements[this.activeScreen].id;
@@ -124,6 +129,10 @@ export default class FullPageScroll {
       this.prizesAnimation.init();
     } else {
       this.prizesAnimation.destroy();
+    }
+    // ЭКРАН ПРАВИЛА
+    if (this.activeScreen === Screens.RULES) {
+      onSceneLoaded();
     }
     // ЭКРАН ИГРА
     if (this.activeScreen === Screens.GAME) {
