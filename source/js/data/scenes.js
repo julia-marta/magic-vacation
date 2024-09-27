@@ -1429,6 +1429,56 @@ export const Scenes = {
         verticalAngle: 3 * Math.PI / 180,
       }
     },
+    effectAnimations: {
+      scene: `room2`,
+      animations: [
+        {
+          type: `custom`,
+          func: `HueEffect`,
+          shift: -0.025,
+          fps: 60,
+          duration: 2500,
+          easing: `easeLinear`,
+        },
+        {
+          type: `custom`,
+          func: `BlobsEffect`,
+          params: [
+            {
+              radius: 90,
+              position: {
+                x: 0.22,
+                y: 0.7,
+              },
+              glowOffset: 20,
+              glowClippingPosition: 20,
+            },
+            {
+              radius: 125,
+              position: {
+                x: 0.37,
+                y: 1.85,
+              },
+              glowOffset: 20,
+              glowClippingPosition: 30,
+            },
+            {
+              radius: 50,
+              position: {
+                x: 0.48,
+                y: 0.1,
+              },
+              glowOffset: 15,
+              glowClippingPosition: 1,
+            },
+          ],
+          frequency: 13,
+          fps: 60,
+          duration: 3000,
+        },
+      ],
+
+    },
   },
   room3:
   {

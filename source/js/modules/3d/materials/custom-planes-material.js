@@ -35,16 +35,13 @@ export default class CustomPlanesMaterial extends THREE.RawShaderMaterial {
         },
       },
       defines: {
-        BLOBS_COUNT: 3,
+        BLOBS_COUNT: 3.0,
         BLOB_BORDER_WIDTH: 2.0,
         BLOB_BORDER_COLOR: [1.0, 1.0, 1.0, 0.15],
         BLOB_RESOLUTION: [window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio],
       },
       fragmentShader: Shaders.planes.frag,
       vertexShader: Shaders.planes.vert,
-      extensions: {
-        derivatives: true,
-      }
     });
   }
 }

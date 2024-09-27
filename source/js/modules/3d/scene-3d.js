@@ -1,9 +1,13 @@
 import * as THREE from "three";
+import {EffectComposer} from "three/examples/jsm/postprocessing/EffectComposer";
+import {RenderPass} from "three/examples/jsm/postprocessing/RenderPass";
+import {ShaderPass} from "three/examples/jsm/postprocessing/ShaderPass";
 import {GUI} from "dat.gui";
 import SceneGroup from "./scenes/scene-group.js";
 import PlanesGroup from "./scenes/planes-group.js";
 import CameraRigDesktop from "./rigs/camera-desktop.js";
 import CameraRigMobile from "./rigs/camera-mobile.js";
+import MaterialsFactory from './materials/materials-factory.js';
 import Animation from "../animation.js";
 import {Scenes, ScreensScenes} from "../../data/scenes.js";
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
@@ -26,6 +30,7 @@ export default class Scene3D {
     this.cameraPozitionZ = options.cameraPozitionZ;
     this.cameraPozitionY = options.cameraPozitionY;
     this.aspectRatio = this.width / this.height;
+    this.materialsFactory = new MaterialsFactory();
     this.planes = {};
     this.directionalLight = null;
     this.pointLight = null;
@@ -37,6 +42,7 @@ export default class Scene3D {
     this.initScenes = this.initScenes.bind(this);
     this.setScenePlane = this.setScenePlane.bind(this);
     this.runCurrentAnimation = this.runCurrentAnimation.bind(this);
+    this.runEffectAnimations = this.runEffectAnimations.bind(this);
   }
 
   // инициирует глобальную сцену
@@ -56,14 +62,15 @@ export default class Scene3D {
   // производит настройки отрисовщика, сцены и камеры
   setup() {
     // 1.1.1. Renderer
+    this.devicePixelRatio = Math.min(window.devicePixelRatio, 2);
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
       alpha: true,
-      antialias: window.devicePixelRatio <= 1,
-      logarithmicDepthBuffer: false,
+      antialias: this.devicePixelRatio <= 1,
+      logarithmicDepthBuffer: true,
       powerPreference: `high-performance`
     });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(this.devicePixelRatio);
     this.renderer.setSize(this.width, this.height);
     this.renderer.setClearColor(this.color, this.alpha);
     this.renderer.shadowMap.enabled = isDesktop ? true : false;
@@ -80,6 +87,21 @@ export default class Scene3D {
     );
     this.camera.position.z = this.cameraPozitionZ;
     this.camera.position.y = this.cameraPozitionY;
+
+    // 1.1.4. Composer
+    this.composer = new EffectComposer(this.renderer);
+    this.composer.setPixelRatio(this.devicePixelRatio);
+    const renderPass = new RenderPass(this.scene, this.camera);
+    this.effectMaterial = this.materialsFactory.get({
+      type: `CustomPlanes`,
+      options: {
+        texture: undefined,
+      }
+    });
+    const effectPass = new ShaderPass(this.effectMaterial, `map`);
+
+    this.composer.addPass(renderPass);
+    this.composer.addPass(effectPass);
   }
 
   // добавляет контролы и оси для управления глобальной сценой (хелперы)
@@ -100,7 +122,7 @@ export default class Scene3D {
     }
     // this.controls.update();
     // this.stats.update();
-    this.renderer.render(this.scene, this.camera);
+    this.composer.render();
     this.resizeInProgress = false;
   }
 
@@ -186,7 +208,7 @@ export default class Scene3D {
     const screenSceneData = ScreensScenes[screen];
     const currentSceneData = Scenes[currentScene];
     const {name, type, lights, scenes, objects, position, rotation, isMountedOnCameraRig} = screenSceneData;
-    const {cameraState, currentAnimation} = currentSceneData;
+    const {cameraState, currentAnimation, effectAnimations} = currentSceneData;
     const isSceneRendered = this.renderedScenes.includes(name);
     // сохраняем состояние камеры для конкретной текущей сцены
     this.cameraState = cameraState;
@@ -253,6 +275,13 @@ export default class Scene3D {
         // добавляем в состояние камеры коллбэк для запуска анимации следующей сцены
         currentCameraState.animationCallback = this.runCurrentAnimation;
       }
+      // если есть текущие анимации эффектов
+      if (effectAnimations) {
+        // сохраняем анимации эффектов для текущей сцены
+        this.effectAnimations = effectAnimations;
+        // добавляем в состояние камеры коллбэк для запуска анимации эффектов
+        currentCameraState.effectCallback = this.runEffectAnimations;
+      }
       // если есть сопутствующая смене камеры анимация
       const {relatedAnimation} = currentCameraState;
       if (relatedAnimation) {
@@ -281,6 +310,20 @@ export default class Scene3D {
     }
     // запускаем анимации нужного объекта на искомой сцене
     scene.runObjectAnimations(this.currentAnimation.object, this.currentAnimation.animations, this.currentAnimation.isPlayOnce);
+  }
+  // запускает анимации эффектов на текущей сцене
+  runEffectAnimations() {
+    if (!this.effectAnimations) {
+      return;
+    }
+
+    // находим сцену, которой принадлежат эффекты
+    const scene = this.childScenes[this.effectAnimations.scene];
+    if (!scene) {
+      return;
+    }
+    // запускаем анимации эффектов на искомой сцене, передаём материал с эффектом, ранее переданный в ShaderPass
+    scene.runEffectAnimations(this.effectMaterial, this.effectAnimations.animations);
   }
 
   // добавляет локальную сцену из группы объектов
@@ -318,14 +361,13 @@ export default class Scene3D {
     this.render();
   }
 
-  // устанавливает позицию плоскости со сценой и применяет эффекты к данной плоскости
+  // устанавливает позицию плоскости со сценой
   setScenePlane(name) {
     if (!this.planes) {
       return;
     }
 
     this.planes.setPosition(name);
-    this.planes.setEffect(name);
   }
 
   // возвращает конфиг с настройками света для проекта

@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import Animation from "../../animation";
 import _ from "../../../common/easings";
 
@@ -10,6 +11,8 @@ class AnimationsFactory {
     this.createLeafAnimation = this.createLeafAnimation.bind(this);
     this.createAirplaneAnimation = this.createAirplaneAnimation.bind(this);
     this.createCameraAnimation = this.createCameraAnimation.bind(this);
+    this.createHueEffectAnimation = this.createHueEffectAnimation.bind(this);
+    this.createBlobsEffectAnimation = this.createBlobsEffectAnimation.bind(this);
   }
 
   // создаёт и запускает анимации объекта
@@ -324,6 +327,62 @@ class AnimationsFactory {
       delay,
       easing: this.getEasing(easing),
       callback,
+    });
+    animation.start();
+  }
+
+  // создаёт анимацию растрового смещения hue
+  createHueEffectAnimation(material, options) {
+    const {shift, duration, easing, fps} = options;
+
+    const animation = new Animation({
+      func: (progress) => {
+        const hue = Math.cos((progress * 100) / 10) * -shift;
+        material.uniforms.hueShift.value = hue;
+        material.needsUpdate = true;
+      },
+      duration,
+      fps,
+      easing: this.getEasing(easing),
+    });
+    animation.start();
+  }
+
+  // создаёт анимацию пузырьков
+  createBlobsEffectAnimation(material, options) {
+    const {params, duration, frequency, fps} = options;
+
+    const animation = new Animation({
+      func: (progress) => {
+        const progressReversed = 1 - progress;
+
+        material.uniforms.blobs.value = params.reduce((acc, item) => {
+          const amplitude = item.radius / 2;
+          const offsetX =
+              amplitude *
+              Math.pow(progressReversed, 1) *
+              Math.sin(progress * Math.PI * frequency);
+          const x = item.position.x * window.innerWidth + offsetX;
+          const y =
+              0 +
+              progress *
+                (window.innerHeight + item.position.y * window.innerHeight);
+
+          const blobParams = {
+            radius: item.radius,
+            position: new THREE.Vector2(x, y).multiplyScalar(
+                window.devicePixelRatio
+            ),
+            glowOffset: item.glowOffset,
+            glowClippingPosition: item.glowClippingPosition,
+          };
+          acc.push(blobParams);
+          return acc;
+        }, []);
+        material.needsUpdate = true;
+      },
+      duration,
+      fps,
     });
     animation.start();
   }

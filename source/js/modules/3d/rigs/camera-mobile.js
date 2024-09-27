@@ -145,6 +145,11 @@ class CameraRigMobile extends THREE.Group {
       newState.animationCallback();
       delete newState.animationCallback;
     }
+    if (newState.effectCallback) {
+      // вызываем анимацию эффектов для следующей сцены
+      newState.effectCallback();
+      delete newState.effectCallback;
+    }
     this.state = newState;
     // добавляем новый обработчик касания экрана
     this.addTouchMoveListener();
