@@ -81,15 +81,17 @@
   }
 
   .screen--game.active & {
-    transform: scaleX(1);
-    flex: 1;
+    animation: input-expand-in 0.3s 0.8s ease both,
+        placeholder-fade-in 0.2s 1s ease-in both;
+    // transform: scaleX(1);
+    // flex: 1;
   }
 }
 
 .form__button {
   opacity: 0;
 
-  .screen--animate & {
+  .screen--animate &, .screen--game.active & {
     animation: fade-in 0.2s 0.7s ease-in both;
 
     span {

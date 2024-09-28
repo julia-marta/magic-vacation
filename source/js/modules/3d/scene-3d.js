@@ -369,7 +369,10 @@ export default class Scene3D {
 
   // завершает прелоадер после загрузки сцены
   finishPreloader() {
-    this.preloader.classList.add(`preloader-screen--loaded`);
+    this.preloaderProgress.textContent = 100;
+    setTimeout(() => {
+      this.preloader.classList.add(`preloader-screen--loaded`);
+    }, 100);
   }
 
   // возвращает конфиг с настройками света для проекта

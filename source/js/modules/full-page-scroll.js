@@ -5,7 +5,7 @@ import PrizesAnimation from "./2d/animations/prizes-animation.js";
 import SonyaAnimation from "./2d/animations/sonya-animation.js";
 import {Screens, ColorThemes, Scenes, SliderScenes} from "../common/enums.js";
 import {setColorTheme} from "../common/utils.js";
-import {PRIZES_ANIMATIONS} from "../data/animations.js";
+import {PRIZES_ANIMATIONS, SonyaAnimations} from "../data/animations.js";
 
 
 export default class FullPageScroll {
@@ -15,6 +15,7 @@ export default class FullPageScroll {
     this.timeout = null;
     this.pageAnimationSwitcher = new PageSwitchHandler();
     this.prizesAnimation = new PrizesAnimation(PRIZES_ANIMATIONS);
+    this.sonyaAnimation = new SonyaAnimation(SonyaAnimations);
     this.gameTimer = new TimerAnimation();
     this.scene3D = scene3D;
 
@@ -138,8 +139,10 @@ export default class FullPageScroll {
     if (this.activeScreen === Screens.GAME) {
       onSceneLoaded();
       this.gameTimer.init();
+      this.sonyaAnimation.start();
     } else {
       this.gameTimer.destroyTimer();
+      this.sonyaAnimation.finish();
     }
   }
 
