@@ -1,5 +1,5 @@
-import Scene2DSeaCalf from "./scene-2d-sea-calf";
-import Scene2DCrocodile from "./scene-2d-crocodile";
+import Scene2DSeaCalf from "./2d/scene-2d-sea-calf.js";
+import Scene2DCrocodile from "./2d/scene-2d-crocodile.js";
 import {RESULT_ANIMATIONS} from "../data/animations.js";
 
 const resultScenes = {

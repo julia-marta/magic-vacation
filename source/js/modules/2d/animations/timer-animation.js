@@ -1,9 +1,9 @@
-import {TimeUnits, convertTimeToString} from "../common/utils.js";
-import {TIMER_DURATION_MIN} from "../common/const.js";
+import {TimeUnits, convertTimeToString} from "../../../common/utils.js";
+import {TIMER_DURATION_MIN} from "../../../common/const.js";
 
 const {minute} = TimeUnits;
 
-export default class Timer {
+export default class TimerAnimation {
   constructor() {
     this.timer = null;
     this.fps = 1;
