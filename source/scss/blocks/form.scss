@@ -83,8 +83,6 @@
   .screen--game.active & {
     animation: input-expand-in 0.3s 0.8s ease both,
         placeholder-fade-in 0.2s 1s ease-in both;
-    // transform: scaleX(1);
-    // flex: 1;
   }
 }
 

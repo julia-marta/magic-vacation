@@ -85,9 +85,7 @@ void main() {
 	vec3 totalEmissiveRadiance = emissive;
 
 	// stripes
-	// находим высоту полоски относительно высоты дороги (пропорция 160 и 0.25)
 	float stripeHeight = stripesSize * 0.25 / 160.0;
-	// находим верхнюю и нижнюю координаты полосок
 	float stripeTopY = 0.25 + (0.25 / 2.0) + (stripeHeight / 2.0);
 	float stripeBottomY = 0.25 + (0.25 / 2.0) - (stripeHeight / 2.0);
 	vec4 texelColor = vec4(mainColor, 1.0);
@@ -132,7 +130,6 @@ void main() {
 
 	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;
 
-	// this is a stub for the transparency model
 	#ifdef TRANSPARENCY
 		diffuseColor.a *= saturate( 1. - transparency + linearToRelativeLuminance( reflectedLight.directSpecular + reflectedLight.indirectSpecular ) );
 	#endif

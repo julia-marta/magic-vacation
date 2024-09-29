@@ -15,7 +15,6 @@ class PlanesGroup extends THREE.Group {
     this.createPlanesGroup();
   }
 
-  // загрузчик текстур
   loadTexture(url, callback, options) {
     const manager = new THREE.LoadingManager();
     const loader = new THREE.TextureLoader(manager);
@@ -33,7 +32,6 @@ class PlanesGroup extends THREE.Group {
     };
   }
 
-  // создание объекта плоскости с текстурой (коллбэк для загрузчика текстур)
   createPlaneObject(options) {
     const {width, height, position, name, material} = options;
     const planeGeometry = new THREE.PlaneBufferGeometry(width, height);
@@ -44,13 +42,7 @@ class PlanesGroup extends THREE.Group {
     this.add(plane);
   }
 
-  // добавляет плоскости с текстурами
   createPlanesGroup() {
-    // вычисляем высоту плоскости в зависимости от угла и удаленности камеры
-    // схема: https://i.stack.imgur.com/PgSn3.jpg
-    // отношение половины высоты к удаленности равно тангенсу половины угла камеры
-    // соответственно половина высоты = удаленность * тангенс половины угла в радианах
-    // а целая высота = 2 x удаленность * тангенс половины угла в радианах
     const angle = (this.fov * Math.PI) / 180 / 2;
     const planeHeight = 2 * (Math.tan(angle) * this.far);
     const planeWidth = planeHeight * this.planeRatio;
@@ -66,7 +58,6 @@ class PlanesGroup extends THREE.Group {
     });
   }
 
-  // устанавливает позицию плоскости-текстуре по названию плоскости
   setPosition(name) {
     if (!this.planePositions.hasOwnProperty(name)) {
       return;

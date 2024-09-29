@@ -17,14 +17,8 @@ class Lantern extends THREE.Group {
     this.addBase();
   }
 
-  // добавление фонаря (лампы)
   addLamp() {
     const {lamp} = this.options;
-
-    // верхняя часть лампы представляет собой усеченную пирамиду
-    // для создания такой фигуры берем геометрию цилиндра и задаем ему 4 стороны и основания с разными радиусами
-    // нижнее и верхнее основание пирамиды - это квадраты
-    // радиус окружности, описанной около квадрата, равняется длине его стороны, умноженной на квадратный корень из двух и деленной на два
     const radiusLampTop = (lamp.top.widthTop * Math.sqrt(2)) / 2;
     const radiusLampBottom = (lamp.top.widthBottom * Math.sqrt(2)) / 2;
     const materialLampTop = this.materialsFactory.get(this.materials.lamp.top);
@@ -42,8 +36,6 @@ class Lantern extends THREE.Group {
     top.position.set(0, -lamp.top.height / 2, 0);
     top.rotation.y = Math.PI / 4;
 
-    // плафон лампы представляет собой усеченную пирамиду
-    // аналогично берем геометрию цилиндра и задаем ему 4 стороны, рассчитываем радиусы оснований
     const radiusPlafonTop = (lamp.plafon.widthTop * Math.sqrt(2)) / 2;
     const radiusPlafonBottom = (lamp.plafon.widthBottom * Math.sqrt(2)) / 2;
     const materialLampPlafon = this.materialsFactory.get(this.materials.lamp.plafon);
@@ -61,7 +53,6 @@ class Lantern extends THREE.Group {
     plafon.position.set(0, -(lamp.top.height / 2 + lamp.plafon.height / 2), 0);
     plafon.rotation.y = Math.PI / 4;
 
-    // основание лампы представляет собой параллелепипед
     const materialLampBase = this.materialsFactory.get(this.materials.lamp.base);
 
     let base = new THREE.Mesh(
@@ -86,7 +77,6 @@ class Lantern extends THREE.Group {
     this.add(base);
   }
 
-  // добавление столба
   addPost() {
     const {post} = this.options;
     const materialPost = this.materialsFactory.get(this.materials.post);
@@ -101,7 +91,6 @@ class Lantern extends THREE.Group {
     this.add(postMesh);
   }
 
-  // добавление основания фонаря
   addBase() {
     const {base} = this.options;
     const materialBaseTop = this.materialsFactory.get(this.materials.base.top);

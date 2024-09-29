@@ -19,7 +19,6 @@ class SceneGroup extends THREE.Group {
     this.createObjects();
   }
 
-  // получает готовый объект после создания, добавляет его на сцену и запускает анимации
   onCreateComplete(object, options, outer) {
     let hiddenMobileObjects;
     if (options) {
@@ -42,7 +41,6 @@ class SceneGroup extends THREE.Group {
       }
 
       if (animations) {
-      // сохраняем анимации для последующего запуска
         this.sceneAnimations.push({
           object, animations, isCurrentAnimation
         });
@@ -128,11 +126,9 @@ class SceneGroup extends THREE.Group {
       this.add(object);
     }
   }
-  // запускает все анимации сцены
   runSceneAnimations() {
     this.sceneAnimations.forEach((sceneAnimation) => {
       const {object, animations, isCurrentAnimation} = sceneAnimation;
-      // если объект имеет анимацию для конкретной сцены, запускаем её вместе с остальными анимациями
       if (isCurrentAnimation) {
         this.runCurrentSceneAnimation();
       }
@@ -140,30 +136,24 @@ class SceneGroup extends THREE.Group {
     });
   }
 
-  // запускает анимации у одного из дочерних объектов
   runObjectAnimations(name, animations, isPlayOnce) {
-    // если анимация должна проигрываться только один раз и уже проигрывалась, ничего не делаем
     const isAnimationsHavePlayed = this.playedAnimations.includes(name);
     if (isAnimationsHavePlayed && isPlayOnce) {
       return;
     }
-    // ищем дочерний объект сцены, который надо анимировать, и запускаем для него анимации
     const object = this.getObjectByName(name);
     if (!object) {
       return;
     }
 
     this.animationsFactory.run(object, animations);
-    // добавляем анимацию в список уже проигранных анимаций
     this.playedAnimations.push(name);
   }
 
-  // запускает анимации эффектов на переданном материале
   runEffectAnimations(material, animations) {
     this.animationsFactory.run(material, animations);
   }
 
-  // создаёт с помощью фабрики объекты разного типа
   createObjects() {
     this.sceneObjects.forEach((object) => {
       this.objectsFactory.get(object);

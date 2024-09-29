@@ -22,7 +22,6 @@ class Road extends THREE.Group {
     points.push(new THREE.Vector2(radius, 0));
     points.push(new THREE.Vector2(radius + width, 0));
 
-    // переводим угол в радианы
     const phiStart = startAngle * Math.PI / 180;
     const phiLength = (endAngle - startAngle) * Math.PI / 180;
     const roadGeometry = new THREE.LatheGeometry(

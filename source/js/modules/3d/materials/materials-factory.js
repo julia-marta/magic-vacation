@@ -11,7 +11,6 @@ class MaterialsFactory {
     this.get = this.get.bind(this);
   }
 
-  // берёт готовый конфиг для данного типа материала и на его основе создаёт материал
   get(material) {
     const {type, color, doubleSide, transparent, options} = material;
     const materialConfig = this.getMaterialConfig(type);
@@ -46,7 +45,6 @@ class MaterialsFactory {
     return this.create(materialConfig);
   }
 
-  // создаёт материал в зависимости от типа
   create(materialConfig) {
     const {type, reflection, options} = materialConfig;
     switch (type) {
@@ -68,34 +66,28 @@ class MaterialsFactory {
     }
   }
 
-  // возвращает цвет материала из библиотеки цветов либо исходный цвет в нужном формате
   getMaterialColor(name) {
     return isArray(name) ? new THREE.Color(...name) : MaterialsFactory.Colors[name];
   }
 
-  // возвращает конфиг материала из библиотеки конфигов
   getMaterialConfig(type) {
     return {...MaterialsFactory.Configs[type]};
   }
 
-  // возвращает свойства шероховатости и металличности в зависимости от типа отражения
   getMaterialReflectionOptions(reflection) {
     switch (reflection) {
-      // среднее отражение
       case `basic`: {
         return {
           roughness: 0.6,
           metalness: 0.6,
         };
       }
-      // сильное отражение
       case `strong`: {
         return {
           shininess: 0,
           specular: 0xffffff,
         };
       }
-      // по дефолту значения soft (слабое отражение)
       default: {
         return {
           roughness: 0.95,
@@ -104,7 +96,7 @@ class MaterialsFactory {
       }
     }
   }
-  // возвращает uniform переменные для кастомного материала
+
   getCustomMaterialUniforms(reflection, colors, additionalUniforms) {
     const reflectionOptions = this.getMaterialReflectionOptions(reflection);
     const colorUniforms = colors.reduce((acc, color) => {
@@ -122,19 +114,17 @@ class MaterialsFactory {
     };
   }
 
-  // использует карту освещённости на сфере
   _getMeshMatcapMaterial(url, options) {
     const matcap = this.textureLoader.load(url);
     options = {...options, color: this.getMaterialColor(options.color), matcap};
     return new THREE.MeshMatcapMaterial(options);
   }
 
-  // заливает фигуру однородным цветом, не обрабатывая информацию об освещении
   _getBasicMaterial(options) {
     options = {...options, color: this.getMaterialColor(options.color)};
     return new THREE.MeshBasicMaterial(options);
   }
-  // моделирует физически реалистичные модели отражения, использует параметры roughness (шероховатость) и metalness (металличность)
+
   _getStandardMaterial(options, reflection) {
     if (isDesktop) {
       if (reflection) {
@@ -148,7 +138,6 @@ class MaterialsFactory {
     }
   }
 
-  // вычисляет освещение в каждом пикселе и генерирует выраженное отражение от поверхности (блик)
   _getPhongMaterial(options, reflection) {
     if (isDesktop) {
       if (reflection) {

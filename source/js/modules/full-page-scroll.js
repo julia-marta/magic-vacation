@@ -82,37 +82,28 @@ export default class FullPageScroll {
     }
     changeScreen();
   }
-  // меняет отображаемую страницу, рисует нужные 3D сцены и запускает необходимые анимации
+
   changePageDisplay() {
     this.gameResultsSwitcher.hideResults();
-    // после полной загрузки объектов сцены
+
     const onSceneLoaded = () => {
-      // делаем текущий экран видимым
       this.changeVisibilityDisplay();
-      // меняем активный пункт меню
       this.changeActiveMenuItem();
-      // запускаем css анимации в зависимости от id экрана
       this.pageAnimationSwitcher.runAnimationScheme(activeScreenId);
-      // передаём на body событие смены экрана
       this.emitChangeDisplayEvent();
-      // завершаем прелоадер
       this.scene3D.finishPreloader();
-      // добавляем класс loaded на body и запускаем CSS анимации для него
       document.body.classList.add(`loaded`);
     };
-    // определяем id активного экрана
+
     const activeScreenId = this.screenElements[this.activeScreen].id;
 
-    // ГЛАВНЫЙ ЭКРАН
+    // main page
     if (this.activeScreen === Screens.TOP) {
-      // берём id конкретной сцены, соответствующей данному экрану
       const activeSceneId = Scenes[this.activeScreen];
-      // отрисовываем конкретную сцену, соответствующую данному экрану
       this.scene3D.initScenes(activeScreenId, activeSceneId, onSceneLoaded);
     }
-    // ЭКРАН ИСТОРИЯ
+    // story
     if (this.activeScreen === Screens.STORY) {
-      // берём id конкретной сцены, соответствующей текущему слайду в свайпере
       const slider = this.screenElements[this.activeScreen].children[0].dom7ElementDataStorage.swiper;
       const scene3D = this.scene3D;
       const activeSlide = slider.realIndex;
@@ -128,18 +119,18 @@ export default class FullPageScroll {
     } else {
       setColorTheme(ColorThemes, 6);
     }
-    // ЭКРАН ПРИЗЫ
+    // prizes
     if (this.activeScreen === Screens.PRIZES) {
       onSceneLoaded();
       this.prizesAnimation.init();
     } else {
       this.prizesAnimation.destroy();
     }
-    // ЭКРАН ПРАВИЛА
+    // rules
     if (this.activeScreen === Screens.RULES) {
       onSceneLoaded();
     }
-    // ЭКРАН ИГРА
+    // game
     if (this.activeScreen === Screens.GAME) {
       onSceneLoaded();
       this.gameTimer.init();

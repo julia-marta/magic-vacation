@@ -23,7 +23,6 @@ class ObjectsFactory {
     this.onCreate = onCreate.bind(this);
   }
 
-  // загрузчик SVG форм
   loadSVG(config) {
     const {url, extrude, options} = config;
 
@@ -50,7 +49,6 @@ class ObjectsFactory {
     );
   }
 
-  // загрузчик моделей OBJ
   loadOBJ(config) {
     const {url, material} = config;
 
@@ -67,14 +65,12 @@ class ObjectsFactory {
     );
   }
 
-  // загрузчик моделей gLTF
   loadGLTF(config) {
     const {url, material} = config;
 
     this.GLTFLoader.load(
         url, (gltf) => {
           const {scene} = gltf;
-          // для мобильных устройств заменяем встроенный материал дочерних объектов gLTF на MeshMatcapMaterial
           if (!isDesktop && material) {
             scene.traverse((child) => {
               if (child.isMesh) {
@@ -94,7 +90,6 @@ class ObjectsFactory {
     );
   }
 
-  // создаёт объект сферы
   createSphereObject(options) {
     const {radius, widthSegments, heightSegments, material} = options;
     const sphereGeometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
@@ -103,7 +98,6 @@ class ObjectsFactory {
     this.onCreate(sphere, options);
   }
 
-  // создаёт объект куба
   createCubeObject(options) {
     const {width, height, depth, material} = options;
     const cubeGeometry = new THREE.BoxGeometry(width, height, depth);
@@ -112,7 +106,6 @@ class ObjectsFactory {
     this.onCreate(cube, options);
   }
 
-  // создаёт объект круга
   createCircleObject(options) {
     const {radius, segments, thetaStart, thetaLength, material} = options;
     const circleGeometry = new THREE.CircleGeometry(radius, segments, thetaStart, thetaLength);
@@ -121,7 +114,6 @@ class ObjectsFactory {
     this.onCreate(circle, options);
   }
 
-  // создаёт объект плоскости
   createPlaneObject(options) {
     const {width, height, material} = options;
     const planeGeometry = new THREE.PlaneGeometry(width, height);
@@ -130,16 +122,13 @@ class ObjectsFactory {
     this.onCreate(plane, options);
   }
 
-  // создаёт группу объектов
   createObjectsGroup(options) {
     const {children} = options;
 
     children.forEach((child) => {
       const {name, position, scale, rotation, outer, isHiddenOnMobile} = child;
       const isHidden = !isDesktop && isHiddenOnMobile;
-      // получаем конструктор дочернего объекта группы
       const GroupChild = this.getGroupChild(name);
-      // получаем конфиг для дочернего объекта группы
       const childConfig = this.getGroupChildConfig(name);
       if (child.options) {
         childConfig.options = {...childConfig.options, ...child.options};
@@ -163,56 +152,40 @@ class ObjectsFactory {
     });
   }
 
-  // создаёт группу объёмных объектов на основе SVG форм
   createExtrudeObjectsGroup(options) {
     const {shapes} = options;
 
     shapes.forEach((shape) => {
       const {name, type} = shape;
-      // получаем стандартный конфиг формы и конфиг конкретной SVG
       const shapeConfig = this.getObjectConfig(type);
       const SVGConfig = this.getSVGConfig(name);
-      // если изменяются какие-то параметры выдавленной формы, добавляем их в стандартный конфиг
       if (shape.extrude) {
         shapeConfig.extrude = {...shapeConfig.extrude, ...shape.extrude};
       }
-      // если меняются другие свойства, добавляем их в конфиг конкретной SVG
       if (shape.options) {
         SVGConfig.options = {...SVGConfig.options, ...shape.options};
       }
-      // сливаем вместе оба конфига со всеми добавленными свойствами
       const finalConfig = {...SVGConfig, ...shapeConfig};
-      // отправляем финальный конфиг в лоадер
       this.loadSVG(finalConfig);
     });
   }
 
-  // создаёт 3D объект типа OBJ
   create3DOBJ(config) {
     const {name} = config;
-    // получаем конфиг конкретного объекта OBJ
     const OBJconfig = this.getOBJConfig(name);
-    // сливаем вместе общий конфиг и конфиг объекта со всеми добавленными свойствами
     const finalConfig = {...OBJconfig, ...config};
-    // отправляем финальный конфиг в лоадер
     this.loadOBJ(finalConfig);
   }
 
-  // создаёт 3D объект типа glTF
   create3DglTF(config) {
     const {name} = config;
-    // получаем конфиг конкретного объекта glTF
     const glTFconfig = this.getGLTFConfig(name);
-    // сливаем вместе общий конфиг и конфиг объекта со всеми добавленными свойствами
     const finalConfig = {...glTFconfig, ...config};
-    // отправляем финальный конфиг в лоадер
     this.loadGLTF(finalConfig);
   }
 
-  // создаёт объект Rig
   createRig(config) {
     const {name, object, options} = config;
-    // получаем Rig-класс для объекта
     const Rig = this.getRig(name);
     if (Rig) {
       const rig = new Rig(object);
@@ -220,7 +193,6 @@ class ObjectsFactory {
     }
   }
 
-  // берёт готовый конфиг для данного типа объекта и на его основе создаёт модель
   get(object) {
     const {type, options} = object;
     const objectConfig = this.getObjectConfig(type);
@@ -230,8 +202,6 @@ class ObjectsFactory {
     this.create(objectConfig);
   }
 
-
-  // создаёт модель в зависимости от типа на основе конфига
   create(objectConfig) {
     const {type, options} = objectConfig;
     switch (type) {
@@ -267,43 +237,35 @@ class ObjectsFactory {
     }
   }
 
-  // возвращает модель дочернего объекта для группы из библиотеки объектов
   getGroupChild(name) {
     return ObjectsFactory.GroupChilds[name];
   }
 
-  // возвращает конфиг объекта из библиотеки конфигов
   getObjectConfig(type) {
     return {...ObjectsFactory.Configs[type]};
   }
 
-  // возвращает конфиг дочернего объекта для группы из библиотеки конфигов
   getGroupChildConfig(name) {
     return {...ObjectsFactory.GroupChildsConfigs[name]};
   }
 
-  // возвращает конфиг SVG-формы из библиотеки конфигов
   getSVGConfig(name) {
     return {...ObjectsFactory.SVGConfigs[name]};
   }
 
-  // возвращает конфиг 3D объекта типа OBJ из библиотеки конфигов
   getOBJConfig(name) {
     return {...ObjectsFactory.OBJConfigs[name]};
   }
 
-  // возвращает конфиг 3D объекта типа glTF из библиотеки конфигов
   getGLTFConfig(name) {
     return {...ObjectsFactory.glTFConfigs[name]};
   }
 
-  // возвращает класс Rig объекта из библиотеки Rig-классов
   getRig(name) {
     return ObjectsFactory.Rigs[name];
   }
-
-// библиотека расширяемых конфигов для всех типов объектов, включая дочерние
 }
+
 ObjectsFactory.Configs = {
   sphere: {
     type: `sphere`,
@@ -379,12 +341,10 @@ ObjectsFactory.Configs = {
   },
 };
 
-// библиотека Rig-классов для объектов
 ObjectsFactory.Rigs = {
   airplane: AirplaneRig,
 };
 
-// библиотека конструкторов для дочерних объектов / групповых объектов
 ObjectsFactory.GroupChilds = {
   pyramid: Pyramid,
   lantern: Lantern,
@@ -395,7 +355,6 @@ ObjectsFactory.GroupChilds = {
   fence: Fence,
 };
 
-// библиотека расширяемых конфигов дочерних объектов / групповых объектов
 ObjectsFactory.GroupChildsConfigs = {
   pyramid: {
     name: `pyramid`,
@@ -623,7 +582,6 @@ ObjectsFactory.GroupChildsConfigs = {
   },
 };
 
-// библиотека расширяемых конфигов SVG форм
 ObjectsFactory.SVGConfigs = {
   flamingo: {
     name: `flamingo`,
@@ -693,7 +651,6 @@ ObjectsFactory.SVGConfigs = {
   },
 };
 
-// библиотека расширяемых конфигов 3D объектов типа OBJ
 ObjectsFactory.OBJConfigs = {
   airplane: {
     name: `airplane`,
@@ -711,7 +668,6 @@ ObjectsFactory.OBJConfigs = {
   },
 };
 
-// библиотека расширяемых конфигов 3D объектов типа glTF
 ObjectsFactory.glTFConfigs = {
   suitcase: {
     name: `suitcase`,

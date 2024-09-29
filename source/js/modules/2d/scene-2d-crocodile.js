@@ -2,7 +2,6 @@ import Scene2D from "./scene-2d.js";
 import Animation from "../animation.js";
 import _ from "../../common/easings.js";
 
-// модуль для анимации 2D-сцены с крокодилом
 export default class Scene2DCrocodile extends Scene2D {
   constructor(options) {
     const canvas = document.getElementById(options.canvas);
@@ -28,7 +27,6 @@ export default class Scene2DCrocodile extends Scene2D {
     this.canvas.width = this.size + 130;
   }
 
-  // метод создания анимаций
   initAnimations() {
     this.animations.push(
         new Animation({
@@ -51,7 +49,6 @@ export default class Scene2DCrocodile extends Scene2D {
 
   }
 
-  // метод создания анимаций замочной скважины
   initKeyHoleAnimations() {
     this.animations.push(new Animation({
       func: (progress) => {
@@ -64,7 +61,6 @@ export default class Scene2DCrocodile extends Scene2D {
     }));
   }
 
-  // метод создания анимаций крокодила
   initCrocodileAnimations() {
     this.animations.push(new Animation({
       func: (progress) => {
@@ -79,7 +75,6 @@ export default class Scene2DCrocodile extends Scene2D {
     }));
   }
 
-  // метод создания анимаций фламинго
   initFlamingoAnimations() {
     this.animations.push(new Animation({
       func: (progress) => {
@@ -104,7 +99,6 @@ export default class Scene2DCrocodile extends Scene2D {
     }));
   }
 
-  // метод создания анимаций арбуза
   initWatermelonAnimations() {
     this.animations.push(new Animation({
       func: (progress) => {
@@ -129,7 +123,6 @@ export default class Scene2DCrocodile extends Scene2D {
     }));
   }
 
-  // метод создания анимаций листа
   initLeafAnimations() {
     this.animations.push(new Animation({
       func: (progress) => {
@@ -154,7 +147,6 @@ export default class Scene2DCrocodile extends Scene2D {
     }));
   }
 
-  // метод создания анимаций снежинки
   initSnowflakeAnimations() {
     this.animations.push(new Animation({
       func: (progress) => {
@@ -179,7 +171,6 @@ export default class Scene2DCrocodile extends Scene2D {
     }));
   }
 
-  // метод создания анимаций сатурна
   initSaturnAnimations() {
     this.animations.push(new Animation({
       func: (progress) => {
@@ -206,7 +197,6 @@ export default class Scene2DCrocodile extends Scene2D {
 
   }
 
-  // метод запуска анимаций слезы
   initDropAnimations() {
     this.animations.push(new Animation({
       func: (progress) => {
@@ -282,10 +272,7 @@ export default class Scene2DCrocodile extends Scene2D {
     animation2.start();
   }
 
-  // метод отрисовки слезы
   drawDrop() {
-    // восстанавливаем контекст после обрезки скважины сразу после отрисовки крокодила
-    // чтобы остальные предметы на канвасе были видны
     this.ctx.restore();
     const drop = this.locals.drop;
     const angle = drop.angle * Math.PI / 180;
@@ -327,7 +314,6 @@ export default class Scene2DCrocodile extends Scene2D {
     this.ctx.restore();
   }
 
-  // метод обрезки области замочной скважины
   clipKeyArea() {
     const {x, y, size, imageId} = this.objects.key;
     const image = this.images[imageId];
