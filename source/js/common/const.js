@@ -13,4 +13,6 @@ export const Scene3DSettings = {
 
 export const TIMER_DURATION_MIN = 5;
 
+export const LOSER_SCREEN_ID = `result3`;
+
 export const isDesktop = window.innerWidth > 768;

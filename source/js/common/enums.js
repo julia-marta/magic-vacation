@@ -45,3 +45,8 @@ export const MatcapMaps = {
   soft: `./img/module-7/matcaps/Soft-Mat.png`,
   strong: `./img/module-7/matcaps/Strong-Mat-SnowColor.png`,
 };
+
+export const ChatResults = {
+  result: `Это Антарктида?`,
+  result2: `Антарктида?`,
+};

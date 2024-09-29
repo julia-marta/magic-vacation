@@ -1,5 +1,7 @@
 import throttle from "lodash/throttle";
 import PageSwitchHandler from "./page-switch-handler.js";
+import ResultsSwitchHandler from "./results-switch-handler.js";
+import Chat from "./chat.js";
 import TimerAnimation from "./2d/animations/timer-animation.js";
 import PrizesAnimation from "./2d/animations/prizes-animation.js";
 import SonyaAnimation from "./2d/animations/sonya-animation.js";
@@ -16,7 +18,9 @@ export default class FullPageScroll {
     this.pageAnimationSwitcher = new PageSwitchHandler();
     this.prizesAnimation = new PrizesAnimation(PRIZES_ANIMATIONS);
     this.sonyaAnimation = new SonyaAnimation(SonyaAnimations);
-    this.gameTimer = new TimerAnimation();
+    this.gameResultsSwitcher = new ResultsSwitchHandler();
+    this.chat = new Chat(this.gameResultsSwitcher);
+    this.gameTimer = new TimerAnimation(this.gameResultsSwitcher);
     this.scene3D = scene3D;
 
     this.screenElements = document.querySelectorAll(
@@ -80,6 +84,7 @@ export default class FullPageScroll {
   }
   // меняет отображаемую страницу, рисует нужные 3D сцены и запускает необходимые анимации
   changePageDisplay() {
+    this.gameResultsSwitcher.hideResults();
     // после полной загрузки объектов сцены
     const onSceneLoaded = () => {
       // делаем текущий экран видимым
@@ -104,7 +109,6 @@ export default class FullPageScroll {
       const activeSceneId = Scenes[this.activeScreen];
       // отрисовываем конкретную сцену, соответствующую данному экрану
       this.scene3D.initScenes(activeScreenId, activeSceneId, onSceneLoaded);
-
     }
     // ЭКРАН ИСТОРИЯ
     if (this.activeScreen === Screens.STORY) {
@@ -146,7 +150,6 @@ export default class FullPageScroll {
     }
   }
 
-  // меняет видимость экранов (добавляет и убирает соответствующие классы active и screen--hidden)
   changeVisibilityDisplay() {
     this.screenElements.forEach((screen) => {
       screen.classList.add(`screen--hidden`);
@@ -158,7 +161,6 @@ export default class FullPageScroll {
     }, 100);
   }
 
-  // меняет активный пункт меню
   changeActiveMenuItem() {
     const activeItem = Array.from(this.menuElements).find(
         (item) => item.dataset.href === this.screenElements[this.activeScreen].id
@@ -168,7 +170,7 @@ export default class FullPageScroll {
       activeItem.classList.add(`active`);
     }
   }
-  // передаёт кастомное событие на body (пока не используется)
+
   emitChangeDisplayEvent() {
     const event = new CustomEvent(`screenChanged`, {
       detail: {

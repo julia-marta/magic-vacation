@@ -1,10 +1,11 @@
 import {TimeUnits, convertTimeToString} from "../../../common/utils.js";
-import {TIMER_DURATION_MIN} from "../../../common/const.js";
+import {TIMER_DURATION_MIN, LOSER_SCREEN_ID} from "../../../common/const.js";
 
 const {minute} = TimeUnits;
 
 export default class TimerAnimation {
-  constructor() {
+  constructor(resultsSwitcher) {
+    this.resultsSwitcher = resultsSwitcher;
     this.timer = null;
     this.fps = 1;
     this.fpsInterval = 1000 / this.fps;
@@ -22,6 +23,7 @@ export default class TimerAnimation {
       new Date().getTime() + TIMER_DURATION_MIN * minute.includesMS;
     this.then = Date.now();
     this.runTimer();
+    this.resultsSwitcher.setTimer(this);
   }
 
   _getRemainingTime(deadline) {
@@ -40,6 +42,8 @@ export default class TimerAnimation {
     } else {
       this.minutesField.textContent = `00`;
       this.secondsField.textContent = `00`;
+      this.resultsSwitcher.showResultScreen(LOSER_SCREEN_ID);
+      this.destroyTimer();
     }
   }
 
