@@ -1,12 +1,13 @@
 .slogan__word {
-  display: inline-block;
-  padding-top: 2.5rem;
-  margin-right: 5px;
   overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  white-space: nowrap;
 
     span {
-    transform: translateY(1.5em);
       display: inline-block;
+      padding-top: 2rem;
+      transform: translateY(100%);
 
       .accent-typography--active & {
         animation-name: slide-in-up;

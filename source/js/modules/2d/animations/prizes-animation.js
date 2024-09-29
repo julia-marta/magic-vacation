@@ -105,6 +105,9 @@ export default class PrizesAnimation {
   }
 
   _setCounterValue() {
+    if (!this.frameAnimationElement) {
+      return;
+    }
     if (this.frameAnimationCurrentValue <= this.frameAnimationEndValue) {
       this.frameAnimationElement.textContent = this.frameAnimationCurrentValue;
       this.frameAnimationCurrentValue += this.frameAnimationStep;
